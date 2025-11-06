@@ -1,0 +1,39 @@
+/* Home Content Styles */
+.home-content {
+  padding: 2rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.home-content h2 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.home-content p {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.toggle-competitions {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.toggle-competitions:hover {
+  background: #2980b9;
+}
+
+/* Competitions Section */
+.competitions-section {
+  margin-top: 2rem;
+  padding: 2rem 0;
+  border-top: 1px solid #eee;
+}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codathor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+     
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <div class="logo-text">
+                        <p>
+                            <span class="word wisteria">Codathor</span>
+                            <span class="word belize">Codathor</span>
+                            <span class="word pomegranate">Codathor</span>
+                            <span class="word green">Codathor</span>
+                            <span class="word midnight">Codathor</span>
+                        </p>
+                    </div>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="competitions.html">Code-Quest</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#team">Team</a></li>
+                   <li id="auth-links">
+    <a href="#" id="login-btn">Login</a>
+    <a href="#" id="register-btn">Register</a>
+    <a href="#" id="profile-btn" style="display: none;">
+        <i class="fas fa-user"></i>
+        <span id="notification-badge" class="notification-badge"></span>
+    </a>
+   
+    <a href="#" id="logout-btn" style="display: none;">Logout</a>
+</li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="competitions.html">Competitions</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#" id="mobile-login-btn">Login</a></li>
+            <li><a href="#" id="mobile-register-btn">Register</a></li>
+            <li><a href="#" id="mobile-profile-btn" style="display: none;">Profile</a></li>
+            <li><a href="#" id="mobile-logout-btn" style="display: none;">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Auth Modals -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="auth-form" id="login-form">
+                    <h2>Login to Your Account</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <button type="submit" class="modal-btn modal-btn-primary">Login</button>
+                    </form>
+                    <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+                </div>
+                <div class="auth-form" id="register-form" style="display: none;">
+                    <h2>Create an Account</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="register-name">Full Name</label>
+                            <input type="text" id="register-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">Password</label>
+                            <input type="password" id="register-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-confirm-password">Confirm Password</label>
+                            <input type="password" id="register-confirm-password" required>
+                        </div>
+                        <button type="submit" class="modal-btn modal-btn-primary">Register</button>
+                    </form>
+                    <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+   <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="container">
+        <div class="hero-content">
+            <h1 id="typewriter-heading"></h1>
+            <p class="subtitle">Unleash your coding might in electrifying battles and ignite your path to greatness</p>
+            <p class="description">Join warriors of logic and lightning on a platform where ideas are forged, challenges are epic, and every coder becomes a legend.</p>
+            <a href="#competitions" class="cta-button">Start Your Journey</a>
+        </div>
+    </div>
+</section>
+
+
+    
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <h2>Complete Your Enrollment</h2>
+                <div id="payment-form">
+                    <div class="form-group">
+                        <label for="card-number">Card Number</label>
+                        <input type="text" id="card-number" placeholder="4242 4242 4242 4242">
+                    </div>
+                    <div class="form-group">
+                        <label for="card-expiry">Expiry Date</label>
+                        <input type="text" id="card-expiry" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="card-cvc">CVC</label>
+                        <input type="text" id="card-cvc" placeholder="123">
+                    </div>
+                    <div class="form-group">
+                        <label for="card-name">Name on Card</label>
+                        <input type="text" id="card-name">
+                    </div>
+                    <button id="submit-payment" class="modal-btn modal-btn-primary">Pay $<span id="payment-amount">0</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Features Section -->
+        <section class="features" id="features">
+    <div id="features-bg"></div>
+    <div class="container">
+        <h2 class="section-title">What We Offer</h2>
+        <div class="containe">
+
+            <!-- Learn to Code -->
+            <div class="box" id="learn-box">
+                <span></span>
+                <a href="#" onclick="loadLearnPage(event)">
+                    <div class="content">
+                        <div class="feature-icon">🎓</div>
+                        <h2>Learn to Code</h2>
+                        <p>Kickstart your coding journey with beginner-friendly tutorials. Explore programming languages and build a strong foundation in coding.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Projects -->
+            <div class="box">
+                <span></span>
+                <a href="fianl pro.html">
+                    <div class="content">
+                        <div class="feature-icon">🧩</div>
+                        <h2>Projects</h2>
+                        <p>Explore a collection of real-world projects with complete source code. Learn by building and understand how things work through hands-on examples.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Tech Competitions -->
+            <div class="box">
+                <span></span>
+                <a href="competitions.html">
+                    <div class="content">
+                        <div class="feature-icon">🏆</div>
+                        <h3>Tech Competitions</h3>
+                        <p>Participate in cutting-edge programming competitions, AI challenges, and innovation contests with exciting prizes and recognition.</p>
+                    </div>
+                </a>
+            </div>
+
+            
+            <!-- Preparation Hub -->
+            <div class="box">
+                <span></span>
+                <a href="road4.html">
+                    <div class="content">
+                        <div class="feature-icon">🚀</div>
+                        <h2>Preparation Hub</h2>
+                        <p>Access curated cheatsheets, interview questions, and career roadmaps designed to help you excel in placements and land your dream job.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Jobs & Internships -->
+            <div class="box">
+                <span></span>
+                <a href="job.html">
+                    <div class="content">
+                        <div class="feature-icon">💡</div>
+                        <h2>Jobs & Internships</h2>
+                        <p>Explore exciting job and internship opportunities to gain real-world experience and build a strong professional network.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Community Support -->
+            <div class="box">
+                <span></span>
+                <a href="https://chat.whatsapp.com/CJNaKH13JX46KJ83EIgGeZ" target="_blank">
+                    <div class="content">
+                        <div class="feature-icon">🌟</div>
+                        <h2>Community Support</h2>
+                        <p>Be part of a thriving community of innovators, get feedback on your projects, and collaborate on groundbreaking ideas.</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
+    <!-- Team Section -->
+    <section class="team" id="team">
+        <div class="container">
+            <h2 class="section-title">Meet Our Founders</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">RS</div>
+                    <h3>Raghav Saini</h3>
+                    <p class="role">Founder & CEO</p>
+                    <p>Passionate technologist with 2+ years of experience building scalable platforms and automating data-driven solutions. Former software architect at leading tech companies, now focused on leveraging Python for web scraping, data engineering, and workflow automation. Dedicated to fostering innovation through competitive programming, collaborative development.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">AT</div>
+                    <h3>Anjali Tiwari</h3>
+                    <p class="role">Co-Founder</p>
+                    <p>Expert in AI/ML and full-stack development with a background in organizing large-scale tech events. Committed to creating inclusive spaces where diverse talents can thrive and innovate together.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+  <section class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Active Participants</p>
+            </div>
+            <div class="stat-item">
+                <h3>20+</h3>
+                <p>Competitions Hosted</p>
+            </div>
+            <div class="stat-item">
+                <h3>100+</h3>
+                <p>Projects Completed</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CodethorLab</h3>
+                    <p>Empowering the next generation of innovators through competitions, collaboration, and community.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="#home">Home</a></p>
+                    <p><a href="#features">Features</a></p>
+                    <p><a href="#team">Team</a></p>
+                    <p><a href="#contact">Contact</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>Email: hello@Codathor.com</p>
+                    
+                  
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CodathorLab. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Features, Team, and other sections remain the same as before -->
+    
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/competitions.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script src="js/notifications.js"></script>
+
+</body>
+</html>

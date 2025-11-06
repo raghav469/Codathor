@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Competitions | Codathor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-c_cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/theme-monokai.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #059669;
+            --error: #dc2626;
+            --warning: #d97706;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--white);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .competitions-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 70px;
+        }
+
+        .competitions-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .competitions-hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        /* Main Content */
+        .all-competitions {
+            padding: 80px 0;
+            min-height: 100vh;
+        }
+
+        .competitions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .competition-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border-top: 5px solid var(--primary);
+        }
+
+        .competition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .competition-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .language-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #e0e7ff;
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #f3f4f6;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Challenge Page */
+        .challenge-container {
+            padding: 100px 0 50px;
+        }
+
+        .challenge-header {
+            margin-bottom: 30px;
+        }
+
+        .challenge-header h1 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .challenge-header .language-tag {
+            margin-bottom: 20px;
+        }
+
+        .challenge-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .challenge-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .problem-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .problem-statement {
+            margin-bottom: 25px;
+        }
+
+        .problem-statement h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .problem-examples {
+            margin-top: 20px;
+        }
+
+        .example {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 3px solid var(--primary);
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .example-code {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .editor-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .code-editor-container {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .editor-header {
+            background: #f8fafc;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-editor {
+            height: 400px;
+            width: 100%;
+        }
+
+        .editor-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .run-button, .submit-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .run-button {
+            background: var(--warning);
+            color: white;
+        }
+
+        .run-button:hover {
+            background: #b45309;
+        }
+
+        .submit-button {
+            background: var(--success);
+            color: white;
+        }
+
+        .submit-button:hover {
+            background: #047857;
+        }
+
+        .output-container {
+            margin-top: 20px;
+        }
+
+        .output-panel {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #475569;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .results-section {
+            margin-top: 30px;
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .score-display {
+            background: linear-gradient(45deg, var(--success), #10b981);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .test-cases {
+            margin-top: 20px;
+        }
+
+        .test-case {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .test-case.passed {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        .test-case.failed {
+            border-color: var(--error);
+            background: #fef2f2;
+        }
+
+        .test-case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .test-status {
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .test-status.passed {
+            background: var(--success);
+            color: white;
+        }
+
+        .test-status.failed {
+            background: var(--error);
+            color: white;
+        }
+
+        /* Back button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: var(--primary-dark);
+            transform: translateX(-3px);
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">Codathor</div>
+                <ul class="nav-links">
+                    <li><a href="#" id="home-link">Home</a></li>
+                    <li><a href="#" class="active">Competitions</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Competitions Page -->
+    <section id="competitions-page">
+        <!-- Hero Section -->
+        <section class="competitions-hero">
+            <div class="container">
+                <h1>Code Challenge Arena</h1>
+                <p>Test your programming skills with language-specific challenges</p>
+            </div>
+        </section>
+
+        <!-- Main Competitions -->
+        <section class="all-competitions">
+            <div class="container">
+                <div class="competitions-grid">
+                    <!-- JavaScript Competition -->
+                    <div class="competition-card" data-id="js-challenge">
+                        <h3>JavaScript Challenge</h3>
+                        <span class="language-tag">JavaScript</span>
+                        <p class="description">Solve problems using modern JavaScript (ES6+). Test your knowledge of closures, promises, and async/await.</p>
+                        <div class="stats">
+                            <span><i class="fas fa-users"></i> 125 participants</span>
+                            <span><i class="fas fa-trophy"></i> 5 winners</span>
+                            <span><i class="fas fa-star"></i> Intermediate</span>
+                        </div>
+                        <button class="cta-button start-challenge">Start Challenge</button>
+                    </div>
+
+                    <!-- Python Competition -->
+                    <div class="competition-card" data-id="python-challenge">
+                        <h3>Python Mastery</h3>
+                        <span class="language-tag">Python</span>
+                        <p class="description">Advanced Python problems covering generators, decorators, and algorithm optimization.</p>
+                        <div class="stats">
+                            <span><i class="fas fa-users"></i> 98 participants</span>
+                            <span><i class="fas fa-trophy"></i> 3 winners</span>
+                            <span><i class="fas fa-star"></i> Advanced</span>
+                        </div>
+                        <button class="cta-button start-challenge">Start Challenge</button>
+                    </div>
+
+                    <!-- Java Competition -->
+                    <div class="competition-card" data-id="java-challenge">
+                        <h3>Java Coding Sprint</h3>
+                        <span class="language-tag">Java</span>
+                        <p class="description">Object-oriented programming challenges with Java. Focus on collections and design patterns.</p>
+                        <div class="stats">
+                            <span><i class="fas fa-users"></i> 87 participants</span>
+                            <span><i class="fas fa-trophy"></i> 4 winners</span>
+                            <span><i class="fas fa-star"></i> Intermediate</span>
+                        </div>
+                        <button class="cta-button start-challenge">Start Challenge</button>
+                    </div>
+
+                    <!-- C++ Competition -->
+                    <div class="competition-card" data-id="cpp-challenge">
+                        <h3>C++ Optimization</h3>
+                        <span class="language-tag">C++</span>
+                        <p class="description">Low-level programming challenges focusing on memory management and performance.</p>
+                        <div class="stats">
+                            <span><i class="fas fa-users"></i> 76 participants</span>
+                            <span><i class="fas fa-trophy"></i> 3 winners</span>
+                            <span><i class="fas fa-star"></i> Expert</span>
+                        </div>
+                        <button class="cta-button start-challenge">Start Challenge</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Challenge Page (Hidden by default) -->
+    <section id="challenge-page" class="hidden">
+        <div class="container challenge-container">
+            <a href="#" class="back-button" id="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Competitions
+            </a>
+            
+            <div class="challenge-header">
+                <h1 id="challenge-title">Challenge Title</h1>
+                <span class="language-tag" id="challenge-language">Language</span>
+            </div>
+            
+            <div class="challenge-layout">
+                <div class="problem-section">
+                    <div class="problem-statement">
+                        <h2>Problem Statement</h2>
+                        <div id="problem-description">
+                            Problem description will appear here...
+                        </div>
+                        
+                        <div class="problem-examples" id="problem-examples">
+                            <!-- Examples will be added here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="editor-section">
+                    <div class="code-editor-container">
+                        <div class="editor-header">
+                            <span>Code Editor</span>
+                            <select class="language-selector" id="language-select">
+                                <option value="javascript">JavaScript</option>
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                            </select>
+                        </div>
+                        <div id="code-editor" class="code-editor"></div>
+                    </div>
+                    
+                    <div class="editor-controls">
+                        <button class="run-button" id="run-button">▶ Run Code</button>
+                        <button class="submit-button" id="submit-button">✓ Submit Solution</button>
+                    </div>
+                    
+                    <div class="output-container">
+                        <div class="output-panel">
+                            <div class="output-header">
+                                <span>Output</span>
+                                <span id="execution-time">Execution Time: 0s</span>
+                            </div>
+                            <div id="code-output">Click "Run Code" to see output...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results-section hidden" id="results-section">
+                <div class="score-display" id="score-display">
+                    Your Score: 0/100
+                </div>
+                
+                <div class="test-cases" id="test-cases">
+                    <!-- Test cases will be added here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Competition data with problems
+        const competitions = {
+            'js-challenge': {
+                title: 'JavaScript Challenge',
+                language: 'JavaScript',
+                problems: [
+                    {
+                        title: 'Array Manipulation',
+                        description: 'Write a function that takes an array of numbers and returns a new array with all even numbers doubled and all odd numbers tripled.',
+                        examples: [
+                            {
+                                input: '[1, 2, 3, 4]',
+                                output: '[3, 4, 9, 8]',
+                                explanation: 'Odd numbers (1,3) are tripled, even numbers (2,4) are doubled'
+                            },
+                            {
+                                input: '[10, 5, 8, 7]',
+                                output: '[20, 15, 16, 21]'
+                            }
+                        ],
+                        testCases: [
+                            { input: '[1, 2, 3, 4]', expected: '[3, 4, 9, 8]' },
+                            { input: '[10, 5, 8, 7]', expected: '[20, 15, 16, 21]' },
+                            { input: '[0, -1, 2]', expected: '[0, -3, 4]' }
+                        ],
+                        starterCode: {
+                            javascript: `function manipulateArray(arr) {
+    // Your code here
+}
+
+// Test your solution
+console.log(manipulateArray([1, 2, 3, 4])); // Should output [3, 4, 9, 8]`
+                        }
+                    },
+                    {
+                        title: 'Promise Chain',
+                        description: 'Create a function that takes an array of URLs and returns a promise that resolves with an array of responses in the same order, after fetching all URLs sequentially.',
+                        examples: [
+                            {
+                                input: '["/api/1", "/api/2"]',
+                                output: '[response1, response2]',
+                                explanation: 'Responses should be in the same order as the input URLs'
+                            }
+                        ],
+                        testCases: [
+                            { input: '["/api/1", "/api/2"]', expected: '[response1, response2]' }
+                        ],
+                        starterCode: {
+                            javascript: `async function fetchSequentially(urls) {
+    // Your code here
+}
+
+// Test your solution
+fetchSequentially(["https://jsonplaceholder.typicode.com/posts/1", 
+                  "https://jsonplaceholder.typicode.com/posts/2"])
+    .then(console.log);`
+                        }
+                    }
+                ]
+            },
+            'python-challenge': {
+                title: 'Python Mastery',
+                language: 'Python',
+                problems: [
+                    {
+                        title: 'List Comprehension',
+                        description: 'Write a function using list comprehension that takes a list of strings and returns a new list containing only palindromes (strings that read the same backward as forward).',
+                        examples: [
+                            {
+                                input: '["madam", "racecar", "hello", "world"]',
+                                output: '["madam", "racecar"]'
+                            }
+                        ],
+                        testCases: [
+                            { input: '["madam", "racecar", "hello", "world"]', expected: '["madam", "racecar"]' },
+                            { input: '["python", "radar", "level"]', expected: '["radar", "level"]' }
+                        ],
+                        starterCode: {
+                            python: `def find_palindromes(words):
+    # Your code here
+    pass
+
+# Test your solution
+print(find_palindromes(["madam", "racecar", "hello", "world"]))  # Should output ['madam', 'racecar']`
+                        }
+                    }
+                ]
+            },
+            'java-challenge': {
+                title: 'Java Coding Sprint',
+                language: 'Java',
+                problems: [
+                    {
+                        title: 'Thread Safe Counter',
+                        description: 'Implement a thread-safe counter class that can be incremented from multiple threads without race conditions.',
+                        examples: [
+                            {
+                                input: 'Multiple threads incrementing counter 1000 times each',
+                                output: 'Correct total count',
+                                explanation: 'The final count should be exactly the sum of all increments'
+                            }
+                        ],
+                        testCases: [
+                            { input: '5 threads, 1000 increments each', expected: '5000' }
+                        ],
+                        starterCode: {
+                            java: `public class ThreadSafeCounter {
+    // Your thread-safe counter implementation here
+    
+    public static void main(String[] args) {
+        // Test your solution
+        ThreadSafeCounter counter = new ThreadSafeCounter();
+        
+        // Create and start multiple threads that increment the counter
+        // Verify the final count is correct
+    }
+}`
+                        }
+                    }
+                ]
+            },
+            'cpp-challenge': {
+                title: 'C++ Optimization',
+                language: 'C++',
+                problems: [
+                    {
+                        title: 'Memory Management',
+                        description: 'Implement a custom string class that manages its own memory without memory leaks.',
+                        examples: [
+                            {
+                                input: 'Creating and copying strings',
+                                output: 'Properly managed memory',
+                                explanation: 'No memory leaks when strings are copied and destroyed'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'String creation and copying', expected: 'No memory leaks' }
+                        ],
+                        starterCode: {
+                            cpp: `class MyString {
+    // Your string class implementation here
+};
+
+int main() {
+    // Test your solution
+    MyString s1("hello");
+    MyString s2 = s1;
+    // Verify no memory leaks
+    return 0;
+}`
+                        }
+                    }
+                ]
+            }
+        };
+
+        // Global variables
+        let currentCompetition = null;
+        let currentProblemIndex = 0;
+        let editor;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+            initializeCodeEditor();
+        });
+
+        // Event listeners
+        function initializeEventListeners() {
+            // Start challenge buttons
+            document.querySelectorAll('.start-challenge').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = this.closest('.competition-card');
+                    const competitionId = card.dataset.id;
+                    startChallenge(competitionId);
+                });
+            });
+
+            // Back button
+            document.getElementById('back-button').addEventListener('click', function(e) {
+                e.preventDefault();
+                showCompetitionsPage();
+            });
+
+            // Home link
+            document.getElementById('home-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showCompetitionsPage();
+            });
+
+            // Run and Submit buttons
+            document.getElementById('run-button').addEventListener('click', runCode);
+            document.getElementById('submit-button').addEventListener('click', submitCode);
+
+            // Language selector change
+            document.getElementById('language-select').addEventListener('change', function() {
+                updateStarterCode();
+            });
+        }
+
+        // Initialize code editor
+        function initializeCodeEditor() {
+            editor = ace.edit("code-editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.session.setMode("ace/mode/javascript");
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                fontSize: "14px"
+            });
+        }
+
+        // Start a challenge
+        function startChallenge(competitionId) {
+            currentCompetition = competitions[competitionId];
+            if (!currentCompetition) return;
+
+            currentProblemIndex = 0;
+            showChallengePage();
+            loadProblem(currentProblemIndex);
+        }
+
+        // Show challenge page
+        function showChallengePage() {
+            document.getElementById('competitions-page').classList.add('hidden');
+            document.getElementById('challenge-page').classList.remove('hidden');
+            
+            // Set challenge title and language
+            document.getElementById('challenge-title').textContent = currentCompetition.title;
+            document.getElementById('challenge-language').textContent = currentCompetition.language;
+            
+            // Hide results section initially
+            document.getElementById('results-section').classList.add('hidden');
+        }
+
+        // Show competitions page
+        function showCompetitionsPage() {
+            document.getElementById('competitions-page').classList.remove('hidden');
+            document.getElementById('challenge-page').classList.add('hidden');
+        }
+
+        // Load a specific problem
+        function loadProblem(index) {
+            if (!currentCompetition || !currentCompetition.problems[index]) return;
+            
+            const problem = currentCompetition.problems[index];
+            
+            // Update problem title in the header
+            document.getElementById('challenge-title').textContent = `${currentCompetition.title}: ${problem.title}`;
+            
+            // Update problem description
+            document.getElementById('problem-description').textContent = problem.description;
+            
+            // Clear and add examples
+            const examplesContainer = document.getElementById('problem-examples');
+            examplesContainer.innerHTML = '';
+            
+            problem.examples.forEach((example, i) => {
+                const exampleEl = document.createElement('div');
+                exampleEl.className = 'example';
+                exampleEl.innerHTML = `
+                    <div class="example-title">Example ${i + 1}:</div>
+                    <div class="example-code">Input: ${example.input}
+Output: ${example.output}${example.explanation ? '\nExplanation: ' + example.explanation : ''}</div>
+                `;
+                examplesContainer.appendChild(exampleEl);
+            });
+            
+            // Set starter code for the current language
+            updateStarterCode();
+            
+            // Clear previous output and results
+            document.getElementById('code-output').textContent = 'Click "Run Code" to see output...';
+            document.getElementById('execution-time').textContent = 'Execution Time: 0s';
+            document.getElementById('score-display').textContent = 'Your Score: 0/100';
+            document.getElementById('test-cases').innerHTML = '';
+            document.getElementById('results-section').classList.add('hidden');
+        }
+
+        // Update starter code based on selected language
+        function updateStarterCode() {
+            if (!currentCompetition || !currentCompetition.problems[currentProblemIndex]) return;
+            
+            const language = document.getElementById('language-select').value;
+            const problem = currentCompetition.problems[currentProblemIndex];
+            const starterCode = problem.starterCode[language] || '// No starter code available for this language';
+            
+            editor.session.setMode(`ace/mode/${language}`);
+            editor.setValue(starterCode, 1);
+        }
+
+        // Run code
+        function runCode() {
+            const code = editor.getValue();
+            const language = document.getElementById('language-select').value;
+            
+            // Simulate code execution
+            const output = document.getElementById('code-output');
+            output.textContent = 'Running code...\n';
+            
+            // Show execution time
+            const startTime = performance.now();
+            
+            setTimeout(() => {
+                const endTime = performance.now();
+                const executionTime = ((endTime - startTime) / 1000).toFixed(3);
+                document.getElementById('execution-time').textContent = `Execution Time: ${executionTime}s`;
+                
+                // Simulate output based on language
+                let simulatedOutput = '';
+                
+                if (language === 'javascript') {
+                    simulatedOutput = `[3, 4, 9, 8]
+                    
+✓ Code executed successfully
+Memory usage: 14.2 MB`;
+                } else if (language === 'python') {
+                    simulatedOutput = `['madam', 'racecar']
+                    
+✓ Code executed successfully
+Memory usage: 12.5 MB`;
+                } else if (language === 'java') {
+                    simulatedOutput = `Counter value: 5000
+                    
+✓ Code compiled and executed successfully`;
+                } else if (language === 'cpp') {
+                    simulatedOutput = `String created and copied successfully
+                    
+✓ No memory leaks detected`;
+                }
+                
+                output.textContent = simulatedOutput;
+            }, 800);
+        }
+
+        // Submit code
+        function submitCode() {
+            if (!currentCompetition || !currentCompetition.problems[currentProblemIndex]) return;
+            
+            const problem = currentCompetition.problems[currentProblemIndex];
+            const testCasesContainer = document.getElementById('test-cases');
+            testCasesContainer.innerHTML = '';
+            
+            let passedCount = 0;
+            
+            // Simulate test case execution
+            problem.testCases.forEach((testCase, index) => {
+                // Randomly pass or fail some test cases for demonstration
+                const passed = Math.random() > 0.3;
+                if (passed) passedCount++;
+                
+                const testCaseEl = document.createElement('div');
+                testCaseEl.className = `test-case ${passed ? 'passed' : 'failed'}`;
+                testCaseEl.innerHTML = `
+                    <div class="test-case-header">
+                        <span>Test Case ${index + 1}</span>
+                        <span class="test-status ${passed ? 'passed' : 'failed'}">${passed ? 'PASSED' : 'FAILED'}</span>
+                    </div>
+                    <div>Input: ${testCase.input}</div>
+                    <div>Expected: ${testCase.expected}</div>
+                    ${!passed ? '<div>Your Output: ' + getRandomOutput(testCase.expected) + '</div>' : ''}
+                `;
+                
+                testCasesContainer.appendChild(testCaseEl);
+            });
+            
+            // Calculate score
+            const score = Math.floor((passedCount / problem.testCases.length) * 100);
+            document.getElementById('score-display').textContent = `Your Score: ${score}/100`;
+            
+            // Show results section
+            document.getElementById('results-section').classList.remove('hidden');
+            
+            // Scroll to results
+            document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Helper function to generate random incorrect output
+        function getRandomOutput(expected) {
+            if (expected.includes('[')) {
+                // For array outputs
+                const arr = JSON.parse(expected);
+                if (arr.length > 0) {
+                    // Swap two elements
+                    const i = Math.floor(Math.random() * arr.length);
+                    const j = Math.floor(Math.random() * arr.length);
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                    return JSON.stringify(arr);
+                }
+            } else if (!isNaN(expected)) {
+                // For numeric outputs
+                return Math.floor(Math.random() * 1000).toString();
+            }
+            
+            return 'incorrect output';
+        }
+    </script>
+</body>
+</html>

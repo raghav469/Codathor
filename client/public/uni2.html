@@ -1,0 +1,2676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Path Simulator - Enhanced</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .animate-pulse-custom {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .progress-bar {
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .skill-item {
+            transition: all 0.5s ease;
+        }
+        
+        .skill-completed {
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .reward-unlocked {
+            animation: bounce 0.6s ease-in-out;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .floating-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .sparkle {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sparkle::after {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            animation: sparkle 2s infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-purple-100">
+    
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+    
+    <!-- Initial Path Selection Screen -->
+    <div id="pathSelection" class="min-h-screen p-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-6xl font-bold gradient-text mb-6 floating-animation">
+                    🚀 Career Path Simulator
+                </h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                    Choose your path and visualize your future success. Set goals, track progress, and unlock rewards along your journey to becoming a tech professional.
+                </p>
+                <div class="mt-8 flex justify-center items-center gap-4 text-sm text-gray-500">
+                    <div class="flex items-center gap-2">
+                        <span>👥</span>
+                        <span>Join 5M+ learners</span>
+                    </div>
+                    <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                    <div class="flex items-center gap-2">
+                        <span>⭐</span>
+                        <span>4.9/5 Success Rate</span>
+                    </div>
+                    <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                    <div class="flex items-center gap-2">
+                        <span>🎯</span>
+                        <span>Personalized Learning</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="group cursor-pointer card-hover" onclick="selectPath('web-dev')">
+                    <div class="bg-gradient-to-br from-blue-50 via-blue-25 to-purple-50 rounded-3xl p-8 shadow-lg hover:shadow-2xl border-2 border-transparent hover:border-blue-200 relative overflow-hidden">
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                            HOT 🔥
+                        </div>
+                        <div class="text-center">
+                            <div class="text-7xl mb-6">🌐</div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">Web Development</h3>
+                            <p class="text-gray-600 mb-4 text-sm">Build modern websites and web applications</p>
+                            <div class="flex justify-center items-center gap-6 text-sm text-gray-600 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span>👥</span>
+                                    <span>2.8M+ devs</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span>📈</span>
+                                    <span>+15% growth</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span>💰</span>
+                                    <span>$45K-$110K</span>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 px-8 rounded-full font-semibold group-hover:shadow-lg transition-all duration-300 transform group-hover:scale-105">
+                                Start Your Journey →
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group cursor-pointer card-hover" onclick="selectPath('ai-ml')">
+                    <div class="bg-gradient-to-br from-green-50 via-green-25 to-teal-50 rounded-3xl p-8 shadow-lg hover:shadow-2xl border-2 border-transparent hover:border-green-200 relative overflow-hidden">
+                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                            TRENDING ⚡
+                        </div>
+                        <div class="text-center">
+                            <div class="text-7xl mb-6">🤖</div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">AI & Machine Learning</h3>
+                            <p class="text-gray-600 mb-4 text-sm">Create intelligent systems and AI solutions</p>
+                            <div class="flex justify-center items-center gap-6 text-sm text-gray-600 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span>👥</span>
+                                    <span>1.2M+ devs</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span>📈</span>
+                                    <span>+35% growth</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span>💰</span>
+                                    <span>$55K-$160K</span>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-r from-green-500 to-teal-600 text-white py-4 px-8 rounded-full font-semibold group-hover:shadow-lg transition-all duration-300 transform group-hover:scale-105">
+                                Start Your Journey →
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group cursor-pointer card-hover" onclick="selectPath('blockchain')">
+                    <div class="bg-gradient-to-br from-orange-50 via-orange-25 to-red-50 rounded-3xl p-8 shadow-lg hover:shadow-2xl border-2 border-transparent hover:border-orange-200 relative overflow-hidden">
+                        <div class="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                            HIGH PAY 💎
+                        </div>
+                        <div class="text-center">
+                            <div class="text-7xl mb-6">⛓️</div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">Blockchain Development</h3>
+                            <p class="text-gray-600 mb-4 text-sm">Build decentralized applications and smart contracts</p>
+                            <div class="flex justify-center items-center gap-6 text-sm text-gray-600 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span>👥</span>
+                                    <span>450K+ devs</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span>📈</span>
+                                    <span>+50% growth</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span>💰</span>
+                                    <span>$60K-$180K</span>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-r from-orange-500 to-red-600 text-white py-4 px-8 rounded-full font-semibold group-hover:shadow-lg transition-all duration-300 transform group-hover:scale-105">
+                                Start Your Journey →
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group cursor-pointer card-hover" onclick="selectPath('mobile-dev')">
+                    <div class="bg-gradient-to-br from-purple-50 via-purple-25 to-pink-50 rounded-3xl p-8 shadow-lg hover:shadow-2xl border-2 border-transparent hover:border-purple-200 relative overflow-hidden">
+                        <div class="absolute top-4 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                            IN-DEMAND 📱
+                        </div>
+                        <div class="text-center">
+                            <div class="text-7xl mb-6">📱</div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-3">Mobile Development</h3>
+                            <p class="text-gray-600 mb-4 text-sm">Create native and cross-platform mobile apps</p>
+                            <div class="flex justify-center items-center gap-6 text-sm text-gray-600 mb-6">
+                                <div class="flex items-center gap-1">
+                                    <span>👥</span>
+                                    <span>1.8M+ devs</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span>📈</span>
+                                    <span>+20% growth</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span>💰</span>
+                                    <span>$50K-$130K</span>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-r from-purple-500 to-pink-600 text-white py-4 px-8 rounded-full font-semibold group-hover:shadow-lg transition-all duration-300 transform group-hover:scale-105">
+                                Start Your Journey →
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Section -->
+            <div class="mt-16 bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Why Choose Our Career Path Simulator?</h2>
+                    <p class="text-gray-600">Backed by industry data and real career outcomes</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 mb-2">94%</div>
+                        <div class="text-sm text-gray-600">Job Placement Rate</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600 mb-2">$78K</div>
+                        <div class="text-sm text-gray-600">Average Starting Salary</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-600 mb-2">6-24</div>
+                        <div class="text-sm text-gray-600">Months to Job Ready</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-600 mb-2">24/7</div>
+                        <div class="text-sm text-gray-600">Learning Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Simulator Screen -->
+    <div id="simulator" class="hidden min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
+                <div>
+                    <h1 id="pathTitle" class="text-4xl font-bold text-gray-800 mb-2">
+                        🌐 Web Development Journey
+                    </h1>
+                    <p class="text-gray-600">Track your progress and unlock your potential</p>
+                    <div class="flex items-center gap-4 mt-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-green-500">●</span>
+                            <span class="text-sm text-gray-600">Active Learning Path</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span>🔥</span>
+                            <span id="streakCounter" class="text-sm font-medium">0 day streak</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button
+                        onclick="resetProgress()"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+                    >
+                        🔄 Reset Progress
+                    </button>
+                    <button
+                        onclick="goBack()"
+                        class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+                    >
+                        ← Change Path
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Actions Bar -->
+            <div class="bg-white rounded-xl shadow-sm p-4 mb-8">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-6">
+                        <button onclick="quickSetProgress(25)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition-colors">
+                            Quick: 25%
+                        </button>
+                        <button onclick="quickSetProgress(50)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition-colors">
+                            Quick: 50%
+                        </button>
+                        <button onclick="quickSetProgress(75)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition-colors">
+                            Quick: 75%
+                        </button>
+                        <button onclick="quickSetProgress(100)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm transition-colors">
+                            Complete Path
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-600">Study Mode:</span>
+                            <select id="studyMode" onchange="updateStudyMode()" class="text-sm border border-gray-300 rounded px-2 py-1">
+                                <option value="casual">Casual (5h/week)</option>
+                                <option value="standard" selected>Standard (10h/week)</option>
+                                <option value="intensive">Intensive (20h/week)</option>
+                                <option value="bootcamp">Bootcamp (40h/week)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <!-- Progress Tracker -->
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Your Learning Path</h2>
+                        <div class="text-right">
+                            <div id="progressPercent" class="text-3xl font-bold text-indigo-600">0%</div>
+                            <div class="text-sm text-gray-500">Complete</div>
+                            <div id="hoursEstimate" class="text-xs text-gray-400 mt-1">Est. 0 hours</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="w-full bg-gray-200 rounded-full h-4 mb-4 relative overflow-hidden">
+                            <div 
+                                id="progressBar"
+                                class="bg-gradient-to-r from-blue-500 to-purple-600 h-4 rounded-full progress-bar relative"
+                                style="width: 0%"
+                            >
+                                <div class="absolute inset-0 bg-white/20 rounded-full animate-pulse-custom"></div>
+                            </div>
+                        </div>
+                        
+                        <div id="skillsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                            <!-- Skills will be populated by JavaScript -->
+                        </div>
+
+                        <!-- Current Focus -->
+                        <div id="currentFocus" class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                                <span>🎯</span> Current Focus
+                            </h4>
+                            <p id="focusText" class="text-gray-600 text-sm">Start your journey by learning the fundamentals!</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <label class="text-sm font-medium text-gray-700 whitespace-nowrap">Progress:</label>
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                value="0"
+                                id="progressSlider"
+                                onchange="updateProgress(this.value)"
+                                oninput="previewProgress(this.value)"
+                                class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            />
+                            <input
+                                type="number"
+                                min="0"
+                                max="100"
+                                value="0"
+                                id="progressNumber"
+                                onchange="updateProgress(this.value)"
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center"
+                            />
+                            <span class="text-sm text-gray-500">%</span>
+                        </div>
+                        
+                        <!-- Study Session Simulator -->
+                        <div class="flex items-center gap-4 pt-2">
+                            <button onclick="simulateStudySession()" id="studyBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                                <span>📚</span> Complete Study Session (+5%)
+                            </button>
+                            <div id="sessionCooldown" class="hidden text-sm text-gray-500">
+                                Next session in: <span id="cooldownTimer">0</span>s
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Future Projection -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>🔮</span>
+                        Your Future in <span id="timeFrameText">12</span> months
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                            <span class="text-green-600 text-2xl">💰</span>
+                            <div>
+                                <div id="projectedSalary" class="text-2xl font-bold text-green-600">$65,000</div>
+                                <div class="text-sm text-gray-500">Expected Salary</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                            <span class="text-blue-600 text-2xl">🏆</span>
+                            <div>
+                                <div id="projectedRole" class="text-lg font-semibold text-gray-800">Frontend Developer</div>
+                                <div class="text-sm text-gray-500">Job Title</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                            <span class="text-purple-600 text-2xl">⭐</span>
+                            <div>
+                                <div id="projectedProjects" class="text-sm font-medium text-gray-800">E-commerce Sites, SPAs</div>
+                                <div class="text-xs text-gray-500">Project Types</div>
+                            </div>
+                        </div>
+
+                        <!-- Market Demand -->
+                        <div class="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg">
+                            <span class="text-yellow-600 text-2xl">📊</span>
+                            <div>
+                                <div id="marketDemand" class="text-sm font-medium text-gray-800">High Demand</div>
+                                <div class="text-xs text-gray-500">Job Market</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Time Frame Projection
+                        </label>
+                        <select
+                            id="timeFrameSelect"
+                            onchange="updateTimeFrame(this.value)"
+                            class="w-full p-3 border border-gray-300 rounded-lg"
+                        >
+                            <option value="6">6 months</option>
+                            <option value="12" selected>1 year</option>
+                            <option value="18">1.5 years</option>
+                            <option value="24">2 years</option>
+                            <option value="36">3 years</option>
+                        </select>
+                    </div>
+
+                    <!-- Learning Efficiency -->
+                    <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Learning Efficiency</span>
+                            <span id="efficiencyScore" class="text-sm font-semibold text-indigo-600">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                            <div id="efficiencyBar" class="bg-indigo-500 h-2 rounded-full transition-all duration-300" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rewards & Time Capsule -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Rewards -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <span class="text-yellow-500">🏆</span>
+                        Milestone Rewards
+                        <span id="rewardCount" class="bg-yellow-100 text-yellow-800 text-sm px-2 py-1 rounded-full">0/4</span>
+                    </h3>
+                    
+                    <div id="rewardsContainer" class="space-y-4">
+                        <!-- Rewards will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Achievement Showcase -->
+                    <div class="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                            <span>🏅</span> Recent Achievement
+                        </h4>
+                        <p id="latestAchievement" class="text-sm text-gray-600">Start your journey to earn your first achievement!</p>
+                    </div>
+                </div>
+
+                <!-- Time Capsule -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <span class="text-purple-500">🎁</span>
+                        Time Capsule
+                        <span id="capsuleCount" class="bg-purple-100 text-purple-800 text-sm px-2 py-1 rounded-full">0</span>
+                    </h3>
+                    
+                    <div id="timeCapsuleForm">
+                        <button
+                            onclick="showTimeCapsuleForm()"
+                            class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-6 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 mb-4 flex items-center justify-center gap-2"
+                        >
+                            <span>📝</span> Leave a Message to Future You
+                        </button>
+                    </div>
+
+                    <div id="timeCapsuleInput" class="hidden mb-4">
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Your Message:</label>
+                            <textarea
+                                id="capsuleMessage"
+                                placeholder="Write an encouraging message to your future self... What are your current goals? What motivates you?"
+                                class="w-full h-28 p-3 border border-gray-300 rounded-lg resize-none text-sm"
+                                maxlength="200"
+                            ></textarea>
+                            <div class="text-xs text-gray-500 mt-1">
+                                <span id="charCount">0</span>/200 characters
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Unlock at progress:</label>
+                            <select id="unlockLevel" class="w-full p-2 border border-gray-300 rounded-lg">
+                                <option value="25">25% - First Quarter</option>
+                                <option value="50">50% - Halfway Point</option>
+                                <option value="75">75% - Almost There</option>
+                                <option value="100">100% - Journey Complete</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-2">
+                            <button
+                                onclick="saveTimeCapsule()"
+                                class="flex-1 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors flex items-center justify-center gap-2"
+                            >
+                                <span>💾</span> Save Capsule
+                            </button>
+                            <button
+                                onclick="hideTimeCapsuleForm()"
+                                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="capsulesContainer" class="space-y-3 max-h-60 overflow-y-auto">
+                        <!-- Time capsules will be populated by JavaScript -->
+                    </div>
+
+                    <div id="emptyCapsules" class="text-center py-8 text-gray-500">
+                        <div class="text-4xl mb-2">🎁</div>
+                        <p class="text-sm">No time capsules yet. Create one to motivate your future self!</p>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentPath = null;
+        let currentProgress = 0;
+        let unlockedRewards = [];
+        let timeFrame = 12;
+        let savedCapsules = [];
+        let studyStreak = 0;
+        let lastStudySession = null;
+        let studyMode = 'standard';
+        let sessionCooldown = null;
+
+        // Career paths data with detailed learning content
+        const careerPaths = {
+            "web-dev": {
+                title: "Web Development",
+                icon: "🌐",
+                color: "from-blue-500 to-purple-600",
+                roadmap: [
+                    "HTML/CSS Fundamentals",
+                    "JavaScript Essentials", 
+                    "React/Vue Framework",
+                    "Backend Development",
+                    "Database Management",
+                    "DevOps & Deployment",
+                    "Advanced Frameworks",
+                    "System Architecture"
+                ],
+                skillDetails: {
+                    "HTML/CSS Fundamentals": {
+                        description: "Master the building blocks of web development",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📌 Core HTML</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Document structure & semantic HTML5</li>
+                                        <li>Forms, inputs & validation</li>
+                                        <li>Accessibility (ARIA, landmarks)</li>
+                                        <li>SEO best practices</li>
+                                        <li>HTML5 APIs (localStorage, geolocation)</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🎨 CSS Mastery</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Box model & positioning</li>
+                                        <li>Flexbox & Grid layouts</li>
+                                        <li>Responsive design (media queries, viewport)</li>
+                                        <li>CSS variables & custom properties</li>
+                                        <li>Transitions & animations</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🚀 Advanced Techniques</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>CSS methodologies (BEM, SMACSS)</li>
+                                        <li>Preprocessors (SASS/SCSS)</li>
+                                        <li>CSS-in-JS solutions</li>
+                                        <li>Performance optimization</li>
+                                        <li>Cross-browser compatibility</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "JavaScript Essentials": {
+                        description: "The programming language of the web",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📌 JavaScript Core</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Variables, types & operators</li>
+                                        <li>Functions & scope (closures)</li>
+                                        <li>Objects & prototypes</li>
+                                        <li>Arrays & array methods</li>
+                                        <li>Error handling</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🌐 DOM Manipulation</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Selecting & modifying elements</li>
+                                        <li>Event handling & propagation</li>
+                                        <li>Dynamic content creation</li>
+                                        <li>Form validation & handling</li>
+                                        <li>AJAX & Fetch API</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚡ ES6+ Features</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Arrow functions & template literals</li>
+                                        <li>Destructuring & spread/rest</li>
+                                        <li>Modules (import/export)</li>
+                                        <li>Classes & inheritance</li>
+                                        <li>Promises & async/await</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "React/Vue Framework": {
+                        description: "Modern frontend frameworks",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚛️ React Core</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Components & JSX syntax</li>
+                                        <li>Props & state management</li>
+                                        <li>Hooks (useState, useEffect, etc.)</li>
+                                        <li>Context API</li>
+                                        <li>React Router</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🖖 Vue Core</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Vue instance & templates</li>
+                                        <li>Directives & computed properties</li>
+                                        <li>Components & props</li>
+                                        <li>Vue Router</li>
+                                        <li>Composition API</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📦 State Management</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Redux (React)</li>
+                                        <li>Vuex/Pinia (Vue)</li>
+                                        <li>Context API alternatives</li>
+                                        <li>Server state management</li>
+                                        <li>Performance optimization</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Backend Development": {
+                        description: "Server-side programming fundamentals",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🖥️ Node.js Basics</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Node runtime & event loop</li>
+                                        <li>Express framework</li>
+                                        <li>Middleware concepts</li>
+                                        <li>RESTful API design</li>
+                                        <li>Error handling</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔐 Authentication</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>JWT (JSON Web Tokens)</li>
+                                        <li>OAuth & social login</li>
+                                        <li>Session management</li>
+                                        <li>Password hashing</li>
+                                        <li>Security best practices</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚙️ Advanced Concepts</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>WebSockets & real-time</li>
+                                        <li>GraphQL APIs</li>
+                                        <li>Microservices architecture</li>
+                                        <li>Serverless functions</li>
+                                        <li>API documentation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Database Management": {
+                        description: "Data storage and retrieval systems",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🗃️ SQL Databases</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>PostgreSQL/MySQL fundamentals</li>
+                                        <li>Database design & normalization</li>
+                                        <li>CRUD operations</li>
+                                        <li>Joins & relationships</li>
+                                        <li>Transactions & ACID</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📊 NoSQL Databases</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>MongoDB document model</li>
+                                        <li>Firebase real-time database</li>
+                                        <li>Schema design patterns</li>
+                                        <li>Indexing & performance</li>
+                                        <li>Aggregation pipelines</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔌 ORMs & Tools</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Sequelize (SQL)</li>
+                                        <li>Mongoose (MongoDB)</li>
+                                        <li>Database migrations</li>
+                                        <li>Query optimization</li>
+                                        <li>Database security</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "DevOps & Deployment": {
+                        description: "Application deployment and infrastructure",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔄 CI/CD Pipelines</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Git workflows</li>
+                                        <li>GitHub Actions</li>
+                                        <li>Jenkins configuration</li>
+                                        <li>Automated testing</li>
+                                        <li>Deployment strategies</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🐳 Containerization</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Docker fundamentals</li>
+                                        <li>Container orchestration</li>
+                                        <li>Kubernetes basics</li>
+                                        <li>Docker Compose</li>
+                                        <li>Best practices</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">☁️ Cloud Platforms</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>AWS core services</li>
+                                        <li>Azure fundamentals</li>
+                                        <li>Google Cloud Platform</li>
+                                        <li>Serverless architecture</li>
+                                        <li>Infrastructure as Code</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Advanced Frameworks": {
+                        description: "Next-generation web frameworks",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⏭️ Next.js</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>SSR vs SSG vs ISR</li>
+                                        <li>File-based routing</li>
+                                        <li>API routes</li>
+                                        <li>Image optimization</li>
+                                        <li>Authentication patterns</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔄 Nuxt.js</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Universal mode</li>
+                                        <li>Modules ecosystem</li>
+                                        <li>Auto-imports</li>
+                                        <li>Composition API</li>
+                                        <li>Deployment targets</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🚀 Advanced Features</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Internationalization</li>
+                                        <li>Performance optimization</li>
+                                        <li>PWA capabilities</li>
+                                        <li>Analytics integration</li>
+                                        <li>Security headers</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "System Architecture": {
+                        description: "Designing scalable applications",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🏗️ Architecture Patterns</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Monolithic vs Microservices</li>
+                                        <li>Event-driven architecture</li>
+                                        <li>Clean architecture</li>
+                                        <li>Domain-driven design</li>
+                                        <li>Hexagonal architecture</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📦 Scalability</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Load balancing</li>
+                                        <li>Caching strategies</li>
+                                        <li>Database sharding</li>
+                                        <li>Message queues</li>
+                                        <li>CDN integration</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛡️ Security</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>OWASP Top 10</li>
+                                        <li>Rate limiting</li>
+                                        <li>Data encryption</li>
+                                        <li>Security headers</li>
+                                        <li>Compliance standards</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    }
+                },
+                projections: {
+                    6: { salary: "$45,000", role: "Junior Developer", projects: "Landing Pages, Simple Apps", demand: "High Demand" },
+                    12: { salary: "$65,000", role: "Frontend Developer", projects: "E-commerce Sites, SPAs", demand: "Very High Demand" },
+                    18: { salary: "$85,000", role: "Full-Stack Developer", projects: "Complex Web Apps, APIs", demand: "Extremely High Demand" },
+                    24: { salary: "$110,000", role: "Senior Developer", projects: "Enterprise Solutions, Team Lead", demand: "Critical Shortage" },
+                    36: { salary: "$140,000", role: "Tech Lead/Architect", projects: "Platform Architecture, Strategy", demand: "Executive Level" }
+                },
+                resources: [
+                    { title: "HTML/CSS Mastery Course", type: "Course", difficulty: "Beginner", duration: "40 hours" },
+                    { title: "JavaScript: The Complete Guide", type: "Book", difficulty: "Intermediate", duration: "60 hours" },
+                    { title: "React Documentation", type: "Documentation", difficulty: "Intermediate", duration: "∞" },
+                    { title: "Full-Stack Web Development Bootcamp", type: "Bootcamp", difficulty: "All Levels", duration: "24 weeks" }
+                ]
+            },
+            "ai-ml": {
+                title: "AI & Machine Learning",
+                icon: "🤖",
+                color: "from-green-500 to-teal-600",
+                roadmap: [
+                    "Python Fundamentals",
+                    "Math & Statistics",
+                    "Machine Learning Basics",
+                    "Deep Learning",
+                    "Computer Vision",
+                    "NLP & LLMs",
+                    "MLOps & Deployment",
+                    "AI Research & Innovation"
+                ],
+                skillDetails: {
+                    "Python Fundamentals": {
+                        description: "Master Python programming for data science and machine learning",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🐍 Python Basics</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Variables, data types & control structures</li>
+                                        <li>Functions, classes & object-oriented programming</li>
+                                        <li>File handling & error management</li>
+                                        <li>Modules, packages & virtual environments</li>
+                                        <li>List comprehensions & generators</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📊 Scientific Computing</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>NumPy for numerical computing</li>
+                                        <li>Pandas for data manipulation</li>
+                                        <li>Matplotlib & Seaborn for visualization</li>
+                                        <li>SciPy for scientific computing</li>
+                                        <li>Jupyter notebooks & development workflow</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔧 Advanced Features</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Decorators & context managers</li>
+                                        <li>Multithreading & multiprocessing</li>
+                                        <li>Regular expressions & text processing</li>
+                                        <li>Web scraping with BeautifulSoup</li>
+                                        <li>Database connections (SQLite, PostgreSQL)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Math & Statistics": {
+                        description: "Essential mathematical foundations for machine learning",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📐 Linear Algebra</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Vectors, matrices & matrix operations</li>
+                                        <li>Eigenvalues, eigenvectors & decompositions</li>
+                                        <li>Principal Component Analysis (PCA)</li>
+                                        <li>Vector spaces & linear transformations</li>
+                                        <li>Solving systems of linear equations</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📊 Statistics & Probability</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Probability distributions & random variables</li>
+                                        <li>Hypothesis testing & confidence intervals</li>
+                                        <li>Bayesian statistics & inference</li>
+                                        <li>Statistical modeling & regression</li>
+                                        <li>Experimental design & A/B testing</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔢 Calculus & Optimization</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Derivatives & partial derivatives</li>
+                                        <li>Chain rule & backpropagation</li>
+                                        <li>Gradient descent algorithms</li>
+                                        <li>Lagrange multipliers</li>
+                                        <li>Convex optimization</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Machine Learning Basics": {
+                        description: "Core machine learning algorithms and concepts",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🎯 Supervised Learning</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Linear & logistic regression</li>
+                                        <li>Decision trees & random forests</li>
+                                        <li>Support Vector Machines (SVM)</li>
+                                        <li>k-Nearest Neighbors (k-NN)</li>
+                                        <li>Naive Bayes classifier</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔍 Unsupervised Learning</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>K-means & hierarchical clustering</li>
+                                        <li>DBSCAN & density-based clustering</li>
+                                        <li>Principal Component Analysis (PCA)</li>
+                                        <li>t-SNE & dimensionality reduction</li>
+                                        <li>Association rule mining</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📈 Model Evaluation</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Cross-validation techniques</li>
+                                        <li>Precision, recall & F1-score</li>
+                                        <li>ROC curves & AUC</li>
+                                        <li>Bias-variance tradeoff</li>
+                                                                               <li>Overfitting & regularization</li>
+                                        <li>Hyperparameter tuning</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Deep Learning": {
+                        description: "Neural networks and deep learning architectures",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🧠 Neural Networks</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Perceptrons & activation functions</li>
+                                        <li>Feedforward networks</li>
+                                        <li>Backpropagation algorithm</li>
+                                        <li>Vanishing gradients problem</li>
+                                        <li>Weight initialization techniques</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🏗️ Architectures</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Convolutional Neural Networks (CNNs)</li>
+                                        <li>Recurrent Neural Networks (RNNs)</li>
+                                        <li>Long Short-Term Memory (LSTM)</li>
+                                        <li>Autoencoders & GANs</li>
+                                        <li>Transformer architecture</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚙️ Frameworks</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>TensorFlow & Keras</li>
+                                        <li>PyTorch fundamentals</li>
+                                        <li>Model training & evaluation</li>
+                                        <li>Transfer learning</li>
+                                        <li>Distributed training</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Computer Vision": {
+                        description: "Image processing and analysis techniques",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🖼️ Image Processing</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>OpenCV fundamentals</li>
+                                        <li>Image filtering & transformations</li>
+                                        <li>Feature detection & extraction</li>
+                                        <li>Image segmentation</li>
+                                        <li>Object detection basics</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">👁️ CNN Applications</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Image classification</li>
+                                        <li>Object detection (YOLO, Faster R-CNN)</li>
+                                        <li>Semantic segmentation</li>
+                                        <li>Instance segmentation</li>
+                                        <li>Pose estimation</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📸 Advanced Topics</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Video analysis</li>
+                                        <li>3D computer vision</li>
+                                        <li>Generative models for images</li>
+                                        <li>Medical imaging</li>
+                                        <li>Edge deployment</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "NLP & LLMs": {
+                        description: "Natural Language Processing and Large Language Models",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📝 NLP Fundamentals</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Text preprocessing & tokenization</li>
+                                        <li>Word embeddings (Word2Vec, GloVe)</li>
+                                        <li>Text classification</li>
+                                        <li>Named Entity Recognition (NER)</li>
+                                        <li>Sentiment analysis</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🧠 Transformer Models</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Attention mechanism</li>
+                                        <li>BERT & its variants</li>
+                                        <li>GPT architecture</li>
+                                        <li>Encoder-decoder models</li>
+                                        <li>Multimodal models</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🚀 LLM Applications</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Prompt engineering</li>
+                                        <li>Fine-tuning techniques</li>
+                                        <li>Retrieval-Augmented Generation (RAG)</li>
+                                        <li>AI assistants & chatbots</li>
+                                        <li>Ethical considerations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "MLOps & Deployment": {
+                        description: "Machine Learning Operations and model deployment",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛠️ Model Deployment</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Model serialization</li>
+                                        <li>Web service APIs (Flask, FastAPI)</li>
+                                        <li>Containerization (Docker)</li>
+                                        <li>Cloud deployment (AWS SageMaker, GCP AI)</li>
+                                        <li>Edge deployment</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔄 CI/CD for ML</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>ML pipelines</li>
+                                        <li>Version control for models</li>
+                                        <li>Automated testing</li>
+                                        <li>Monitoring & logging</li>
+                                        <li>Model retraining strategies</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📊 Data Management</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Feature stores</li>
+                                        <li>Data versioning</li>
+                                        <li>Data quality monitoring</li>
+                                        <li>Data pipelines</li>
+                                        <li>Privacy-preserving ML</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "AI Research & Innovation": {
+                        description: "Cutting-edge AI research and applications",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔍 Research Methods</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Literature review</li>
+                                        <li>Experimental design</li>
+                                        <li>Reproducibility</li>
+                                        <li>Paper writing</li>
+                                        <li>Conference submissions</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🚀 Emerging Areas</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Reinforcement learning</li>
+                                        <li>Generative AI</li>
+                                        <li>Multimodal learning</li>
+                                        <li>Neuro-symbolic AI</li>
+                                        <li>AI for science</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🤖 AI Ethics</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Bias & fairness</li>
+                                        <li>Explainability</li>
+                                        <li>Privacy & security</li>
+                                        <li>Regulatory compliance</li>
+                                        <li>Social impact</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    }
+                },
+                projections: {
+                    6: { salary: "$55,000", role: "Data Analyst", projects: "Basic ML Models, Data Analysis", demand: "High Demand" },
+                    12: { salary: "$85,000", role: "Machine Learning Engineer", projects: "Predictive Models, NLP", demand: "Very High Demand" },
+                    18: { salary: "$110,000", role: "AI Engineer", projects: "Deep Learning Systems", demand: "Extremely High Demand" },
+                    24: { salary: "$140,000", role: "Senior AI Engineer", projects: "LLMs, Computer Vision", demand: "Critical Shortage" },
+                    36: { salary: "$180,000", role: "AI Research Scientist", projects: "Cutting-edge Research", demand: "Executive Level" }
+                },
+                resources: [
+                    { title: "Python for Data Science", type: "Course", difficulty: "Beginner", duration: "50 hours" },
+                    { title: "Hands-On Machine Learning", type: "Book", difficulty: "Intermediate", duration: "80 hours" },
+                    { title: "Deep Learning Specialization", type: "Course", difficulty: "Advanced", duration: "100 hours" },
+                    { title: "AI Research Papers", type: "Papers", difficulty: "Expert", duration: "∞" }
+                ]
+            },
+            "blockchain": {
+                title: "Blockchain Development",
+                icon: "⛓️",
+                color: "from-orange-500 to-red-600",
+                roadmap: [
+                    "Blockchain Fundamentals",
+                    "Cryptography Basics",
+                    "Smart Contracts",
+                    "DApp Development",
+                    "DeFi Protocols",
+                    "NFT Systems",
+                    "Blockchain Security",
+                    "Scalability Solutions"
+                ],
+                skillDetails: {
+                    "Blockchain Fundamentals": {
+                        description: "Core concepts of blockchain technology",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⛓️ Blockchain Basics</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Distributed ledger technology</li>
+                                        <li>Consensus mechanisms (PoW, PoS, etc.)</li>
+                                        <li>Blocks, hashes & Merkle trees</li>
+                                        <li>Public vs private blockchains</li>
+                                        <li>Blockchain use cases</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">💰 Cryptocurrencies</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Bitcoin architecture</li>
+                                        <li>Ethereum & EVM</li>
+                                        <li>Token economics</li>
+                                        <li>Wallets & addresses</li>
+                                        <li>Transaction lifecycle</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🌐 Blockchain Ecosystem</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Layer 1 vs Layer 2</li>
+                                        <li>Alternative blockchains</li>
+                                        <li>Oracles & data feeds</li>
+                                        <li>Interoperability solutions</li>
+                                        <li>Regulatory landscape</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Cryptography Basics": {
+                        description: "Cryptographic foundations for blockchain",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔐 Hash Functions</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>SHA-256 & other algorithms</li>
+                                        <li>Merkle trees & Patricia tries</li>
+                                        <li>Hash pointers</li>
+                                        <li>Proof-of-work basics</li>
+                                        <li>Mining difficulty</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔑 Public Key Cryptography</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Elliptic curve cryptography</li>
+                                        <li>Digital signatures</li>
+                                        <li>Key generation & management</li>
+                                        <li>Wallet security</li>
+                                        <li>Multi-signature schemes</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛡️ Security Protocols</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Zero-knowledge proofs</li>
+                                        <li>Homomorphic encryption</li>
+                                        <li>Secure multi-party computation</li>
+                                        <li>Threshold cryptography</li>
+                                        <li>Post-quantum cryptography</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Smart Contracts": {
+                        description: "Programmable contracts on blockchain",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📜 Solidity Basics</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Contract structure</li>
+                                        <li>Data types & variables</li>
+                                        <li>Functions & modifiers</li>
+                                        <li>Events & logging</li>
+                                        <li>Error handling</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚙️ Advanced Features</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Inheritance & interfaces</li>
+                                        <li>Libraries & imports</li>
+                                        <li>Gas optimization</li>
+                                        <li>Assembly & low-level calls</li>
+                                        <li>Upgradeable contracts</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛡️ Security Practices</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Common vulnerabilities</li>
+                                        <li>Testing strategies</li>
+                                        <li>Static analysis tools</li>
+                                        <li>Formal verification</li>
+                                        <li>Bug bounty programs</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "DApp Development": {
+                        description: "Decentralized application development",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🌐 Frontend Integration</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Web3.js & Ethers.js</li>
+                                        <li>Wallet connections</li>
+                                        <li>Transaction handling</li>
+                                        <li>Event listening</li>
+                                        <li>Gas fee estimation</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📦 Backend Services</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Node.js backends</li>
+                                        <li>Indexing solutions (The Graph)</li>
+                                        <li>IPFS integration</li>
+                                        <li>Off-chain computation</li>
+                                        <li>API design for DApps</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🚀 Deployment</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Test networks</li>
+                                        <li>Mainnet deployment</li>
+                                        <li>Verification & publishing</li>
+                                        <li>Monitoring tools</li>
+                                        <li>User onboarding</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "DeFi Protocols": {
+                        description: "Decentralized Finance applications",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">💰 Core Protocols</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Decentralized exchanges (DEXs)</li>
+                                        <li>Lending & borrowing platforms</li>
+                                        <li>Stablecoins & algorithmic coins</li>
+                                        <li>Yield farming strategies</li>
+                                        <li>Liquidity mining</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📈 Financial Primitives</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Automated Market Makers (AMMs)</li>
+                                        <li>Liquidity pools</li>
+                                        <li>Flash loans</li>
+                                        <li>Derivatives & options</li>
+                                        <li>Portfolio management</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛡️ Risk Management</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Smart contract risks</li>
+                                        <li>Oracle risks</li>
+                                        <li>Economic attacks</li>
+                                        <li>Insurance protocols</li>
+                                        <li>Regulatory considerations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "NFT Systems": {
+                        description: "Non-Fungible Token ecosystems",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🖼️ NFT Standards</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>ERC-721 & ERC-1155</li>
+                                        <li>Metadata standards</li>
+                                        <li>Royalty implementations</li>
+                                        <li>Cross-chain NFTs</li>
+                                        <li>Fractionalized NFTs</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🎨 NFT Applications</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Digital art & collectibles</li>
+                                        <li>Gaming assets</li>
+                                        <li>Virtual real estate</li>
+                                        <li>Identity & credentials</li>
+                                        <li>Ticketing systems</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛒 Marketplaces</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Marketplace architecture</li>
+                                        <li>Bidding systems</li>
+                                        <li>Auction mechanisms</li>
+                                        <li>Secondary sales</li>
+                                        <li>Curation & discovery</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Blockchain Security": {
+                        description: "Security best practices for blockchain",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛡️ Smart Contract Security</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Reentrancy attacks</li>
+                                        <li>Integer overflow/underflow</li>
+                                        <li>Front-running protection</li>
+                                        <li>Oracle manipulation</li>
+                                        <li>Access control issues</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔍 Auditing</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Static analysis tools</li>
+                                        <li>Manual code review</li>
+                                        <li>Fuzz testing</li>
+                                        <li>Formal verification</li>
+                                        <li>Bug bounty programs</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">💼 Operational Security</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Key management</li>
+                                        <li>Multi-sig wallets</li>
+                                        <li>Incident response</li>
+                                        <li>Governance security</li>
+                                        <li>Regulatory compliance</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Scalability Solutions": {
+                        description: "Scaling blockchain networks",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚡ Layer 2 Solutions</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Rollups (Optimistic, ZK)</li>
+                                        <li>State channels</li>
+                                        <li>Sidechains</li>
+                                        <li>Plasma chains</li>
+                                        <li>Validium</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔗 Sharding</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Network sharding</li>
+                                        <li>Transaction sharding</li>
+                                        <li>State sharding</li>
+                                        <li>Cross-shard communication</li>
+                                        <li>Shard coordination</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🌐 Alternative Approaches</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>DAG-based systems</li>
+                                        <li>BlockDAGs</li>
+                                        <li>Parallel execution</li>
+                                        <li>Off-chain computation</li>
+                                        <li>Zero-knowledge proofs</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    }
+                },
+                projections: {
+                    6: { salary: "$60,000", role: "Blockchain Developer", projects: "Basic Smart Contracts", demand: "High Demand" },
+                    12: { salary: "$90,000", role: "Smart Contract Engineer", projects: "DeFi Protocols", demand: "Very High Demand" },
+                    18: { salary: "$120,000", role: "Senior Blockchain Dev", projects: "Complex DApps", demand: "Extremely High Demand" },
+                    24: { salary: "$150,000", role: "Blockchain Architect", projects: "Enterprise Solutions", demand: "Critical Shortage" },
+                    36: { salary: "$200,000", role: "CTO/Lead Researcher", projects: "Protocol Design", demand: "Executive Level" }
+                },
+                resources: [
+                    { title: "Blockchain Basics Course", type: "Course", difficulty: "Beginner", duration: "30 hours" },
+                    { title: "Mastering Ethereum", type: "Book", difficulty: "Intermediate", duration: "50 hours" },
+                    { title: "Solidity Documentation", type: "Documentation", difficulty: "Intermediate", duration: "∞" },
+                    { title: "Advanced DeFi Development", type: "Course", difficulty: "Advanced", duration: "80 hours" }
+                ]
+            },
+            "mobile-dev": {
+                title: "Mobile Development",
+                icon: "📱",
+                color: "from-purple-500 to-pink-600",
+                roadmap: [
+                    "Mobile Fundamentals",
+                    "Native iOS Development",
+                    "Native Android Development",
+                    "Cross-Platform Frameworks",
+                    "Mobile UI/UX",
+                    "Backend Integration",
+                    "Performance Optimization",
+                    "Advanced Mobile Features"
+                ],
+                skillDetails: {
+                    "Mobile Fundamentals": {
+                        description: "Core concepts of mobile development",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📱 Platform Basics</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Mobile OS architectures</li>
+                                        <li>App lifecycle management</li>
+                                        <li>Mobile hardware considerations</li>
+                                        <li>Development environments</li>
+                                        <li>App distribution models</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📐 Design Principles</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Mobile-first design</li>
+                                        <li>Touch interactions</li>
+                                        <li>Responsive layouts</li>
+                                        <li>Platform guidelines</li>
+                                        <li>Accessibility standards</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛠️ Development Tools</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Emulators & simulators</li>
+                                        <li>Debugging techniques</li>
+                                        <li>Performance profiling</li>
+                                        <li>CI/CD for mobile</li>
+                                        <li>Testing frameworks</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Native iOS Development": {
+                        description: "Building apps for Apple's iOS platform",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🍏 Swift Fundamentals</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Swift syntax & features</li>
+                                        <li>Optionals & error handling</li>
+                                        <li>Protocol-oriented programming</li>
+                                        <li>Concurrency (async/await)</li>
+                                        <li>Memory management</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📱 UIKit & SwiftUI</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>View controllers & navigation</li>
+                                        <li>Auto Layout & constraints</li>
+                                        <li>SwiftUI declarative syntax</li>
+                                        <li>State management</li>
+                                        <li>Combine framework</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚙️ Core Features</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Core Data & persistence</li>
+                                        <li>Networking (URLSession)</li>
+                                        <li>Notifications</li>
+                                        <li>Camera & photo library</li>
+                                        <li>Location services</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Native Android Development": {
+                        description: "Building apps for Android platform",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🤖 Kotlin Fundamentals</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Kotlin syntax & features</li>
+                                        <li>Null safety</li>
+                                        <li>Coroutines & flows</li>
+                                        <li>Extension functions</li>
+                                        <li>Interoperability with Java</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📱 Android Components</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Activities & fragments</li>
+                                        <li>Views & ViewModels</li>
+                                        <li>Jetpack Compose</li>
+                                        <li>Navigation components</li>
+                                        <li>Lifecycle awareness</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚙️ Core Features</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Room database</li>
+                                        <li>Retrofit & networking</li>
+                                        <li>WorkManager</li>
+                                        <li>Permissions system</li>
+                                        <li>Background services</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Cross-Platform Frameworks": {
+                        description: "Frameworks for multi-platform development",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚛️ React Native</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>React fundamentals</li>
+                                        <li>JSX & components</li>
+                                        <li>Native modules</li>
+                                        <li>Performance optimization</li>
+                                        <li>Debugging tools</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🛠️ Flutter</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Dart language basics</li>
+                                        <li>Widget tree & composition</li>
+                                        <li>State management</li>
+                                        <li>Platform channels</li>
+                                        <li>Custom painting</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🌐 Other Frameworks</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Xamarin/.NET MAUI</li>
+                                        <li>Ionic/Capacitor</li>
+                                        <li>NativeScript</li>
+                                        <li>KMM (Kotlin Multiplatform)</li>
+                                        <li>Framework comparison</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Mobile UI/UX": {
+                        description: "Designing exceptional mobile experiences",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🎨 Design Systems</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Material Design</li>
+                                        <li>Human Interface Guidelines</li>
+                                        <li>Custom design systems</li>
+                                        <li>Theming & dark mode</li>
+                                        <li>Design tokens</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🖌️ Animation</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Property animations</li>
+                                        <li>Transition animations</li>
+                                        <li>Physics-based animations</li>
+                                        <li>Lottie animations</li>
+                                        <li>Performance considerations</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📱 Adaptive UI</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Responsive layouts</li>
+                                        <li>Screen size adaptation</li>
+                                        <li>Foldable devices</li>
+                                        <li>Tablet layouts</li>
+                                        <li>Multi-window support</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Backend Integration": {
+                        description: "Connecting mobile apps to backend services",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🌐 REST APIs</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>HTTP methods & status codes</li>
+                                        <li>JSON serialization</li>
+                                        <li>Authentication (JWT, OAuth)</li>
+                                        <li>Error handling</li>
+                                        <li>Offline-first strategies</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚡ GraphQL</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Query language basics</li>
+                                        <li>Apollo Client</li>
+                                        <li>Mutation operations</li>
+                                        <li>Caching strategies</li>
+                                        <li>Error handling</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">☁️ Cloud Services</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Firebase integration</li>
+                                        <li>Authentication services</li>
+                                        <li>Cloud functions</li>
+                                        <li>Push notifications</li>
+                                        <li>Analytics & crash reporting</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Performance Optimization": {
+                        description: "Optimizing mobile app performance",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">⚡ Rendering Performance</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>UI thread optimization</li>
+                                        <li>List view recycling</li>
+                                        <li>Image loading & caching</li>
+                                        <li>Memory management</li>
+                                        <li>Jank detection</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔋 Battery Efficiency</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Background work optimization</li>
+                                        <li>Location services best practices</li>
+                                        <li>Network usage optimization</li>
+                                        <li>Wake locks & alarms</li>
+                                        <li>Power profiling</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📊 App Size</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Code shrinking & obfuscation</li>
+                                        <li>Resource optimization</li>
+                                        <li>Dynamic feature modules</li>
+                                        <li>App bundles</li>
+                                        <li>Lazy loading</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    },
+                    "Advanced Mobile Features": {
+                        description: "Cutting-edge mobile capabilities",
+                        content: `
+                            <div class="space-y-3">
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">📱 Platform Features</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Biometric authentication</li>
+                                        <li>ARKit/ARCore</li>
+                                        <li>Machine Learning (Core ML/ML Kit)</li>
+                                        <li>Payments integration</li>
+                                        <li>Deep linking</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🔒 Security</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Data encryption</li>
+                                        <li>Secure storage</li>
+                                        <li>Certificate pinning</li>
+                                        <li>App attestation</li>
+                                        <li>Reverse engineering protection</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-3 bg-white/50 rounded-lg">
+                                    <h4 class="font-semibold text-sm mb-1">🚀 Emerging Technologies</h4>
+                                    <ul class="text-xs space-y-1 list-disc pl-4">
+                                        <li>Foldable devices</li>
+                                        <li>Wearable integration</li>
+                                        <li>Instant apps</li>
+                                        <li>PWA capabilities</li>
+                                        <li>5G optimization</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `
+                    }
+                },
+                projections: {
+                    6: { salary: "$50,000", role: "Junior Mobile Dev", projects: "Simple Apps, UI Screens", demand: "High Demand" },
+                    12: { salary: "$75,000", role: "Mobile Developer", projects: "Full-featured Apps", demand: "Very High Demand" },
+                    18: { salary: "$95,000", role: "Senior Mobile Dev", projects: "Complex Apps, SDKs", demand: "Extremely High Demand" },
+                    24: { salary: "$120,000", role: "Mobile Architect", projects: "Cross-platform Solutions", demand: "Critical Shortage" },
+                    36: { salary: "$150,000", role: "Mobile Tech Lead", projects: "Platform Strategy", demand: "Executive Level" }
+                },
+                resources: [
+                    { title: "Mobile Development Fundamentals", type: "Course", difficulty: "Beginner", duration: "40 hours" },
+                    { title: "Swift/Kotlin Deep Dive", type: "Book", difficulty: "Intermediate", duration: "60 hours" },
+                    { title: "React Native Documentation", type: "Documentation", difficulty: "Intermediate", duration: "∞" },
+                    { title: "Advanced Mobile Architecture", type: "Course", difficulty: "Advanced", duration: "80 hours" }
+                ]
+            }
+        };
+
+        // Rewards data
+        const rewards = [
+            { id: 1, title: "First Steps", description: "Complete 25% of your learning path", progress: 25, icon: "👣" },
+            { id: 2, title: "Halfway There", description: "Complete 50% of your learning path", progress: 50, icon: "🎯" },
+            { id: 3, title: "Almost Pro", description: "Complete 75% of your learning path", progress: 75, icon: "🚀" },
+            { id: 4, title: "Path Master", description: "Complete 100% of your learning path", progress: 100, icon: "🏆" }
+        ];
+
+        // DOM elements
+        const pathSelectionEl = document.getElementById('pathSelection');
+        const simulatorEl = document.getElementById('simulator');
+        const pathTitleEl = document.getElementById('pathTitle');
+        const progressBarEl = document.getElementById('progressBar');
+        const progressPercentEl = document.getElementById('progressPercent');
+        const progressSliderEl = document.getElementById('progressSlider');
+        const progressNumberEl = document.getElementById('progressNumber');
+        const skillsGridEl = document.getElementById('skillsGrid');
+        const focusTextEl = document.getElementById('focusText');
+        const projectedSalaryEl = document.getElementById('projectedSalary');
+        const projectedRoleEl = document.getElementById('projectedRole');
+        const projectedProjectsEl = document.getElementById('projectedProjects');
+        const marketDemandEl = document.getElementById('marketDemand');
+        const timeFrameTextEl = document.getElementById('timeFrameText');
+        const timeFrameSelectEl = document.getElementById('timeFrameSelect');
+        const rewardsContainerEl = document.getElementById('rewardsContainer');
+        const rewardCountEl = document.getElementById('rewardCount');
+        const latestAchievementEl = document.getElementById('latestAchievement');
+        const capsulesContainerEl = document.getElementById('capsulesContainer');
+        const emptyCapsulesEl = document.getElementById('emptyCapsules');
+        const capsuleCountEl = document.getElementById('capsuleCount');
+        const resourcesContainerEl = document.getElementById('resourcesContainer');
+        const jobMatchesEl = document.getElementById('jobMatches');
+        const hoursEstimateEl = document.getElementById('hoursEstimate');
+        const studyModeEl = document.getElementById('studyMode');
+        const studyBtnEl = document.getElementById('studyBtn');
+        const sessionCooldownEl = document.getElementById('sessionCooldown');
+        const cooldownTimerEl = document.getElementById('cooldownTimer');
+        const streakCounterEl = document.getElementById('streakCounter');
+        const notificationContainerEl = document.getElementById('notificationContainer');
+
+        // Initialize the app
+        function init() {
+            // Load saved data from localStorage
+            loadSavedData();
+            
+            // Set up event listeners
+            document.getElementById('capsuleMessage').addEventListener('input', updateCharCount);
+            
+            // Initialize UI
+            updateUI();
+        }
+
+        // Load saved data from localStorage
+        function loadSavedData() {
+            const savedPath = localStorage.getItem('currentPath');
+            const savedProgress = localStorage.getItem('currentProgress');
+            const savedRewards = localStorage.getItem('unlockedRewards');
+            const savedCapsulesData = localStorage.getItem('savedCapsules');
+            const savedStreak = localStorage.getItem('studyStreak');
+            const savedLastSession = localStorage.getItem('lastStudySession');
+            const savedStudyMode = localStorage.getItem('studyMode');
+            
+            if (savedPath) {
+                currentPath = savedPath;
+                pathSelectionEl.classList.add('hidden');
+                simulatorEl.classList.remove('hidden');
+            }
+            
+            if (savedProgress) {
+                currentProgress = parseInt(savedProgress);
+            }
+            
+            if (savedRewards) {
+                unlockedRewards = JSON.parse(savedRewards);
+            }
+            
+            if (savedCapsulesData) {
+                savedCapsules = JSON.parse(savedCapsulesData);
+            }
+            
+            if (savedStreak) {
+                studyStreak = parseInt(savedStreak);
+            }
+            
+            if (savedLastSession) {
+                lastStudySession = new Date(savedLastSession);
+            }
+            
+            if (savedStudyMode) {
+                studyMode = savedStudyMode;
+                studyModeEl.value = studyMode;
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('currentPath', currentPath);
+            localStorage.setItem('currentProgress', currentProgress);
+            localStorage.setItem('unlockedRewards', JSON.stringify(unlockedRewards));
+            localStorage.setItem('savedCapsules', JSON.stringify(savedCapsules));
+            localStorage.setItem('studyStreak', studyStreak);
+            localStorage.setItem('lastStudySession', lastStudySession);
+            localStorage.setItem('studyMode', studyMode);
+        }
+
+        // Select a career path
+        function selectPath(path) {
+            currentPath = path;
+            saveData();
+            
+            // Update UI
+            pathSelectionEl.classList.add('hidden');
+            simulatorEl.classList.remove('hidden');
+            
+            // Set path title
+            pathTitleEl.innerHTML = `${careerPaths[path].icon} ${careerPaths[path].title} Journey`;
+            
+            // Update gradient color
+            progressBarEl.className = `bg-gradient-to-r ${careerPaths[path].color} h-4 rounded-full progress-bar relative`;
+            
+            // Initialize progress if this is a new path
+            if (currentProgress === 0) {
+                showNotification(`🎉 Welcome to your ${careerPaths[path].title} journey!`, 'success');
+            }
+            
+            updateUI();
+        }
+
+        // Go back to path selection
+        function goBack() {
+            currentPath = null;
+            saveData();
+            
+            simulatorEl.classList.add('hidden');
+            pathSelectionEl.classList.remove('hidden');
+        }
+
+        // Reset progress
+        function resetProgress() {
+            if (confirm("Are you sure you want to reset your progress? This cannot be undone.")) {
+                currentProgress = 0;
+                unlockedRewards = [];
+                studyStreak = 0;
+                lastStudySession = null;
+                saveData();
+                updateUI();
+                showNotification("🔄 Progress reset successfully!", 'info');
+            }
+        }
+
+        // Update progress
+        function updateProgress(value) {
+            const newProgress = parseInt(value);
+            if (isNaN(newProgress)) return;
+            
+            currentProgress = Math.min(100, Math.max(0, newProgress));
+            
+            // Check for unlocked rewards
+            checkRewards();
+            
+            saveData();
+            updateUI();
+        }
+
+        // Preview progress change
+        function previewProgress(value) {
+            const newProgress = parseInt(value);
+            if (isNaN(newProgress)) return;
+            
+            progressPercentEl.textContent = `${newProgress}%`;
+            progressBarEl.style.width = `${newProgress}%`;
+            progressNumberEl.value = newProgress;
+            
+            // Update projected salary temporarily
+            updateProjections(newProgress);
+        }
+
+        // Quick set progress
+        function quickSetProgress(percent) {
+            updateProgress(percent);
+            showNotification(`⚡ Progress set to ${percent}%`, 'success');
+        }
+
+        // Update the UI based on current state
+        function updateUI() {
+            if (!currentPath) return;
+            
+            // Update progress elements
+            progressPercentEl.textContent = `${currentProgress}%`;
+            progressBarEl.style.width = `${currentProgress}%`;
+            progressSliderEl.value = currentProgress;
+            progressNumberEl.value = currentProgress;
+            
+            // Update skills grid
+            updateSkillsGrid();
+            
+            // Update current focus
+            updateCurrentFocus();
+            
+            // Update projections
+            updateProjections(currentProgress);
+            
+            // Update rewards
+            updateRewards();
+            
+            // Update time capsules
+            updateTimeCapsules();
+            
+            // Update resources
+            updateResources();
+            
+            // Update job matches
+            updateJobMatches();
+            
+            // Update hours estimate
+            updateHoursEstimate();
+            
+            // Update streak counter
+            updateStreakCounter();
+            
+            // Update study mode button
+            updateStudyModeButton();
+            
+            // Check for unlocked capsules
+            checkUnlockedCapsules();
+        }
+
+        // Update skills grid
+        function updateSkillsGrid() {
+            skillsGridEl.innerHTML = '';
+            
+            const path = careerPaths[currentPath];
+            const skillCount = path.roadmap.length;
+            const skillsPerPercent = 100 / skillCount;
+            
+            path.roadmap.forEach((skill, index) => {
+                const skillProgress = Math.min(100, Math.max(0, (currentProgress - (index * skillsPerPercent)) / skillsPerPercent * 100));
+                const isCompleted = skillProgress >= 100;
+                const isCurrent = currentProgress >= (index * skillsPerPercent) && currentProgress < ((index + 1) * skillsPerPercent);
+                
+                const skillEl = document.createElement('div');
+                skillEl.className = `skill-item p-3 rounded-lg border ${isCompleted ? 'bg-green-50 border-green-200' : isCurrent ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'}`;
+                
+                skillEl.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <h4 class="font-medium text-sm ${isCompleted ? 'text-green-800' : 'text-gray-800'}">${skill}</h4>
+                        <span class="text-xs ${isCompleted ? 'text-green-600' : 'text-gray-500'}">${Math.round(skillProgress)}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-1.5">
+                        <div class="h-1.5 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-blue-500'}" style="width: ${skillProgress}%"></div>
+                    </div>
+                    ${path.skillDetails[skill] ? `<p class="text-xs text-gray-600 mt-1">${path.skillDetails[skill].description}</p>` : ''}
+                `;
+                
+                // Add click handler to show skill details
+                if (path.skillDetails[skill]) {
+                    skillEl.addEventListener('click', () => showSkillDetails(skill));
+                    skillEl.classList.add('cursor-pointer', 'hover:bg-white');
+                }
+                
+                skillsGridEl.appendChild(skillEl);
+                
+                // Add animation for completed skills
+                if (isCompleted) {
+                    setTimeout(() => {
+                        skillEl.classList.add('skill-completed');
+                    }, index * 100);
+                }
+            });
+        }
+
+        // Show skill details in a modal
+        function showSkillDetails(skill) {
+            const path = careerPaths[currentPath];
+            const skillDetail = path.skillDetails[skill];
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">${skill}</h3>
+                            <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-gray-600 mb-4">${skillDetail.description}</p>
+                        ${skillDetail.content}
+                        <div class="mt-6 flex justify-end">
+                            <button onclick="this.closest('.fixed').remove()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        // Update current focus
+        function updateCurrentFocus() {
+            const path = careerPaths[currentPath];
+            const skillCount = path.roadmap.length;
+            const skillsPerPercent = 100 / skillCount;
+            
+            let currentSkillIndex = Math.floor(currentProgress / skillsPerPercent);
+            currentSkillIndex = Math.min(currentSkillIndex, skillCount - 1);
+            
+            const currentSkill = path.roadmap[currentSkillIndex];
+            const nextMilestone = Math.ceil(currentProgress / 25) * 25;
+            
+            if (currentProgress >= 100) {
+                focusTextEl.textContent = "Congratulations! You've completed your learning path!";
+            } else {
+                focusTextEl.textContent = `Currently learning: ${currentSkill}. Next milestone at ${nextMilestone}% progress.`;
+            }
+        }
+
+        // Update projections
+        function updateProjections(progress) {
+            const path = careerPaths[currentPath];
+            const projection = path.projections[timeFrame];
+            
+            // Calculate projected salary based on progress
+            const baseSalary = parseInt(projection.salary.replace(/\D/g, ''));
+            const projectedSalary = Math.round(baseSalary * (progress / 100));
+            
+            projectedSalaryEl.textContent = `$${projectedSalary.toLocaleString()}`;
+            projectedRoleEl.textContent = projection.role;
+            projectedProjectsEl.textContent = projection.projects;
+            marketDemandEl.textContent = projection.demand;
+            timeFrameTextEl.textContent = timeFrame;
+            
+            // Update efficiency score (random for demo purposes)
+            const efficiency = Math.min(100, Math.max(60, 85 + (Math.random() * 10 - 5)));
+            document.getElementById('efficiencyScore').textContent = `${Math.round(efficiency)}%`;
+            document.getElementById('efficiencyBar').style.width = `${efficiency}%`;
+        }
+
+        // Update time frame
+        function updateTimeFrame(value) {
+            timeFrame = parseInt(value);
+            updateProjections(currentProgress);
+        }
+
+        // Update rewards
+        function updateRewards() {
+            rewardsContainerEl.innerHTML = '';
+            
+            rewards.forEach(reward => {
+                const isUnlocked = unlockedRewards.includes(reward.id);
+                
+                const rewardEl = document.createElement('div');
+                rewardEl.className = `flex items-center gap-4 p-3 rounded-lg ${isUnlocked ? 'bg-yellow-50 reward-unlocked' : 'bg-gray-50'}`;
+                
+                rewardEl.innerHTML = `
+                    <div class="text-3xl ${isUnlocked ? 'text-yellow-500' : 'text-gray-400'}">${reward.icon}</div>
+                    <div class="flex-1">
+                        <h4 class="font-medium ${isUnlocked ? 'text-yellow-800' : 'text-gray-600'}">${reward.title}</h4>
+                        <p class="text-xs ${isUnlocked ? 'text-yellow-600' : 'text-gray-500'}">${reward.description}</p>
+                    </div>
+                    <div class="text-xs font-medium ${isUnlocked ? 'text-yellow-600' : 'text-gray-400'}">
+                        ${isUnlocked ? 'Unlocked!' : `${reward.progress}%`}
+                    </div>
+                `;
+                
+                rewardsContainerEl.appendChild(rewardEl);
+            });
+            
+            // Update reward count
+            rewardCountEl.textContent = `${unlockedRewards.length}/${rewards.length}`;
+            
+            // Update latest achievement
+            if (unlockedRewards.length > 0) {
+                const latestReward = rewards.find(r => r.id === unlockedRewards[unlockedRewards.length - 1]);
+                latestAchievementEl.textContent = `"${latestReward.title}" - ${latestReward.description}`;
+            } else {
+                latestAchievementEl.textContent = "Start your journey to earn your first achievement!";
+            }
+        }
+
+        // Check for unlocked rewards
+        function checkRewards() {
+            let newRewards = false;
+            
+            rewards.forEach(reward => {
+                if (currentProgress >= reward.progress && !unlockedRewards.includes(reward.id)) {
+                    unlockedRewards.push(reward.id);
+                    showNotification(`🏆 Reward Unlocked: ${reward.title}!`, 'success');
+                    newRewards = true;
+                }
+            });
+            
+            if (newRewards) {
+                saveData();
+                updateRewards();
+            }
+        }
+
+        // Show time capsule form
+        function showTimeCapsuleForm() {
+            document.getElementById('timeCapsuleForm').classList.add('hidden');
+            document.getElementById('timeCapsuleInput').classList.remove('hidden');
+        }
+
+        // Hide time capsule form
+        function hideTimeCapsuleForm() {
+            document.getElementById('timeCapsuleForm').classList.remove('hidden');
+            document.getElementById('timeCapsuleInput').classList.add('hidden');
+            document.getElementById('capsuleMessage').value = '';
+        }
+
+        // Save time capsule
+        function saveTimeCapsule() {
+            const message = document.getElementById('capsuleMessage').value.trim();
+            const unlockLevel = document.getElementById('unlockLevel').value;
+            
+            if (message === '') {
+                alert('Please enter a message for your future self!');
+                return;
+            }
+            
+            const capsule = {
+                id: Date.now(),
+                message: message,
+                unlockLevel: parseInt(unlockLevel),
+                createdAt: new Date().toISOString(),
+                unlocked: false
+            };
+            
+            savedCapsules.push(capsule);
+            saveData();
+            
+            hideTimeCapsuleForm();
+            updateTimeCapsules();
+            showNotification('💌 Time capsule saved! You\'ll see it again at ' + unlockLevel + '% progress.', 'success');
+        }
+
+        // Update time capsules
+        function updateTimeCapsules() {
+            capsulesContainerEl.innerHTML = '';
+            
+            if (savedCapsules.length === 0) {
+                emptyCapsulesEl.classList.remove('hidden');
+                capsuleCountEl.textContent = '0';
+                return;
+            }
+            
+            emptyCapsulesEl.classList.add('hidden');
+            capsuleCountEl.textContent = savedCapsules.filter(c => c.unlocked).length;
+            
+            // Sort capsules by unlock level (ascending)
+            savedCapsules.sort((a, b) => a.unlockLevel - b.unlockLevel);
+            
+            savedCapsules.forEach(capsule => {
+                if (!capsule.unlocked && currentProgress < capsule.unlockLevel) return;
+                
+                const capsuleEl = document.createElement('div');
+                capsuleEl.className = `p-3 rounded-lg border ${capsule.unlocked ? 'bg-purple-50 border-purple-200' : 'bg-gray-50 border-gray-200'}`;
+                
+                const unlockedDate = capsule.unlocked ? new Date(capsule.unlockedAt).toLocaleDateString() : '';
+                
+                capsuleEl.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="text-2xl mt-1 ${capsule.unlocked ? 'text-purple-500' : 'text-gray-400'}">💌</div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h4 class="font-medium text-sm ${capsule.unlocked ? 'text-purple-800' : 'text-gray-600'}">
+                                    ${capsule.unlocked ? 'Opened at ' + capsule.unlockLevel + '%' : 'Will open at ' + capsule.unlockLevel + '%'}
+                                </h4>
+                                <span class="text-xs ${capsule.unlocked ? 'text-purple-600' : 'text-gray-500'}">
+                                    ${new Date(capsule.createdAt).toLocaleDateString()}
+                                </span>
+                            </div>
+                            <p class="text-sm mt-1 ${capsule.unlocked ? 'text-purple-700' : 'text-gray-500'}">${capsule.message}</p>
+                            ${capsule.unlocked ? `<p class="text-xs mt-1 text-purple-600">Unlocked on ${unlockedDate}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                capsulesContainerEl.appendChild(capsuleEl);
+            });
+        }
+
+        // Check for unlocked capsules
+        function checkUnlockedCapsules() {
+            let newCapsules = false;
+            
+            savedCapsules.forEach(capsule => {
+                if (!capsule.unlocked && currentProgress >= capsule.unlockLevel) {
+                    capsule.unlocked = true;
+                    capsule.unlockedAt = new Date().toISOString();
+                    newCapsules = true;
+                    
+                    showNotification(`💌 Time capsule opened! Check your messages from the past.`, 'info');
+                }
+            });
+            
+            if (newCapsules) {
+                saveData();
+                updateTimeCapsules();
+            }
+        }
+
+        // Update character count for time capsule message
+        function updateCharCount() {
+            const message = document.getElementById('capsuleMessage').value;
+            document.getElementById('charCount').textContent = message.length;
+        }
+
+        // Update resources
+        function updateResources() {
+            resourcesContainerEl.innerHTML = '';
+            
+            const path = careerPaths[currentPath];
+            
+            path.resources.forEach(resource => {
+                const resourceEl = document.createElement('div');
+                resourceEl.className = 'p-3 bg-gray-50 rounded-lg hover:bg-white transition-colors cursor-pointer';
+                
+                resourceEl.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-medium text-sm text-gray-800">${resource.title}</h4>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">${resource.type}</span>
+                    </div>
+                    <div class="flex items-center gap-3 mt-2">
+                        <span class="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full">${resource.difficulty}</span>
+                        <span class="text-xs text-gray-500">${resource.duration}</span>
+                    </div>
+                `;
+                
+                resourcesContainerEl.appendChild(resourceEl);
+            });
+        }
+
+        // Update job matches
+        function updateJobMatches() {
+            const level = Math.floor(currentProgress / 25);
+            const levels = ['Entry Level', 'Junior', 'Mid-Level', 'Senior', 'Expert'];
+            const count = Math.min(23, Math.floor(currentProgress / 5));
+            
+            jobMatchesEl.textContent = `🎯 ${count} matches at ${levels[level]} level`;
+        }
+
+        // Update hours estimate
+        function updateHoursEstimate() {
+            const baseHours = {
+                'web-dev': 600,
+                'ai-ml': 800,
+                'blockchain': 700,
+                'mobile-dev': 650
+            };
+            
+            const modeMultipliers = {
+                'casual': 1.5,
+                'standard': 1,
+                'intensive': 0.7,
+                'bootcamp': 0.5
+            };
+            
+            const totalHours = Math.round(baseHours[currentPath] * modeMultipliers[studyMode]);
+            const remainingHours = Math.round(totalHours * (100 - currentProgress) / 100);
+            
+            hoursEstimateEl.textContent = `Est. ${remainingHours} hours remaining (${totalHours} total)`;
+        }
+
+        // Update study mode
+        function updateStudyMode() {
+            studyMode = studyModeEl.value;
+            saveData();
+            updateHoursEstimate();
+        }
+
+        // Update study mode button
+        function updateStudyModeButton() {
+            const now = new Date();
+            const cooldownActive = lastStudySession && (now - lastStudySession) < 5 * 60 * 1000;
+            
+            if (cooldownActive) {
+                studyBtnEl.disabled = true;
+                studyBtnEl.classList.remove('bg-green-500', 'hover:bg-green-600');
+                studyBtnEl.classList.add('bg-gray-400', 'cursor-not-allowed');
+                
+                sessionCooldownEl.classList.remove('hidden');
+                
+                // Update cooldown timer
+                const secondsLeft = Math.ceil((5 * 60 * 1000 - (now - lastStudySession)) / 1000);
+                cooldownTimerEl.textContent = secondsLeft;
+                
+                // Update timer every second
+                if (sessionCooldown) clearInterval(sessionCooldown);
+                sessionCooldown = setInterval(() => {
+                    const newSecondsLeft = parseInt(cooldownTimerEl.textContent) - 1;
+                    cooldownTimerEl.textContent = newSecondsLeft;
+                    
+                    if (newSecondsLeft <= 0) {
+                        clearInterval(sessionCooldown);
+                        sessionCooldown = null;
+                        updateStudyModeButton();
+                    }
+                }, 1000);
+            } else {
+                studyBtnEl.disabled = false;
+                studyBtnEl.classList.add('bg-green-500', 'hover:bg-green-600');
+                studyBtnEl.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                
+                sessionCooldownEl.classList.add('hidden');
+            }
+        }
+
+        // Update streak counter
+        function updateStreakCounter() {
+            streakCounterEl.textContent = `${studyStreak} day streak`;
+        }
+
+        // Simulate study session
+        function simulateStudySession() {
+            const now = new Date();
+            
+            // Check if we should increment streak
+            if (lastStudySession) {
+                const lastDate = new Date(lastStudySession);
+                const sameDay = lastDate.getDate() === now.getDate() && 
+                               lastDate.getMonth() === now.getMonth() && 
+                               lastDate.getFullYear() === now.getFullYear();
+                
+                if (!sameDay) {
+                    // Check if it's the next day (for streak)
+                    const nextDay = new Date(lastDate);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    
+                    const isNextDay = nextDay.getDate() === now.getDate() && 
+                                     nextDay.getMonth() === now.getMonth() && 
+                                     nextDay.getFullYear() === now.getFullYear();
+                    
+                    if (isNextDay) {
+                        studyStreak++;
+                    } else {
+                        studyStreak = 1; // Reset streak if not consecutive
+                    }
+                }
+            } else {
+                studyStreak = 1; // First session
+            }
+            
+            lastStudySession = now;
+            
+            // Add 5% progress (capped at 100)
+            updateProgress(Math.min(100, currentProgress + 5));
+            
+            // Set cooldown
+            updateStudyModeButton();
+            
+            // Save and update
+            saveData();
+            updateStreakCounter();
+            
+            showNotification('📚 Study session completed! +5% progress', 'success');
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification p-4 rounded-lg shadow-lg ${type === 'success' ? 'bg-green-100 text-green-800' : type === 'error' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`;
+            notification.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <span class="text-xl">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            notificationContainerEl.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 5000);
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

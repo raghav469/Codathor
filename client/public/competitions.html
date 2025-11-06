@@ -1,0 +1,3411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Competitions | Codathor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-c_cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/theme-monokai.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #059669;
+            --error: #dc2626;
+            --warning: #d97706;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --white: #ffffff;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--white);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .competitions-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 70px;
+        }
+
+        .competitions-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .competitions-hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        /* Main Content */
+        .all-competitions {
+            padding: 80px 0;
+            min-height: 100vh;
+        }
+
+        .competitions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .competition-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            cursor: pointer;
+            border-top: 5px solid var(--primary);
+            position: relative;
+        }
+
+        .competition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .competition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .competition-card h3 {
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .difficulty-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .difficulty-badge.beginner { background: var(--success); }
+        .difficulty-badge.intermediate { background: var(--warning); }
+        .difficulty-badge.advanced { background: var(--error); }
+        .difficulty-badge.expert { background: var(--dark); }
+
+        .language-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: #e0e7ff;
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--gray-100);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Challenge Container */
+        .challenge-container {
+            padding: 100px 0 50px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .challenge-header {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .challenge-title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .challenge-header h1 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .challenge-progress {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray-600);
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .problem-navigation {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .nav-button {
+            padding: 8px 16px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .problem-counter {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Challenge Layout */
+        .challenge-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            min-height: 600px;
+        }
+
+        @media (max-width: 1200px) {
+            .challenge-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .problem-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .problem-statement h2 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .problem-description {
+            color: var(--gray-700);
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        .constraints {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .constraints h3 {
+            color: var(--warning);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .constraints ul {
+            margin-left: 20px;
+            color: var(--gray-700);
+        }
+
+        .problem-examples {
+            margin-top: 25px;
+        }
+
+        .examples-header {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .example {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .example-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .example-content {
+            display: grid;
+            gap: 10px;
+        }
+
+        .example-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .example-label {
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 60px;
+        }
+
+        .example-code {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            flex: 1;
+        }
+
+        .example-explanation {
+            background: #e0f2fe;
+            color: var(--gray-700);
+            padding: 12px;
+            border-radius: 6px;
+            font-style: italic;
+        }
+
+        /* Editor Section */
+        .editor-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .editor-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-selector {
+            padding: 8px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 6px;
+            background: white;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .code-editor-container {
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .code-editor {
+            height: 450px;
+            width: 100%;
+        }
+
+        .editor-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .run-button, .submit-button, .reset-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .run-button {
+            background: var(--warning);
+            color: white;
+        }
+
+        .run-button:hover {
+            background: #b45309;
+            transform: translateY(-2px);
+        }
+
+        .submit-button {
+            background: var(--success);
+            color: white;
+        }
+
+        .submit-button:hover {
+            background: #047857;
+            transform: translateY(-2px);
+        }
+
+        .reset-button {
+            background: var(--gray-600);
+            color: white;
+        }
+
+        .reset-button:hover {
+            background: var(--gray-700);
+            transform: translateY(-2px);
+        }
+
+        .output-container {
+            margin-top: 15px;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            background: var(--gray-100);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .output-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .execution-info {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .output-panel {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            font-family: 'Courier New', monospace;
+            min-height: 120px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+
+        /* Results Section */
+        .results-section {
+            margin-top: 30px;
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .score-display {
+            background: linear-gradient(45deg, var(--success), #10b981);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .test-cases-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 25px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-cases {
+            display: grid;
+            gap: 15px;
+        }
+
+        .test-case {
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .test-case.passed {
+            border-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        .test-case.failed {
+            border-color: var(--error);
+            background: #fef2f2;
+        }
+
+        .test-case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .test-case-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .test-status {
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .test-status.passed {
+            background: var(--success);
+            color: white;
+        }
+
+        .test-status.failed {
+            background: var(--error);
+            color: white;
+        }
+
+        .test-details {
+            display: grid;
+            gap: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .test-detail-item {
+            display: flex;
+            gap: 10px;
+        }
+
+        .test-label {
+            font-weight: 600;
+            min-width: 80px;
+            color: var(--primary);
+        }
+
+        .test-value {
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 6px;
+            flex: 1;
+            border: 1px solid var(--gray-200);
+        }
+
+        /* Back button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .back-button:hover {
+            color: var(--primary-dark);
+            transform: translateX(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none;
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .challenge-title-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .problem-navigation {
+                flex-wrap: wrap;
+            }
+            
+            .editor-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-group {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">Codathor</div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#" class="active">Competitions</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Competitions Page -->
+    <section id="competitions-page">
+        <!-- Hero Section -->
+        <section class="competitions-hero">
+            <div class="container">
+                <h1>Code Challenge Arena</h1>
+                <p>Master programming skills through structured challenges and real-world problems</p>
+            </div>
+        </section>
+
+        <!-- Main Competitions -->
+        <section class="all-competitions">
+            <div class="container">
+                <div class="competitions-grid">
+                    <!-- JavaScript Competition -->
+                    <div class="competition-card" data-id="js-challenge">
+                        <div class="competition-header">
+                            <div>
+                                <h3>JavaScript Mastery</h3>
+                                <span class="language-tag">JavaScript</span>
+                            </div>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <p class="description">Master modern JavaScript with challenges covering ES6+, async programming, DOM manipulation, and algorithm optimization.</p>
+                        <div class="stats">
+                            <span class="stat-item"><i class="fas fa-code"></i> 5 Problems</span>
+                            <span class="stat-item"><i class="fas fa-users"></i> 125 participants</span>
+                            <span class="stat-item"><i class="fas fa-clock"></i> 2-3 hours</span>
+                        </div>
+                        <button class="cta-button start-challenge">Start Challenge</button>
+                    </div>
+
+                    <!-- Python Competition -->
+                    <div class="competition-card" data-id="python-challenge">
+                        <div class="competition-header">
+                            <div>
+                                <h3>Python Deep Dive</h3>
+                                <span class="language-tag">Python</span>
+                            </div>
+                            <span class="difficulty-badge advanced">Advanced</span>
+                        </div>
+                        <p class="description">Advanced Python challenges featuring data structures, algorithms, object-oriented design, and performance optimization.</p>
+                        <div class="stats">
+                            <span class="stat-item"><i class="fas fa-code"></i> 6 Problems</span>
+                            <span class="stat-item"><i class="fas fa-users"></i> 98 participants</span>
+                            <span class="stat-item"><i class="fas fa-clock"></i> 3-4 hours</span>
+                        </div>
+                        <button class="cta-button start-challenge">Start Challenge</button>
+                    </div>
+
+                    <!-- Java Competition -->
+                    <div class="competition-card" data-id="java-challenge">
+                        <div class="competition-header">
+                            <div>
+                                <h3>Java Enterprise</h3>
+                                <span class="language-tag">Java</span>
+                            </div>
+                            <span class="difficulty-badge intermediate">Intermediate</span>
+                        </div>
+                        <p class="description">Object-oriented programming challenges with Java focusing on design patterns, collections, and enterprise-level solutions.</p>
+                        <div class="stats">
+                            <span class="stat-item"><i class="fas fa-code"></i> 4 Problems</span>
+                            <span class="stat-item"><i class="fas fa-users"></i> 87 participants</span>
+                            <span class="stat-item"><i class="fas fa-clock"></i> 2-3 hours</span>
+                        </div>
+                        <button class="cta-button start-challenge">Start Challenge</button>
+                    </div>
+
+                    <!-- C++ Competition -->
+                    <div class="competition-card" data-id="cpp-challenge">
+                        <div class="competition-header">
+                            <div>
+                                <h3>C++ Systems Programming</h3>
+                                <span class="language-tag">C++</span>
+                            </div>
+                            <span class="difficulty-badge expert">Expert</span>
+                        </div>
+                        <p class="description">Low-level programming challenges focusing on memory management, performance optimization, and system-level programming.</p>
+                        <div class="stats">
+                            <span class="stat-item"><i class="fas fa-code"></i> 4 Problems</span>
+                            <span class="stat-item"><i class="fas fa-users"></i> 76 participants</span>
+                            <span class="stat-item"><i class="fas fa-clock"></i> 3-4 hours</span>
+                        </div>
+                        <button class="cta-button start-challenge">Start Challenge</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Challenge Page (Hidden by default) -->
+    <section id="challenge-page" class="hidden">
+        <div class="container challenge-container">
+            <a href="#" class="back-button" id="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Competitions
+            </a>
+            
+            <div class="challenge-header">
+                <div class="challenge-title-section">
+                    <div>
+                        <h1 id="challenge-title">Challenge Title</h1>
+                        <span class="language-tag" id="challenge-language">Language</span>
+                    </div>
+                    <div class="challenge-progress">
+                        <span id="progress-text">Problem 1 of 5</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill" style="width: 20%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="problem-navigation">
+                    <button class="nav-button" id="prev-button" disabled>
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <div class="problem-counter" id="problem-counter">1 / 5</div>
+                    <button class="nav-button" id="next-button">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="challenge-layout">
+                <div class="problem-section">
+                    <div class="problem-statement">
+                        <h2 id="problem-title">
+                            <i class="fas fa-puzzle-piece"></i>
+                            Problem Statement
+                        </h2>
+                        <div class="problem-description" id="problem-description">
+                            Problem description will appear here...
+                        </div>
+                        
+                        <div class="constraints" id="constraints-section">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Constraints</h3>
+                            <ul id="constraints-list">
+                                <!-- Constraints will be added here -->
+                            </ul>
+                        </div>
+                        
+                        <div class="problem-examples" id="problem-examples">
+                            <div class="examples-header">
+                                <i class="fas fa-lightbulb"></i>
+                                Examples
+                            </div>
+                            <!-- Examples will be added here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="editor-section">
+                    <div class="editor-header">
+                        <div class="editor-title">
+                            <i class="fas fa-code"></i>
+                            Code Editor
+                        </div>
+                        <select class="language-selector" id="language-select">
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="c_cpp">C++</option>
+                        </select>
+                    </div>
+                    
+                    <div class="code-editor-container">
+                        <div id="code-editor" class="code-editor"></div>
+                    </div>
+                    
+                    <div class="editor-controls">
+                        <div class="control-group">
+                            <button class="reset-button" id="reset-button">
+                                <i class="fas fa-undo"></i> Reset Code
+                            </button>
+                        </div>
+                        <div class="control-group">
+                            <button class="run-button" id="run-button">
+                                <i class="fas fa-play"></i> Run Code
+                            </button>
+                            <button class="submit-button" id="submit-button">
+                                <i class="fas fa-check"></i> Submit Solution
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="output-container">
+                        <div class="output-header">
+                            <div class="output-title">
+                                <i class="fas fa-terminal"></i> Output
+                            </div>
+                            <div class="execution-info">
+                                <span id="execution-time">Time: 0ms</span>
+                                <span id="memory-usage">Memory: 0MB</span>
+                            </div>
+                        </div>
+                        <div class="output-panel" id="code-output">Click "Run Code" to see output...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results-section hidden" id="results-section">
+                <div class="results-header">
+                    <div class="results-title">
+                        <i class="fas fa-chart-line"></i> Test Results
+                    </div>
+                    <div class="score-display" id="score-display">
+                        Score: 0/100
+                    </div>
+                </div>
+                
+                <div class="test-cases-header">
+                    <i class="fas fa-vial"></i> Test Cases
+                </div>
+                <div class="test-cases" id="test-cases">
+                    <!-- Test cases will be added here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Enhanced competition data with comprehensive problems
+        const competitions = {
+            'js-challenge': {
+                title: 'JavaScript Mastery',
+                language: 'JavaScript',
+                totalProblems: 5,
+                problems: [
+                    {
+                        title: 'Array Transformation',
+                        description: 'Create a function that transforms an array based on specific rules. For each element: if it\'s even, double it; if it\'s odd, triple it; if it\'s zero, keep it as zero.',
+                        constraints: [
+                            'Array length: 1 ≤ n ≤ 1000',
+                            'Element range: -1000 ≤ element ≤ 1000',
+                            'Time complexity: O(n)',
+                            'Space complexity: O(n)'
+                        ],
+                        examples: [
+                            {
+                                input: '[1, 2, 3, 4, 0]',
+                                output: '[3, 4, 9, 8, 0]',
+                                explanation: 'Odd numbers (1,3) are tripled, even numbers (2,4) are doubled, zero stays zero'
+                            },
+                            {
+                                input: '[10, -5, 6, -2]',
+                                output: '[20, -15, 12, -4]',
+                                explanation: 'Works with negative numbers too'
+                            }
+                        ],
+                        testCases: [
+                            { input: '[1, 2, 3, 4, 0]', expected: '[3, 4, 9, 8, 0]' },
+                            { input: '[10, -5, 6, -2]', expected: '[20, -15, 12, -4]' },
+                            { input: '[]', expected: '[]' },
+                            { input: '[0, 0, 0]', expected: '[0, 0, 0]' }
+                        ],
+                        starterCode: {
+                            javascript: `function transformArray(arr) {
+    // Your code here
+    // Transform each element based on the rules:
+    // - Even numbers: multiply by 2
+    // - Odd numbers: multiply by 3  
+    // - Zero: keep as 0
+}
+
+// Test your solution
+console.log(transformArray([1, 2, 3, 4, 0])); // Expected: [3, 4, 9, 8, 0]`
+                        }
+                    },
+                    {
+                        title: 'Async Data Processing',
+                        description: 'Create a function that fetches data from multiple URLs concurrently and processes the results. The function should handle errors gracefully and return processed data in the original order.',
+                        constraints: [
+                            'Handle network timeouts',
+                            'Maintain original order of URLs',
+                            'Process successful responses only',
+                            'Return errors for failed requests'
+                        ],
+                        examples: [
+                            {
+                                input: '["api/users", "api/posts", "api/comments"]',
+                                output: '[{users: data}, {posts: data}, {comments: data}]',
+                                explanation: 'Fetch all URLs concurrently but return in original order'
+                            }
+                        ],
+                        testCases: [
+                            { input: '["api/test1", "api/test2"]', expected: 'Processed data array' }
+                        ],
+                        starterCode: {
+                            javascript: `async function fetchAndProcess(urls) {
+    // Your code here
+    // Fetch all URLs concurrently
+    // Process and return results in original order
+    // Handle errors appropriately
+}
+
+// Test your solution
+const urls = ["https://jsonplaceholder.typicode.com/posts/1", 
+              "https://jsonplaceholder.typicode.com/posts/2"];
+fetchAndProcess(urls).then(console.log);`
+                        }
+                    },
+                    {
+                        title: 'DOM Manipulation Challenge',
+                        description: 'Create a function that dynamically builds a nested navigation menu from a hierarchical data structure. The menu should support unlimited nesting levels and include proper accessibility features.',
+                        constraints: [
+                            'Support unlimited nesting levels',
+                            'Include ARIA attributes for accessibility',
+                            'Handle click events for navigation',
+                            'Apply CSS classes for styling'
+                        ],
+                        examples: [
+                            {
+                                input: '{name: "Home", children: [{name: "Products", children: [...]}]}',
+                                output: '<nav><ul><li><a>Home</a><ul><li>...</li></ul></li></ul></nav>',
+                                explanation: 'Recursive menu structure with proper HTML'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Menu data object', expected: 'DOM structure' }
+                        ],
+                        starterCode: {
+                            javascript: `function createNavigationMenu(menuData, container) {
+    // Your code here
+    // Create nested navigation structure
+    // Add accessibility features
+    // Handle click events
+}
+
+// Test data
+const menuData = {
+    name: "Main Menu",
+    children: [
+        { name: "Home", url: "/" },
+        { 
+            name: "Products", 
+            children: [
+                { name: "Category 1", url: "/cat1" },
+                { name: "Category 2", url: "/cat2" }
+            ]
+        }
+    ]
+};`
+                        }
+                    },
+                    {
+                        title: 'Algorithm Optimization',
+                        description: 'Implement an efficient algorithm to find the longest palindromic substring in a given string. Your solution should handle edge cases and optimize for both time and space complexity.',
+                        constraints: [
+                            'String length: 1 ≤ n ≤ 5000',
+                            'Contains only lowercase letters',
+                            'Time complexity: O(n²) or better',
+                            'Space complexity: O(1) preferred'
+                        ],
+                        examples: [
+                            {
+                                input: '"babad"',
+                                output: '"bab" or "aba"',
+                                explanation: 'Both are valid longest palindromes'
+                            },
+                            {
+                                input: '"cbbd"',
+                                output: '"bb"',
+                                explanation: 'Longest palindrome is of length 2'
+                            }
+                        ],
+                        testCases: [
+                            { input: '"babad"', expected: '"bab" or "aba"' },
+                            { input: '"cbbd"', expected: '"bb"' },
+                            { input: '"a"', expected: '"a"' },
+                            { input: '"ac"', expected: '"a" or "c"' }
+                        ],
+                        starterCode: {
+                            javascript: `function longestPalindrome(s) {
+    // Your code here
+    // Find the longest palindromic substring
+    // Optimize for efficiency
+}
+
+// Test your solution
+console.log(longestPalindrome("babad")); // Expected: "bab" or "aba"`
+                        }
+                    },
+                    {
+                        title: 'Advanced Closure Pattern',
+                        description: 'Create a function factory that generates specialized counter functions with configurable increment values, limits, and callback functions. Demonstrate advanced closure usage and functional programming concepts.',
+                        constraints: [
+                            'Support custom increment values',
+                            'Implement upper and lower limits',
+                            'Execute callbacks on limit reached',
+                            'Maintain private state'
+                        ],
+                        examples: [
+                            {
+                                input: 'createCounter({start: 0, increment: 2, max: 10})',
+                                output: 'Function that counts: 0, 2, 4, 6, 8, 10',
+                                explanation: 'Returns a counter function with specified behavior'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Counter configuration', expected: 'Counter function' }
+                        ],
+                        starterCode: {
+                            javascript: `function createCounter(config) {
+    // Your code here
+    // Create a closure-based counter
+    // Support: start, increment, max, min, onMax, onMin callbacks
+    
+    return function() {
+        // Counter logic here
+    };
+}
+
+// Test your solution
+const counter = createCounter({
+    start: 0,
+    increment: 2,
+    max: 10,
+    onMax: () => console.log("Maximum reached!")
+});
+
+console.log(counter()); // 0
+console.log(counter()); // 2`
+                        }
+                    }
+                ]
+            },
+            'python-challenge': {
+                title: 'Python Deep Dive',
+                language: 'Python',
+                totalProblems: 6,
+                problems: [
+                    {
+                        title: 'Advanced List Comprehensions',
+                        description: 'Create a function that uses nested list comprehensions to process a 2D matrix. Find all prime numbers in the matrix and return their positions along with the numbers.',
+                        constraints: [
+                            'Matrix size: 1 ≤ rows, cols ≤ 100',
+                            'Element range: 1 ≤ element ≤ 1000',
+                            'Use list comprehensions only',
+                            'Return format: [(number, row, col), ...]'
+                        ],
+                        examples: [
+                            {
+                                input: '[[2, 4, 5], [6, 7, 8], [9, 10, 11]]',
+                                output: '[(2, 0, 0), (5, 0, 2), (7, 1, 1), (11, 2, 2)]',
+                                explanation: 'Prime numbers with their matrix positions'
+                            }
+                        ],
+                        testCases: [
+                            { input: '[[2, 4, 5], [6, 7, 8], [9, 10, 11]]', expected: '[(2, 0, 0), (5, 0, 2), (7, 1, 1), (11, 2, 2)]' }
+                        ],
+                        starterCode: {
+                            python: `def find_primes_in_matrix(matrix):
+    # Your code here
+    # Use list comprehensions to find primes and their positions
+    # Helper function for prime checking
+    def is_prime(n):
+        if n < 2:
+            return False
+        return all(n % i != 0 for i in range(2, int(n**0.5) + 1))
+    
+    # Your list comprehension here
+    pass
+
+# Test your solution
+matrix = [[2, 4, 5], [6, 7, 8], [9, 10, 11]]
+print(find_primes_in_matrix(matrix))`
+                        }
+                    },
+                    {
+                        title: 'Decorator Design Pattern',
+                        description: 'Implement a comprehensive caching decorator that supports TTL (time-to-live), maximum cache size, and different eviction policies (LRU, FIFO). The decorator should work with any function.',
+                        constraints: [
+                            'Support TTL for cache entries',
+                            'Implement LRU and FIFO eviction',
+                            'Configurable maximum cache size',
+                            'Thread-safe implementation'
+                        ],
+                        examples: [
+                            {
+                                input: '@cache_with_ttl(ttl=60, max_size=100, policy="LRU")',
+                                output: 'Decorated function with advanced caching',
+                                explanation: 'Function calls are cached with specified parameters'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Decorated function calls', expected: 'Cached results' }
+                        ],
+                        starterCode: {
+                            python: `import time
+import threading
+from collections import OrderedDict
+from functools import wraps
+
+def cache_with_ttl(ttl=300, max_size=128, policy="LRU"):
+    """
+    Advanced caching decorator with TTL and eviction policies
+    """
+    def decorator(func):
+        # Your implementation here
+        cache = {}
+        
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # Implement caching logic
+            pass
+        
+        return wrapper
+    return decorator
+
+# Test your decorator
+@cache_with_ttl(ttl=2, max_size=3, policy="LRU")
+def expensive_function(x):
+    time.sleep(0.1)  # Simulate expensive operation
+    return x * x
+
+# Test calls
+print(expensive_function(5))`
+                        }
+                    },
+                    {
+                        title: 'Context Manager Implementation',
+                        description: 'Create a custom context manager class that manages database connections with automatic transaction handling, connection pooling, and error recovery mechanisms.',
+                        constraints: [
+                            'Implement __enter__ and __exit__ methods',
+                            'Handle transaction rollback on errors',
+                            'Support connection pooling',
+                            'Provide retry mechanism for failed connections'
+                        ],
+                        examples: [
+                            {
+                                input: 'with DatabaseManager() as db: db.execute("SELECT * FROM users")',
+                                output: 'Automatic connection and transaction management',
+                                explanation: 'Context manager handles all database operations'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Database operations', expected: 'Proper resource management' }
+                        ],
+                        starterCode: {
+                            python: `import sqlite3
+from contextlib import contextmanager
+
+class DatabaseManager:
+    """
+    Context manager for database operations with transaction support
+    """
+    def __init__(self, db_path=":memory:", pool_size=5):
+        # Your initialization code here
+        pass
+    
+    def __enter__(self):
+        # Enter context - establish connection
+        pass
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        # Exit context - handle cleanup and transactions
+        pass
+    
+    def execute(self, query, params=None):
+        # Execute database query
+        pass
+
+# Test your context manager
+try:
+    with DatabaseManager() as db:
+        db.execute("CREATE TABLE test (id INTEGER, name TEXT)")
+        db.execute("INSERT INTO test VALUES (1, 'Alice')")
+        results = db.execute("SELECT * FROM test")
+        print(results)
+except Exception as e:
+    print(f"Error: {e}")`
+                        }
+                    },
+                    {
+                        title: 'Metaclass Programming',
+                        description: 'Design a metaclass that automatically adds validation methods to class attributes based on type hints. The metaclass should generate setter methods with appropriate validation logic.',
+                        constraints: [
+                            'Use type hints for validation rules',
+                            'Generate dynamic setter methods',
+                            'Support custom validation functions',
+                            'Maintain original class functionality'
+                        ],
+                        examples: [
+                            {
+                                input: 'class User(metaclass=ValidatedMeta): name: str; age: int',
+                                output: 'Class with automatic validation for name and age',
+                                explanation: 'Metaclass adds validation based on type hints'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Class with type hints', expected: 'Validated class' }
+                        ],
+                        starterCode: {
+                            python: `from typing import get_type_hints
+
+class ValidatedMeta(type):
+    """
+    Metaclass that adds validation to class attributes based on type hints
+    """
+    def __new__(mcs, name, bases, dct, **kwargs):
+        # Your metaclass implementation here
+        pass
+    
+    def __init__(cls, name, bases, dct, **kwargs):
+        # Additional initialization if needed
+        super().__init__(name, bases, dct)
+
+# Test your metaclass
+class User(metaclass=ValidatedMeta):
+    name: str
+    age: int
+    email: str
+    
+    def __init__(self, name, age, email):
+        self.name = name
+        self.age = age
+        self.email = email
+
+# Test validation
+try:
+    user = User("Alice", 25, "alice@example.com")
+    print(f"User created: {user.name}, {user.age}, {user.email}")
+    
+    # This should raise an error
+    user.age = "invalid"
+except Exception as e:
+    print(f"Validation error: {e}")`
+                        }
+                    },
+                    {
+                        title: 'Async Programming Mastery',
+                        description: 'Implement an async web scraper that can handle multiple URLs concurrently with rate limiting, retry logic, and progress tracking. Use asyncio and aiohttp properly.',
+                        constraints: [
+                            'Concurrent request handling',
+                            'Rate limiting (requests per second)',
+                            'Exponential backoff retry logic',
+                            'Progress tracking and reporting'
+                        ],
+                        examples: [
+                            {
+                                input: 'urls = ["http://site1.com", "http://site2.com"]',
+                                output: 'Scraped content with progress tracking',
+                                explanation: 'Async scraping with proper resource management'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'List of URLs', expected: 'Scraped content' }
+                        ],
+                        starterCode: {
+                            python: `import asyncio
+import aiohttp
+import time
+from typing import List, Dict, Optional
+
+class AsyncWebScraper:
+    def __init__(self, rate_limit: int = 5, max_retries: int = 3):
+        self.rate_limit = rate_limit
+        self.max_retries = max_retries
+        self.semaphore = asyncio.Semaphore(rate_limit)
+        
+    async def scrape_url(self, session: aiohttp.ClientSession, url: str) -> Dict:
+        """Scrape a single URL with retry logic"""
+        # Your implementation here
+        pass
+    
+    async def scrape_multiple(self, urls: List[str]) -> List[Dict]:
+        """Scrape multiple URLs concurrently"""
+        # Your implementation here
+        pass
+    
+    def track_progress(self, completed: int, total: int):
+        """Track and display progress"""
+        progress = (completed / total) * 100
+        print(f"Progress: {progress:.1f}% ({completed}/{total})")
+
+# Test your scraper
+async def main():
+    scraper = AsyncWebScraper(rate_limit=3, max_retries=2)
+    urls = [
+        "https://httpbin.org/delay/1",
+        "https://httpbin.org/delay/2", 
+        "https://httpbin.org/status/200"
+    ]
+    
+    results = await scraper.scrape_multiple(urls)
+    print(f"Scraped {len(results)} URLs successfully")
+
+# Run the async main function
+# asyncio.run(main())`
+                        }
+                    },
+                    {
+                        title: 'Data Structure Design',
+                        description: 'Implement a thread-safe LRU (Least Recently Used) cache with O(1) operations for get, put, and delete. Include statistics tracking and memory management.',
+                        constraints: [
+                            'O(1) time complexity for all operations',
+                            'Thread-safe implementation',
+                            'Configurable maximum capacity',
+                            'Statistics tracking (hits, misses, evictions)'
+                        ],
+                        examples: [
+                            {
+                                input: 'cache = LRUCache(capacity=3); cache.put("a", 1); cache.get("a")',
+                                output: 'Efficient cache operations with statistics',
+                                explanation: 'LRU cache with constant time operations'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Cache operations', expected: 'Correct LRU behavior' }
+                        ],
+                        starterCode: {
+                            python: `import threading
+from typing import Any, Optional
+
+class Node:
+    def __init__(self, key: Any = None, value: Any = None):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        """Initialize LRU Cache with given capacity"""
+        # Your implementation here
+        pass
+    
+    def get(self, key: Any) -> Optional[Any]:
+        """Get value by key, mark as recently used"""
+        # Your implementation here
+        pass
+    
+    def put(self, key: Any, value: Any) -> None:
+        """Put key-value pair, evict LRU if needed"""
+        # Your implementation here
+        pass
+    
+    def delete(self, key: Any) -> bool:
+        """Delete key-value pair"""
+        # Your implementation here
+        pass
+    
+    def get_stats(self) -> dict:
+        """Get cache statistics"""
+        # Your implementation here
+        pass
+
+# Test your LRU Cache
+cache = LRUCache(capacity=3)
+
+# Test operations
+cache.put("a", 1)
+cache.put("b", 2)
+cache.put("c", 3)
+
+print(cache.get("a"))  # Should return 1
+cache.put("d", 4)      # Should evict "b"
+print(cache.get("b"))  # Should return None
+print(cache.get_stats())`
+                        }
+                    }
+                ]
+            },
+            'java-challenge': {
+                title: 'Java Enterprise',
+                language: 'Java',
+                totalProblems: 4,
+                problems: [
+                    {
+                        title: 'Thread-Safe Data Structure',
+                        description: 'Implement a thread-safe bounded blocking queue that supports multiple producers and consumers. Include timeout operations and proper exception handling.',
+                        constraints: [
+                            'Thread-safe for multiple producers/consumers',
+                            'Support timeout operations',
+                            'Proper exception handling',
+                            'Bounded capacity with blocking behavior'
+                        ],
+                        examples: [
+                            {
+                                input: 'BoundedQueue<String> queue = new BoundedQueue<>(10)',
+                                output: 'Thread-safe queue operations',
+                                explanation: 'Queue blocks when full/empty with timeout support'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Concurrent operations', expected: 'Thread-safe behavior' }
+                        ],
+                        starterCode: {
+                            java: `import java.util.concurrent.*;
+import java.util.concurrent.locks.*;
+
+public class BoundedQueue<T> {
+    private final Object[] items;
+    private final int capacity;
+    private int count, putIndex, takeIndex;
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition notEmpty = lock.newCondition();
+    private final Condition notFull = lock.newCondition();
+    
+    public BoundedQueue(int capacity) {
+        // Your implementation here
+    }
+    
+    public void put(T item) throws InterruptedException {
+        // Your implementation here
+    }
+    
+    public boolean offer(T item, long timeout, TimeUnit unit) throws InterruptedException {
+        // Your implementation here
+    }
+    
+    public T take() throws InterruptedException {
+        // Your implementation here
+    }
+    
+    public T poll(long timeout, TimeUnit unit) throws InterruptedException {
+        // Your implementation here
+    }
+    
+    public int size() {
+        // Your implementation here
+    }
+    
+    // Test your implementation
+    public static void main(String[] args) throws InterruptedException {
+        BoundedQueue<String> queue = new BoundedQueue<>(3);
+        
+        // Test basic operations
+        queue.put("item1");
+        queue.put("item2");
+        
+        System.out.println("Size: " + queue.size());
+        System.out.println("Took: " + queue.take());
+    }
+}`
+                        }
+                    },
+                    {
+                        title: 'Design Pattern Implementation',
+                        description: 'Implement the Observer pattern for a stock trading system. Include support for multiple observer types, event filtering, and asynchronous notifications.',
+                        constraints: [
+                            'Support multiple observer types',
+                            'Event filtering capabilities',
+                            'Asynchronous notification support',
+                            'Proper error handling and logging'
+                        ],
+                        examples: [
+                            {
+                                input: 'StockExchange exchange; exchange.addObserver(new PriceAlertObserver())',
+                                output: 'Observer notifications for stock price changes',
+                                explanation: 'Observers receive filtered stock updates asynchronously'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Stock price updates', expected: 'Observer notifications' }
+                        ],
+                        starterCode: {
+                            java: `import java.util.*;
+import java.util.concurrent.*;
+import java.math.BigDecimal;
+
+// Stock data class
+class Stock {
+    private final String symbol;
+    private BigDecimal price;
+    private long timestamp;
+    
+    public Stock(String symbol, BigDecimal price) {
+        this.symbol = symbol;
+        this.price = price;
+        this.timestamp = System.currentTimeMillis();
+    }
+    
+    // Getters and setters
+    public String getSymbol() { return symbol; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { 
+        this.price = price; 
+        this.timestamp = System.currentTimeMillis();
+    }
+    public long getTimestamp() { return timestamp; }
+}
+
+// Observer interface
+interface StockObserver {
+    void onStockUpdate(Stock stock);
+    boolean isInterestedIn(Stock stock);
+}
+
+// Stock exchange (Subject)
+class StockExchange {
+    // Your implementation here
+    
+    public void addObserver(StockObserver observer) {
+        // Your implementation here
+    }
+    
+    public void removeObserver(StockObserver observer) {
+        // Your implementation here
+    }
+    
+    public void updateStock(String symbol, BigDecimal newPrice) {
+        // Your implementation here
+    }
+    
+    private void notifyObservers(Stock stock) {
+        // Your implementation here
+    }
+}
+
+// Example observer implementation
+class PriceAlertObserver implements StockObserver {
+    private final String interestedSymbol;
+    private final BigDecimal threshold;
+    
+    public PriceAlertObserver(String symbol, BigDecimal threshold) {
+        this.interestedSymbol = symbol;
+        this.threshold = threshold;
+    }
+    
+    @Override
+    public void onStockUpdate(Stock stock) {
+        // Your implementation here
+    }
+    
+    @Override
+    public boolean isInterestedIn(Stock stock) {
+        // Your implementation here
+        return false;
+    }
+}
+
+// Test your implementation
+public class StockTradingSystem {
+    public static void main(String[] args) throws InterruptedException {
+        StockExchange exchange = new StockExchange();
+        
+        // Add observers
+        PriceAlertObserver alert1 = new PriceAlertObserver("AAPL", new BigDecimal("150.00"));
+        exchange.addObserver(alert1);
+        
+        // Update stock prices
+        exchange.updateStock("AAPL", new BigDecimal("155.50"));
+        
+        Thread.sleep(100); // Allow async notifications
+        System.out.println("Stock trading system test completed");
+    }
+}`
+                        }
+                    },
+                    {
+                        title: 'Custom Collection Framework',
+                        description: 'Design and implement a custom Map interface that supports versioning, allowing retrieval of previous values. Include proper iteration support and performance optimization.',
+                        constraints: [
+                            'Support value versioning',
+                            'Implement proper iteration',
+                            'O(1) access for current values',
+                            'Memory-efficient version storage'
+                        ],
+                        examples: [
+                            {
+                                input: 'VersionedMap<String, Integer> map; map.put("key", 1); map.put("key", 2)',
+                                output: 'Access to current and previous values',
+                                explanation: 'Map maintains version history for each key'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Map operations with versioning', expected: 'Correct version retrieval' }
+                        ],
+                        starterCode: {
+                            java: `import java.util.*;
+
+// Version entry class
+class VersionEntry<V> {
+    private final V value;
+    private final long version;
+    private final long timestamp;
+    
+    public VersionEntry(V value, long version) {
+        this.value = value;
+        this.version = version;
+        this.timestamp = System.currentTimeMillis();
+    }
+    
+    // Getters
+    public V getValue() { return value; }
+    public long getVersion() { return version; }
+    public long getTimestamp() { return timestamp; }
+}
+
+// Versioned Map implementation
+public class VersionedMap<K, V> implements Map<K, V> {
+    // Your implementation here
+    
+    // Custom methods for versioning
+    public V get(K key, long version) {
+        // Get value at specific version
+        return null;
+    }
+    
+    public List<VersionEntry<V>> getVersionHistory(K key) {
+        // Get all versions for a key
+        return null;
+    }
+    
+    public long getCurrentVersion(K key) {
+        // Get current version number for key
+        return 0;
+    }
+    
+    // Implement Map interface methods
+    @Override
+    public int size() {
+        // Your implementation here
+        return 0;
+    }
+    
+    @Override
+    public boolean isEmpty() {
+        // Your implementation here
+        return false;
+    }
+    
+    @Override
+    public boolean containsKey(Object key) {
+        // Your implementation here
+        return false;
+    }
+    
+    @Override
+    public boolean containsValue(Object value) {
+        // Your implementation here
+        return false;
+    }
+    
+    @Override
+    public V get(Object key) {
+        // Your implementation here
+        return null;
+    }
+    
+    @Override
+    public V put(K key, V value) {
+        // Your implementation here
+        return null;
+    }
+    
+    @Override
+    public V remove(Object key) {
+        // Your implementation here
+        return null;
+    }
+    
+    @Override
+    public void putAll(Map<? extends K, ? extends V> m) {
+        // Your implementation here
+    }
+    
+    @Override
+    public void clear() {
+        // Your implementation here
+    }
+    
+    @Override
+    public Set<K> keySet() {
+        // Your implementation here
+        return null;
+    }
+    
+    @Override
+    public Collection<V> values() {
+        // Your implementation here
+        return null;
+    }
+    
+    @Override
+    public Set<Entry<K, V>> entrySet() {
+        // Your implementation here
+        return null;
+    }
+    
+    // Test your implementation
+    public static void main(String[] args) {
+        VersionedMap<String, Integer> map = new VersionedMap<>();
+        
+        // Test versioning
+        map.put("count", 1);
+        map.put("count", 2);
+        map.put("count", 3);
+        
+        System.out.println("Current value: " + map.get("count"));
+        System.out.println("Version 1: " + map.get("count", 1));
+        System.out.println("Version history: " + map.getVersionHistory("count"));
+    }
+}`
+                        }
+                    },
+                    {
+                        title: 'Reflection and Annotation Processing',
+                        description: 'Create a dependency injection framework using reflection and custom annotations. Support constructor injection, field injection, and lifecycle management.',
+                        constraints: [
+                            'Custom annotation processing',
+                            'Constructor and field injection',
+                            'Singleton and prototype scopes',
+                            'Circular dependency detection'
+                        ],
+                        examples: [
+                            {
+                                input: '@Injectable class Service { @Inject UserRepository repo; }',
+                                output: 'Automatic dependency injection',
+                                explanation: 'Framework injects dependencies using reflection'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Classes with injection annotations', expected: 'Injected dependencies' }
+                        ],
+                        starterCode: {
+                            java: `import java.lang.annotation.*;
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+// Custom annotations
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@interface Injectable {
+    String value() default "";
+    Scope scope() default Scope.SINGLETON;
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
+@interface Inject {
+}
+
+enum Scope {
+    SINGLETON, PROTOTYPE
+}
+
+// Dependency injection container
+public class DIContainer {
+    private final Map<Class<?>, Object> singletons = new ConcurrentHashMap<>();
+    private final Map<Class<?>, Constructor<?>> constructors = new ConcurrentHashMap<>();
+    private final Set<Class<?>> inProgress = new HashSet<>();
+    
+    public <T> T getInstance(Class<T> clazz) {
+        // Your implementation here
+        return null;
+    }
+    
+    private <T> T createInstance(Class<T> clazz) {
+        // Your implementation here
+        return null;
+    }
+    
+    private Constructor<?> findInjectableConstructor(Class<?> clazz) {
+        // Your implementation here
+        return null;
+    }
+    
+    private void injectFields(Object instance) {
+        // Your implementation here
+    }
+    
+    private void checkCircularDependency(Class<?> clazz) {
+        // Your implementation here
+    }
+    
+    // Test classes
+    @Injectable
+    static class UserRepository {
+        public String getUser() {
+            return "User data";
+        }
+    }
+    
+    @Injectable
+    static class UserService {
+        @Inject
+        private UserRepository repository;
+        
+        public String getUserInfo() {
+            return repository.getUser();
+        }
+    }
+    
+    @Injectable(scope = Scope.PROTOTYPE)
+    static class OrderService {
+        private final UserService userService;
+        
+        @Inject
+        public OrderService(UserService userService) {
+            this.userService = userService;
+        }
+        
+        public String getOrderInfo() {
+            return "Order for: " + userService.getUserInfo();
+        }
+    }
+    
+    // Test your DI container
+    public static void main(String[] args) {
+        DIContainer container = new DIContainer();
+        
+        try {
+            UserService userService = container.getInstance(UserService.class);
+            System.out.println(userService.getUserInfo());
+            
+            OrderService orderService = container.getInstance(OrderService.class);
+            System.out.println(orderService.getOrderInfo());
+            
+            // Test singleton behavior
+            UserService userService2 = container.getInstance(UserService.class);
+            System.out.println("Same instance: " + (userService == userService2));
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}`
+                        }
+                    }
+                ]
+            },
+            'cpp-challenge': {
+                title: 'C++ Systems Programming',
+                language: 'C++',
+                totalProblems: 4,
+                problems: [
+                    {
+                        title: 'Custom Memory Allocator',
+                        description: 'Implement a custom memory allocator with object pooling, alignment support, and memory debugging features. Ensure efficient allocation and deallocation.',
+                        constraints: [
+                            'Support custom alignment requirements',
+                            'Implement object pooling for performance',
+                            'Memory leak detection',
+                            'Thread-safe operations'
+                        ],
+                        examples: [
+                            {
+                                input: 'Allocator<int> alloc; int* ptr = alloc.allocate(100);',
+                                output: 'Efficient custom memory allocation',
+                                explanation: 'Custom allocator with debugging and pooling'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Memory allocation operations', expected: 'No memory leaks' }
+                        ],
+                        starterCode: {
+                            cpp: `#include <iostream>
+#include <memory>
+#include <mutex>
+#include <unordered_set>
+#include <cstdlib>
+#include <cassert>
+
+template<typename T>
+class CustomAllocator {
+private:
+    struct Block {
+        void* ptr;
+        size_t size;
+        bool allocated;
+        Block* next;
+        
+        Block(void* p, size_t s) : ptr(p), size(s), allocated(false), next(nullptr) {}
+    };
+    
+    Block* free_list;
+    std::mutex mutex_;
+    std::unordered_set<void*> allocated_blocks;
+    size_t total_allocated;
+    size_t peak_usage;
+    
+public:
+    CustomAllocator() : free_list(nullptr), total_allocated(0), peak_usage(0) {}
+    
+    ~CustomAllocator() {
+        // Your cleanup implementation here
+    }
+    
+    T* allocate(size_t n, size_t alignment = alignof(T)) {
+        // Your allocation implementation here
+        return nullptr;
+    }
+    
+    void deallocate(T* ptr, size_t n) {
+        // Your deallocation implementation here
+    }
+    
+    // Memory debugging features
+    size_t getTotalAllocated() const {
+        return total_allocated;
+    }
+    
+    size_t getPeakUsage() const {
+        return peak_usage;
+    }
+    
+    bool hasLeaks() const {
+        return !allocated_blocks.empty();
+    }
+    
+    void printStats() const {
+        std::cout << "Total allocated: " << total_allocated << " bytes\\n";
+        std::cout << "Peak usage: " << peak_usage << " bytes\\n";
+        std::cout << "Active allocations: " << allocated_blocks.size() << "\\n";
+    }
+};
+
+// Test your allocator
+int main() {
+    CustomAllocator<int> allocator;
+    
+    // Test basic allocation
+    int* ptr1 = allocator.allocate(100);
+    int* ptr2 = allocator.allocate(50);
+    
+    if (ptr1 && ptr2) {
+        std::cout << "Allocation successful\\n";
+        
+        // Use the memory
+        for (int i = 0; i < 10; ++i) {
+            ptr1[i] = i;
+        }
+        
+        // Deallocate
+        allocator.deallocate(ptr1, 100);
+        allocator.deallocate(ptr2, 50);
+    }
+    
+    allocator.printStats();
+    
+    if (allocator.hasLeaks()) {
+        std::cout << "Memory leaks detected!\\n";
+    } else {
+        std::cout << "No memory leaks\\n";
+    }
+    
+    return 0;
+}`
+                        }
+                    },
+                    {
+                        title: 'Smart Pointer Implementation',
+                        description: 'Implement a complete smart pointer system including unique_ptr, shared_ptr, and weak_ptr with proper RAII, move semantics, and cyclic reference handling.',
+                        constraints: [
+                            'Implement unique_ptr with move semantics',
+                            'shared_ptr with reference counting',
+                            'weak_ptr to handle cyclic references',
+                            'Exception safety guarantees'
+                        ],
+                        examples: [
+                            {
+                                input: 'auto ptr = make_unique<MyClass>(args);',
+                                output: 'Custom smart pointer with RAII',
+                                explanation: 'Complete smart pointer implementation'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Smart pointer operations', expected: 'Proper resource management' }
+                        ],
+                        starterCode: {
+                            cpp: `#include <iostream>
+#include <utility>
+#include <atomic>
+
+// Forward declarations
+template<typename T> class shared_ptr;
+template<typename T> class weak_ptr;
+
+// Unique pointer implementation
+template<typename T>
+class unique_ptr {
+private:
+    T* ptr_;
+    
+public:
+    // Constructors
+    explicit unique_ptr(T* ptr = nullptr) : ptr_(ptr) {}
+    
+    // Move constructor
+    unique_ptr(unique_ptr&& other) noexcept : ptr_(other.ptr_) {
+        other.ptr_ = nullptr;
+    }
+    
+    // Copy constructor - deleted
+    unique_ptr(const unique_ptr&) = delete;
+    
+    // Destructor
+    ~unique_ptr() {
+        // Your implementation here
+    }
+    
+    // Move assignment
+    unique_ptr& operator=(unique_ptr&& other) noexcept {
+        // Your implementation here
+        return *this;
+    }
+    
+    // Copy assignment - deleted
+    unique_ptr& operator=(const unique_ptr&) = delete;
+    
+    // Access operators
+    T& operator*() const {
+        return *ptr_;
+    }
+    
+    T* operator->() const {
+        return ptr_;
+    }
+    
+    T* get() const {
+        return ptr_;
+    }
+    
+    T* release() {
+        // Your implementation here
+        return nullptr;
+    }
+    
+    void reset(T* ptr = nullptr) {
+        // Your implementation here
+    }
+    
+    explicit operator bool() const {
+        return ptr_ != nullptr;
+    }
+};
+
+// Control block for shared_ptr
+template<typename T>
+class control_block {
+private:
+    std::atomic<long> ref_count_;
+    std::atomic<long> weak_count_;
+    T* ptr_;
+    
+public:
+    control_block(T* ptr) : ref_count_(1), weak_count_(0), ptr_(ptr) {}
+    
+    void add_ref() {
+        ref_count_.fetch_add(1);
+    }
+    
+    void release() {
+        if (ref_count_.fetch_sub(1) == 1) {
+            delete ptr_;
+            ptr_ = nullptr;
+            if (weak_count_.load() == 0) {
+                delete this;
+            }
+        }
+    }
+    
+    void add_weak_ref() {
+        weak_count_.fetch_add(1);
+    }
+    
+    void release_weak() {
+        if (weak_count_.fetch_sub(1) == 1 && ref_count_.load() == 0) {
+            delete this;
+        }
+    }
+    
+    long use_count() const {
+        return ref_count_.load();
+    }
+    
+    T* get() const {
+        return ptr_;
+    }
+    
+    bool expired() const {
+        return ref_count_.load() == 0;
+    }
+};
+
+// Shared pointer implementation
+template<typename T>
+class shared_ptr {
+private:
+    T* ptr_;
+    control_block<T>* control_;
+    
+public:
+    // Constructors
+    explicit shared_ptr(T* ptr = nullptr) : ptr_(ptr), control_(nullptr) {
+        if (ptr_) {
+            control_ = new control_block<T>(ptr_);
+        }
+    }
+    
+    // Copy constructor
+    shared_ptr(const shared_ptr& other) : ptr_(other.ptr_), control_(other.control_) {
+        if (control_) {
+            control_->add_ref();
+        }
+    }
+    
+    // Move constructor
+    shared_ptr(shared_ptr&& other) noexcept : ptr_(other.ptr_), control_(other.control_) {
+        other.ptr_ = nullptr;
+        other.control_ = nullptr;
+    }
+    
+    // Destructor
+    ~shared_ptr() {
+        // Your implementation here
+    }
+    
+    // Assignment operators
+    shared_ptr& operator=(const shared_ptr& other) {
+        // Your implementation here
+        return *this;
+    }
+    
+    shared_ptr& operator=(shared_ptr&& other) noexcept {
+        // Your implementation here
+        return *this;
+    }
+    
+    // Access operators
+    T& operator*() const {
+        return *ptr_;
+    }
+    
+    T* operator->() const {
+        return ptr_;
+    }
+    
+    T* get() const {
+        return ptr_;
+    }
+    
+    long use_count() const {
+        return control_ ? control_->use_count() : 0;
+    }
+    
+    void reset(T* ptr = nullptr) {
+        // Your implementation here
+    }
+    
+    explicit operator bool() const {
+        return ptr_ != nullptr;
+    }
+    
+    // Friend class for weak_ptr
+    friend class weak_ptr<T>;
+};
+
+// Weak pointer implementation
+template<typename T>
+class weak_ptr {
+private:
+    T* ptr_;
+    control_block<T>* control_;
+    
+public:
+    // Constructors
+    weak_ptr() : ptr_(nullptr), control_(nullptr) {}
+    
+    weak_ptr(const shared_ptr<T>& shared) : ptr_(shared.ptr_), control_(shared.control_) {
+        if (control_) {
+            control_->add_weak_ref();
+        }
+    }
+    
+    // Copy constructor
+    weak_ptr(const weak_ptr& other) : ptr_(other.ptr_), control_(other.control_) {
+        if (control_) {
+            control_->add_weak_ref();
+        }
+    }
+    
+    // Destructor
+    ~weak_ptr() {
+        if (control_) {
+            control_->release_weak();
+        }
+    }
+    
+    bool expired() const {
+        return !control_ || control_->expired();
+    }
+    
+    shared_ptr<T> lock() const {
+        // Your implementation here
+        return shared_ptr<T>();
+    }
+    
+    long use_count() const {
+        return control_ ? control_->use_count() : 0;
+    }
+};
+
+// Helper function to create unique_ptr
+template<typename T, typename... Args>
+unique_ptr<T> make_unique(Args&&... args) {
+    return unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+
+// Helper function to create shared_ptr
+template<typename T, typename... Args>
+shared_ptr<T> make_shared(Args&&... args) {
+    return shared_ptr<T>(new T(std::forward<Args>(args)...));
+}
+
+// Test class
+class TestClass {
+public:
+    int value;
+    
+    TestClass(int v) : value(v) {
+        std::cout << "TestClass constructed with value: " << value << std::endl;
+    }
+    
+    ~TestClass() {
+        std::cout << "TestClass destructed with value: " << value << std::endl;
+    }
+};
+
+// Test your smart pointers
+int main() {
+    // Test unique_ptr
+    {
+        auto unique = make_unique<TestClass>(42);
+        std::cout << "Unique ptr value: " << unique->value << std::endl;
+    } // unique should be destroyed here
+    
+    // Test shared_ptr
+    {
+        auto shared1 = make_shared<TestClass>(100);
+        std::cout << "Shared ptr use count: " << shared1.use_count() << std::endl;
+        
+        {
+            auto shared2 = shared1;
+            std::cout << "Shared ptr use count after copy: " << shared1.use_count() << std::endl;
+        }
+        
+        std::cout << "Shared ptr use count after scope: " << shared1.use_count() << std::endl;
+    } // shared should be destroyed here
+    
+    // Test weak_ptr
+    {
+        weak_ptr<TestClass> weak;
+        {
+            auto shared = make_shared<TestClass>(200);
+            weak = shared;
+            std::cout << "Weak ptr expired: " << weak.expired() << std::endl;
+            
+            if (auto locked = weak.lock()) {
+                std::cout << "Locked weak ptr value: " << locked->value << std::endl;
+            }
+        }
+        
+        std::cout << "Weak ptr expired after shared destroyed: " << weak.expired() << std::endl;
+    }
+    
+    return 0;
+}`
+                        }
+                    },
+                    {
+                        title: 'Template Metaprogramming',
+                        description: 'Create a compile-time expression template library for mathematical operations. Support lazy evaluation, automatic optimization, and type deduction.',
+                        constraints: [
+                            'Compile-time expression building',
+                            'Lazy evaluation of expressions',
+                            'Automatic loop optimization',
+                            'Type-safe operations'
+                        ],
+                        examples: [
+                            {
+                                input: 'auto expr = a + b * c; Vector result = expr.evaluate();',
+                                output: 'Optimized mathematical expression evaluation',
+                                explanation: 'Template-based expression evaluation'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Mathematical expressions', expected: 'Optimized evaluation' }
+                        ],
+                        starterCode: {
+                            cpp: `#include <iostream>
+#include <vector>
+#include <type_traits>
+
+// Forward declarations
+template<typename E>
+class Expression;
+
+template<typename T>
+class Vector;
+
+// Expression base class using CRTP (Curiously Recurring Template Pattern)
+template<typename E>
+class Expression {
+public:
+    const E& cast() const {
+        return static_cast<const E&>(*this);
+    }
+    
+    template<typename T>
+    T operator[](size_t i) const {
+        return cast()[i];
+    }
+    
+    size_t size() const {
+        return cast().size();
+    }
+};
+
+// Vector class
+template<typename T>
+class Vector : public Expression<Vector<T>> {
+private:
+    std::vector<T> data_;
+    
+public:
+    Vector(size_t size) : data_(size) {}
+    
+    Vector(std::initializer_list<T> init) : data_(init) {}
+    
+    template<typename E>
+    Vector(const Expression<E>& expr) : data_(expr.size()) {
+        for (size_t i = 0; i < expr.size(); ++i) {
+            data_[i] = expr[i];
+        }
+    }
+    
+    T& operator[](size_t i) {
+        return data_[i];
+    }
+    
+    const T& operator[](size_t i) const {
+        return data_[i];
+    }
+    
+    size_t size() const {
+        return data_.size();
+    }
+    
+    void print() const {
+        std::cout << "[";
+        for (size_t i = 0; i < size(); ++i) {
+            if (i > 0) std::cout << ", ";
+            std::cout << data_[i];
+        }
+        std::cout << "]\\n";
+    }
+};
+
+// Binary operation expression
+template<typename L, typename R, typename Op>
+class BinaryOp : public Expression<BinaryOp<L, R, Op>> {
+private:
+    const L& left_;
+    const R& right_;
+    Op op_;
+    
+public:
+    BinaryOp(const L& left, const R& right, Op op) 
+        : left_(left), right_(right), op_(op) {}
+    
+    auto operator[](size_t i) const -> decltype(op_(left_[i], right_[i])) {
+        return op_(left_[i], right_[i]);
+    }
+    
+    size_t size() const {
+        return left_.size(); // Assume same size
+    }
+};
+
+// Unary operation expression
+template<typename E, typename Op>
+class UnaryOp : public Expression<UnaryOp<E, Op>> {
+private:
+    const E& expr_;
+    Op op_;
+    
+public:
+    UnaryOp(const E& expr, Op op) : expr_(expr), op_(op) {}
+    
+    auto operator[](size_t i) const -> decltype(op_(expr_[i])) {
+        return op_(expr_[i]);
+    }
+    
+    size_t size() const {
+        return expr_.size();
+    }
+};
+
+// Operation functors
+struct AddOp {
+    template<typename T, typename U>
+    auto operator()(const T& a, const U& b) const -> decltype(a + b) {
+        return a + b;
+    }
+};
+
+struct SubOp {
+    template<typename T, typename U>
+    auto operator()(const T& a, const U& b) const -> decltype(a - b) {
+        return a - b;
+    }
+};
+
+struct MulOp {
+    template<typename T, typename U>
+    auto operator()(const T& a, const U& b) const -> decltype(a * b) {
+        return a * b;
+    }
+};
+
+struct DivOp {
+    template<typename T, typename U>
+    auto operator()(const T& a, const U& b) const -> decltype(a / b) {
+        return a / b;
+    }
+};
+
+struct NegOp {
+    template<typename T>
+    auto operator()(const T& a) const -> decltype(-a) {
+        return -a;
+    }
+};
+
+// Operator overloads for expressions
+template<typename L, typename R>
+auto operator+(const Expression<L>& left, const Expression<R>& right) {
+    return BinaryOp<L, R, AddOp>(left.cast(), right.cast(), AddOp{});
+}
+
+template<typename L, typename R>
+auto operator-(const Expression<L>& left, const Expression<R>& right) {
+    return BinaryOp<L, R, SubOp>(left.cast(), right.cast(), SubOp{});
+}
+
+template<typename L, typename R>
+auto operator*(const Expression<L>& left, const Expression<R>& right) {
+    return BinaryOp<L, R, MulOp>(left.cast(), right.cast(), MulOp{});
+}
+
+template<typename L, typename R>
+auto operator/(const Expression<L>& left, const Expression<R>& right) {
+    return BinaryOp<L, R, DivOp>(left.cast(), right.cast(), DivOp{});
+}
+
+template<typename E>
+auto operator-(const Expression<E>& expr) {
+    return UnaryOp<E, NegOp>(expr.cast(), NegOp{});
+}
+
+// Scalar operations
+template<typename E, typename T>
+class ScalarOp : public Expression<ScalarOp<E, T>> {
+private:
+    const E& expr_;
+    T scalar_;
+    
+public:
+    ScalarOp(const E& expr, const T& scalar) : expr_(expr), scalar_(scalar) {}
+    
+    auto operator[](size_t i) const -> decltype(expr_[i] * scalar_) {
+        return expr_[i] * scalar_;
+    }
+    
+    size_t size() const {
+        return expr_.size();
+    }
+};
+
+template<typename E, typename T>
+auto operator*(const Expression<E>& expr, const T& scalar) {
+    return ScalarOp<E, T>(expr.cast(), scalar);
+}
+
+template<typename E, typename T>
+auto operator*(const T& scalar, const Expression<E>& expr) {
+    return ScalarOp<E, T>(expr.cast(), scalar);
+}
+
+// Evaluation functions
+template<typename E, typename T>
+void evaluate_into(const Expression<E>& expr, Vector<T>& result) {
+    for (size_t i = 0; i < expr.size(); ++i) {
+        result[i] = expr[i];
+    }
+}
+
+template<typename E>
+auto evaluate(const Expression<E>& expr) {
+    using ValueType = decltype(expr[0]);
+    Vector<ValueType> result(expr.size());
+    evaluate_into(expr, result);
+    return result;
+}
+
+// Test your expression template library
+int main() {
+    // Create test vectors
+    Vector<double> a{1.0, 2.0, 3.0, 4.0};
+    Vector<double> b{2.0, 3.0, 4.0, 5.0};
+    Vector<double> c{1.0, 1.0, 1.0, 1.0};
+    
+    std::cout << "Vector a: ";
+    a.print();
+    std::cout << "Vector b: ";
+    b.print();
+    std::cout << "Vector c: ";
+    c.print();
+    
+    // Test basic operations
+    auto expr1 = a + b;
+    auto result1 = evaluate(expr1);
+    std::cout << "a + b = ";
+    result1.print();
+    
+    // Test complex expression
+    auto expr2 = a + b * c - a / b;
+    auto result2 = evaluate(expr2);
+    std::cout << "a + b * c - a / b = ";
+    result2.print();
+    
+    // Test scalar operations
+    auto expr3 = a * 2.0 + b;
+    auto result3 = evaluate(expr3);
+    std::cout << "a * 2.0 + b = ";
+    result3.print();
+    
+    // Test unary operations
+    auto expr4 = -a + b;
+    auto result4 = evaluate(expr4);
+    std::cout << "-a + b = ";
+    result4.print();
+    
+    // Test assignment from expression
+    Vector<double> result5 = a * 3.0 - b + c * 2.0;
+    std::cout << "a * 3.0 - b + c * 2.0 = ";
+    result5.print();
+    
+    return 0;
+}`
+                        }
+                    },
+                    {
+                        title: 'Lock-Free Data Structure',
+                        description: 'Implement a lock-free queue using atomic operations and memory ordering. Ensure thread safety without using mutexes or locks.',
+                        constraints: [
+                            'Lock-free implementation using atomics',
+                            'Support multiple producers and consumers',
+                            'Memory ordering guarantees',
+                            'ABA problem prevention'
+                        ],
+                        examples: [
+                            {
+                                input: 'LockFreeQueue<int> queue; queue.enqueue(42); int value = queue.dequeue();',
+                                output: 'Thread-safe queue operations without locks',
+                                explanation: 'Lock-free concurrent data structure'
+                            }
+                        ],
+                        testCases: [
+                            { input: 'Concurrent queue operations', expected: 'Thread-safe behavior' }
+                        ],
+                        starterCode: {
+                            cpp: `#include <atomic>
+#include <memory>
+#include <iostream>
+#include <thread>
+#include <vector>
+#include <chrono>
+
+template<typename T>
+class LockFreeQueue {
+private:
+    struct Node {
+        std::atomic<T*> data;
+        std::atomic<Node*> next;
+        
+        Node() : data(nullptr), next(nullptr) {}
+    };
+    
+    std::atomic<Node*> head;
+    std::atomic<Node*> tail;
+    
+public:
+    LockFreeQueue() {
+        Node* dummy = new Node;
+        head.store(dummy);
+        tail.store(dummy);
+    }
+    
+    ~LockFreeQueue() {
+        // Clean up remaining nodes
+        while (Node* oldHead = head.load()) {
+            head.store(oldHead->next);
+            delete oldHead;
+        }
+    }
+    
+    void enqueue(T item) {
+        // Your lock-free enqueue implementation here
+        // Use compare_and_swap operations
+        // Handle memory ordering carefully
+    }
+    
+    bool dequeue(T& result) {
+        // Your lock-free dequeue implementation here
+        // Return false if queue is empty
+        // Use compare_and_swap operations
+        // Handle ABA problem
+        return false;
+    }
+    
+    bool empty() const {
+        // Check if queue is empty
+        // Be careful with memory ordering
+        return false;
+    }
+    
+    size_t size() const {
+        // Approximate size (may not be exact in concurrent environment)
+        size_t count = 0;
+        Node* current = head.load(std::memory_order_acquire);
+        Node* tail_node = tail.load(std::memory_order_acquire);
+        
+        while (current != tail_node) {
+            if (current->data.load(std::memory_order_acquire) != nullptr) {
+                count++;
+            }
+            current = current->next.load(std::memory_order_acquire);
+        }
+        
+        return count;
+    }
+};
+
+// Test function for concurrent access
+void producer(LockFreeQueue<int>& queue, int start, int count) {
+    for (int i = start; i < start + count; ++i) {
+        queue.enqueue(i);
+        std::this_thread::sleep_for(std::chrono::microseconds(1));
+    }
+}
+
+void consumer(LockFreeQueue<int>& queue, std::vector<int>& results, int count) {
+    int value;
+    int consumed = 0;
+    
+    while (consumed < count) {
+        if (queue.dequeue(value)) {
+            results.push_back(value);
+            consumed++;
+        } else {
+            std::this_thread::sleep_for(std::chrono::microseconds(1));
+        }
+    }
+}
+
+// Test your lock-free queue
+int main() {
+    LockFreeQueue<int> queue;
+    
+    // Single-threaded test
+    std::cout << "Single-threaded test:\\n";
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.enqueue(3);
+    
+    int value;
+    while (queue.dequeue(value)) {
+        std::cout << "Dequeued: " << value << "\\n";
+    }
+    
+    // Multi-threaded test
+    std::cout << "\\nMulti-threaded test:\\n";
+    const int num_producers = 2;
+    const int num_consumers = 2;
+    const int items_per_producer = 1000;
+    
+    std::vector<std::thread> producers;
+    std::vector<std::thread> consumers;
+    std::vector<std::vector<int>> consumer_results(num_consumers);
+    
+    // Start consumers
+    for (int i = 0; i < num_consumers; ++i) {
+        consumers.emplace_back(consumer, std::ref(queue), 
+                              std::ref(consumer_results[i]), 
+                              items_per_producer);
+    }
+    
+    // Start producers
+    for (int i = 0; i < num_producers; ++i) {
+        producers.emplace_back(producer, std::ref(queue), 
+                              i * items_per_producer, 
+                              items_per_producer);
+    }
+    
+    // Wait for all threads to complete
+    for (auto& p : producers) {
+        p.join();
+    }
+    
+    for (auto& c : consumers) {
+        c.join();
+    }
+    
+    // Verify results
+    int total_consumed = 0;
+    for (const auto& results : consumer_results) {
+        total_consumed += results.size();
+    }
+    
+    std::cout << "Total items produced: " << (num_producers * items_per_producer) << "\\n";
+    std::cout << "Total items consumed: " << total_consumed << "\\n";
+    std::cout << "Queue size after test: " << queue.size() << "\\n";
+    
+    if (total_consumed == num_producers * items_per_producer) {
+        std::cout << "✓ All items were successfully processed!\\n";
+    } else {
+        std::cout << "✗ Some items were lost or duplicated!\\n";
+    }
+    
+    return 0;
+}`
+                        }
+                    }
+                ]
+            }
+        };
+
+        // Global variables
+        let currentCompetition = null;
+        let currentProblemIndex = 0;
+        let editor;
+        let userProgress = {}; // Track user progress per competition
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+            initializeCodeEditor();
+            loadProgress();
+        });
+
+        // Event listeners
+        function initializeEventListeners() {
+            // Start challenge buttons
+            document.querySelectorAll('.start-challenge').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = this.closest('.competition-card');
+                    const competitionId = card.dataset.id;
+                    startChallenge(competitionId);
+                });
+            });
+
+            // Navigation buttons
+            document.getElementById('back-button').addEventListener('click', function(e) {
+                e.preventDefault();
+                showCompetitionsPage();
+            });
+
+            document.getElementById('home-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showCompetitionsPage();
+            });
+
+            document.getElementById('prev-button').addEventListener('click', function() {
+                if (currentProblemIndex > 0) {
+                    currentProblemIndex--;
+                    loadProblem(currentProblemIndex);
+                    updateNavigation();
+                }
+            });
+
+            document.getElementById('next-button').addEventListener('click', function() {
+                if (currentCompetition && currentProblemIndex < currentCompetition.problems.length - 1) {
+                    currentProblemIndex++;
+                    loadProblem(currentProblemIndex);
+                    updateNavigation();
+                }
+            });
+
+            // Editor controls
+            document.getElementById('run-button').addEventListener('click', runCode);
+            document.getElementById('submit-button').addEventListener('click', submitCode);
+            document.getElementById('reset-button').addEventListener('click', resetCode);
+
+            // Language selector change
+            document.getElementById('language-select').addEventListener('change', function() {
+                updateStarterCode();
+            });
+        }
+
+        // Initialize code editor
+        function initializeCodeEditor() {
+            editor = ace.edit("code-editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.session.setMode("ace/mode/javascript");
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                fontSize: "14px",
+                wrap: true,
+                showPrintMargin: false
+            });
+        }
+
+        // Load user progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('codathor_progress');
+            if (saved) {
+                try {
+                    userProgress = JSON.parse(saved);
+                } catch (e) {
+                    userProgress = {};
+                }
+            }
+        }
+
+        // Save user progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('codathor_progress', JSON.stringify(userProgress));
+        }
+
+        // Start a challenge
+        function startChallenge(competitionId) {
+            currentCompetition = competitions[competitionId];
+            if (!currentCompetition) return;
+
+            // Load saved progress or start from beginning
+            if (userProgress[competitionId]) {
+                currentProblemIndex = userProgress[competitionId].currentProblem || 0;
+            } else {
+                currentProblemIndex = 0;
+                userProgress[competitionId] = {
+                    currentProblem: 0,
+                    completedProblems: [],
+                    scores: {}
+                };
+            }
+
+            showChallengePage();
+            loadProblem(currentProblemIndex);
+            updateNavigation();
+        }
+
+        // Show challenge page
+        function showChallengePage() {
+            document.getElementById('competitions-page').classList.add('hidden');
+            document.getElementById('challenge-page').classList.remove('hidden');
+            
+            // Set challenge title and language
+            document.getElementById('challenge-title').textContent = currentCompetition.title;
+            document.getElementById('challenge-language').textContent = currentCompetition.language;
+            
+            // Update language selector
+            const languageMap = {
+                'JavaScript': 'javascript',
+                'Python': 'python', 
+                'Java': 'java',
+                'C++': 'c_cpp'
+            };
+            document.getElementById('language-select').value = languageMap[currentCompetition.language] || 'javascript';
+            
+            // Hide results section initially
+            document.getElementById('results-section').classList.add('hidden');
+        }
+
+        // Show competitions page
+        function showCompetitionsPage() {
+            document.getElementById('competitions-page').classList.remove('hidden');
+            document.getElementById('challenge-page').classList.add('hidden');
+        }
+
+        // Load a specific problem
+        function loadProblem(index) {
+            if (!currentCompetition || !currentCompetition.problems[index]) return;
+            
+            const problem = currentCompetition.problems[index];
+            
+            // Update problem description
+            document.getElementById('problem-description').innerHTML = problem.description;
+            
+            // Update constraints
+            const constraintsList = document.getElementById('constraints-list');
+            constraintsList.innerHTML = '';
+            problem.constraints.forEach(constraint => {
+                const li = document.createElement('li');
+                li.textContent = constraint;
+                constraintsList.appendChild(li);
+            });
+            
+            // Clear and add examples
+            const examplesContainer = document.getElementById('problem-examples');
+            examplesContainer.innerHTML = '<div class="examples-header"><i class="fas fa-lightbulb"></i> Examples</div>';
+            
+            problem.examples.forEach((example, i) => {
+                const exampleEl = document.createElement('div');
+                exampleEl.className = 'example';
+                
+                let exampleHTML = `
+                    <div class="example-title">Example ${i + 1}:</div>
+                    <div class="example-content">
+                        <div class="example-item">
+                            <span class="example-label">Input:</span>
+                            <div class="example-code">${example.input}</div>
+                        </div>
+                        <div class="example-item">
+                            <span class="example-label">Output:</span>
+                            <div class="example-code">${example.output}</div>
+                        </div>
+                `;
+                
+                if (example.explanation) {
+                    exampleHTML += `
+                        <div class="example-item">
+                            <span class="example-label">Note:</span>
+                            <div class="example-explanation">${example.explanation}</div>
+                        </div>
+                    `;
+                }
+                
+                exampleHTML += '</div>';
+                exampleEl.innerHTML = exampleHTML;
+                examplesContainer.appendChild(exampleEl);
+            });
+            
+            // Update progress
+            updateProgress();
+            
+            // Set starter code for the current language
+            updateStarterCode();
+            
+            // Clear previous output and results
+            document.getElementById('code-output').textContent = 'Click "Run Code" to see output...';
+            document.getElementById('execution-time').textContent = 'Time: 0ms';
+            document.getElementById('memory-usage').textContent = 'Memory: 0MB';
+            document.getElementById('results-section').classList.add('hidden');
+        }
+
+        // Update navigation buttons and progress
+        function updateNavigation() {
+            if (!currentCompetition) return;
+            
+            const prevButton = document.getElementById('prev-button');
+            const nextButton = document.getElementById('next-button');
+            const problemCounter = document.getElementById('problem-counter');
+            
+            prevButton.disabled = currentProblemIndex === 0;
+            nextButton.disabled = currentProblemIndex === currentCompetition.problems.length - 1;
+            
+            problemCounter.textContent = `${currentProblemIndex + 1} / ${currentCompetition.problems.length}`;
+            
+            // Update button text for last problem
+            if (currentProblemIndex === currentCompetition.problems.length - 1) {
+                nextButton.innerHTML = 'Complete <i class="fas fa-check"></i>';
+            } else {
+                nextButton.innerHTML = 'Next <i class="fas fa-chevron-right"></i>';
+            }
+        }
+
+        // Update progress bar and text
+        function updateProgress() {
+            if (!currentCompetition) return;
+            
+            const progressText = document.getElementById('progress-text');
+            const progressFill = document.getElementById('progress-fill');
+            
+            const currentProblem = currentProblemIndex + 1;
+            const totalProblems = currentCompetition.problems.length;
+            const progressPercentage = (currentProblem / totalProblems) * 100;
+            
+            progressText.textContent = `Problem ${currentProblem} of ${totalProblems}`;
+            progressFill.style.width = `${progressPercentage}%`;
+        }
+
+        // Update starter code based on selected language
+        function updateStarterCode() {
+            if (!currentCompetition || !currentCompetition.problems[currentProblemIndex]) return;
+            
+            const language = document.getElementById('language-select').value;
+            const problem = currentCompetition.problems[currentProblemIndex];
+            const starterCode = problem.starterCode[language] || problem.starterCode.javascript || '// No starter code available for this language';
+            
+            editor.session.setMode(`ace/mode/${language}`);
+            editor.setValue(starterCode, 1);
+        }
+
+        // Reset code to starter code
+        function resetCode() {
+            if (confirm('Are you sure you want to reset your code? This will discard all changes.')) {
+                updateStarterCode();
+            }
+        }
+
+        // Run code
+        function runCode() {
+            const code = editor.getValue().trim();
+            const language = document.getElementById('language-select').value;
+            
+            if (!code) {
+                document.getElementById('code-output').textContent = 'Error: No code to run. Please write some code first.';
+                return;
+            }
+            
+            // Show loading state
+            const runButton = document.getElementById('run-button');
+            const originalText = runButton.innerHTML;
+            runButton.innerHTML = '<span class="spinner"></span> Running...';
+            runButton.disabled = true;
+            
+            const output = document.getElementById('code-output');
+            output.textContent = 'Executing code...';
+            
+            // Show execution time
+            const startTime = performance.now();
+            
+            setTimeout(() => {
+                const endTime = performance.now();
+                const executionTime = Math.round(endTime - startTime);
+                document.getElementById('execution-time').textContent = `Time: ${executionTime}ms`;
+                document.getElementById('memory-usage').textContent = `Memory: ${(Math.random() * 10 + 5).toFixed(1)}MB`;
+                
+                // Simulate output based on language and problem
+                const simulatedOutput = generateSimulatedOutput(language, code);
+                output.textContent = simulatedOutput;
+                
+                // Reset button
+                runButton.innerHTML = originalText;
+                runButton.disabled = false;
+            }, 800 + Math.random() * 500);
+        }
+
+        // Generate simulated output based on language and code
+        function generateSimulatedOutput(language, code) {
+            const outputs = {
+                javascript: [
+                    '[3, 4, 9, 8, 0]\n\n✓ Code executed successfully\nMemory usage: 14.2 MB',
+                    'Promise resolved with data\n\n✓ Async operations completed',
+                    'Navigation menu created successfully\n\n✓ DOM elements added'
+                ],
+                python: [
+                    "['madam', 'racecar']\n\n✓ Code executed successfully\nMemory usage: 12.5 MB",
+                    'Cache hit ratio: 85%\n\n✓ Decorator applied successfully',
+                    'Database connection established\n\n✓ Transaction completed'
+                ],
+                java: [
+                    'Counter value: 5000\n\n✓ Code compiled and executed successfully',
+                    'Observer notifications sent: 3\n\n✓ Pattern implemented correctly',
+                    'Queue operations completed\n\n✓ Thread safety maintained'
+                ],
+                c_cpp: [
+                    'Memory allocated: 1024 bytes\n\n✓ No memory leaks detected',
+                    'Smart pointer operations completed\n\n✓ RAII implemented correctly',
+                    'Expression evaluated successfully\n\n✓ Template compilation successful'
+                ]
+            };
+            
+            const languageOutputs = outputs[language] || outputs.javascript;
+            return languageOutputs[Math.floor(Math.random() * languageOutputs.length)];
+        }
+
+        // Submit code
+        function submitCode() {
+            if (!currentCompetition || !currentCompetition.problems[currentProblemIndex]) return;
+            
+            const code = editor.getValue().trim();
+            if (!code) {
+                alert('Please write some code before submitting.');
+                return;
+            }
+            
+            const problem = currentCompetition.problems[currentProblemIndex];
+            
+            // Show loading state
+            const submitButton = document.getElementById('submit-button');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<span class="spinner"></span> Evaluating...';
+            submitButton.disabled = true;
+            
+            setTimeout(() => {
+                const testResults = evaluateCode(code, problem);
+                displayResults(testResults);
+                
+                // Save progress
+                const competitionId = Object.keys(competitions).find(key => competitions[key] === currentCompetition);
+                if (!userProgress[competitionId]) {
+                    userProgress[competitionId] = { currentProblem: 0, completedProblems: [], scores: {} };
+                }
+                
+                userProgress[competitionId].scores[currentProblemIndex] = testResults.score;
+                if (testResults.score >= 70) { // Consider 70+ as completed
+                    if (!userProgress[competitionId].completedProblems.includes(currentProblemIndex)) {
+                        userProgress[competitionId].completedProblems.push(currentProblemIndex);
+                    }
+                }
+                
+                saveProgress();
+                
+                // Reset button
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+            }, 1500 + Math.random() * 1000);
+        }
+
+        // Evaluate code and generate test results
+        function evaluateCode(code, problem) {
+            const testCases = problem.testCases;
+            const results = [];
+            let passedCount = 0;
+            
+            testCases.forEach((testCase, index) => {
+                // Simulate test case execution with some randomness for realism
+                const passed = Math.random() > 0.25; // 75% pass rate for demo
+                if (passed) passedCount++;
+                
+                results.push({
+                    id: index + 1,
+                    input: testCase.input,
+                    expected: testCase.expected,
+                    actual: passed ? testCase.expected : generateIncorrectOutput(testCase.expected),
+                    passed: passed,
+                    executionTime: Math.floor(Math.random() * 50) + 10
+                });
+            });
+            
+            const score = Math.floor((passedCount / testCases.length) * 100);
+            
+            return {
+                score: score,
+                passedCount: passedCount,
+                totalCount: testCases.length,
+                testResults: results
+            };
+        }
+
+        // Display test results
+        function displayResults(results) {
+            const scoreDisplay = document.getElementById('score-display');
+            const testCasesContainer = document.getElementById('test-cases');
+            
+            // Update score
+            let scoreClass = 'score-display';
+            if (results.score >= 90) scoreClass += ' excellent';
+            else if (results.score >= 70) scoreClass += ' good';
+            else if (results.score >= 50) scoreClass += ' fair';
+            else scoreClass += ' poor';
+            
+            scoreDisplay.textContent = `Score: ${results.score}/100 (${results.passedCount}/${results.totalCount} tests passed)`;
+            scoreDisplay.className = scoreClass;
+            
+            // Clear and populate test cases
+            testCasesContainer.innerHTML = '';
+            
+            results.testResults.forEach(testResult => {
+                const testCaseEl = document.createElement('div');
+                testCaseEl.className = `test-case ${testResult.passed ? 'passed' : 'failed'}`;
+                
+                testCaseEl.innerHTML = `
+                    <div class="test-case-header">
+                        <div class="test-case-title">Test Case ${testResult.id}</div>
+                        <div class="test-status ${testResult.passed ? 'passed' : 'failed'}">
+                            <i class="fas fa-${testResult.passed ? 'check' : 'times'}"></i>
+                            ${testResult.passed ? 'PASSED' : 'FAILED'}
+                        </div>
+                    </div>
+                    <div class="test-details">
+                        <div class="test-detail-item">
+                            <span class="test-label">Input:</span>
+                            <div class="test-value">${testResult.input}</div>
+                        </div>
+                        <div class="test-detail-item">
+                            <span class="test-label">Expected:</span>
+                            <div class="test-value">${testResult.expected}</div>
+                        </div>
+                        ${!testResult.passed ? `
+                        <div class="test-detail-item">
+                            <span class="test-label">Your Output:</span>
+                            <div class="test-value">${testResult.actual}</div>
+                        </div>
+                        ` : ''}
+                        <div class="test-detail-item">
+                            <span class="test-label">Time:</span>
+                            <div class="test-value">${testResult.executionTime}ms</div>
+                        </div>
+                    </div>
+                `;
+                
+                testCasesContainer.appendChild(testCaseEl);
+            });
+            
+            // Show results section
+            document.getElementById('results-section').classList.remove('hidden');
+            
+            // Scroll to results
+            document.getElementById('results-section').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Generate incorrect output for failed test cases
+        function generateIncorrectOutput(expected) {
+            if (expected.includes('[')) {
+                try {
+                    const arr = JSON.parse(expected);
+                    if (arr.length > 1) {
+                        // Swap two elements or change a value
+                        const newArr = [...arr];
+                        if (Math.random() > 0.5 && newArr.length > 1) {
+                            [newArr[0], newArr[1]] = [newArr[1], newArr[0]];
+                        } else if (typeof newArr[0] === 'number') {
+                            newArr[0] = newArr[0] + 1;
+                        }
+                        return JSON.stringify(newArr);
+                    }
+                } catch (e) {
+                    // If parsing fails, return a generic incorrect output
+                }
+            } else if (!isNaN(expected)) {
+                return (parseInt(expected) + Math.floor(Math.random() * 10) + 1).toString();
+            }
+            
+            return 'incorrect output';
+        }
+    </script>
+</body>
+</html>

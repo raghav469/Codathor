@@ -1,0 +1,149 @@
+/* Base Styles */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.app-header h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+}
+
+.app-header p {
+  color: #7f8c8d;
+  font-size: 1.2rem;
+}
+
+/* Filter Controls */
+.filter-controls {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.filter-select {
+  padding: 8px 15px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: white;
+  font-size: 1rem;
+}
+
+/* Competition List */
+.competition-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.competition-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.competition-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Category-specific tag colors */
+.tag.coding { background-color: #e3f2fd; color: #1565c0; }
+.tag.ai-ml { background-color: #f3e5f5; color: #7b1fa2; }
+.tag.blockchain { background-color: #e8f5e9; color: #2e7d32; }
+.tag.web-dev { background-color: #fff3e0; color: #e65100; }
+.tag.mobile-dev { background-color: #fbe9e7; color: #d84315; }
+.tag.game-dev { background-color: #f1f8e9; color: #558b2f; }
+.tag.data-science { background-color: #e0f7fa; color: #00838f; }
+.tag.cybersecurity { background-color: #ede7f6; color: #4527a0; }
+
+.description {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.card-details {
+  margin-bottom: 15px;
+}
+
+.card-details div {
+  margin-bottom: 8px;
+  display: flex;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 8px;
+  color: #555;
+  min-width: 80px;
+}
+
+.value {
+  color: #333;
+}
+
+/* Difficulty indicators */
+.difficulty-beginner { color: #2ecc71; }
+.difficulty-intermediate { color: #f39c12; }
+.difficulty-advanced { color: #e74c3c; }
+
+.prize {
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.register-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Loading and Error States */
+.loading, .error, .empty {
+  text-align: center;
+  padding: 40px;
+  grid-column: 1 / -1;
+  color: #7f8c8d;
+}
+
+.error {
+  color: #e74c3c;
+}

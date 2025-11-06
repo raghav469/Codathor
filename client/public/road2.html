@@ -1,0 +1,4396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Development Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 15px 20px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin: 0 5px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #1e293b;
+            background: #f1f5f9;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .page {
+            display: none;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Home Page */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #475569, #334155);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #64748b, #475569);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin: 0 auto 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Content Pages */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: #475569;
+            color: white;
+            border-color: #475569;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced Roadmap Styles */
+        .roadmap-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .roadmap-step {
+            background: #f8fafc;
+            margin: 20px 0;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #64748b;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-step:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .roadmap-step.completed {
+            border-left-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .roadmap-step.current {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background: #64748b;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .step-number.completed {
+            background: #10b981;
+        }
+
+        .step-number.current {
+            background: #f59e0b;
+        }
+
+        .step-title {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-duration {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        .step-content {
+            padding-left: 45px;
+        }
+
+        .step-topics {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-topics li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+
+        .step-topics li:hover {
+            color: #1e293b;
+            transform: translateX(5px);
+        }
+
+        .step-topics li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .step-topics li.completed::before {
+            content: '✓';
+            color: #10b981;
+            background: #ecfdf5;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #64748b, #475569);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .interactive-element {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            border-color: #64748b;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: #f8fafc;
+            border-color: #64748b;
+        }
+
+        .quiz-option.correct {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #047857;
+        }
+
+        .quiz-option.incorrect {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+
+        .question-card {
+            background: #f8fafc;
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #64748b;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .question-card h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .answer-btn {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .answer-btn:hover {
+            background: #475569;
+            transform: translateY(-1px);
+        }
+
+        .answer {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #475569;
+            white-space: pre-wrap;
+        }
+
+        .code-example {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        .difficulty-easy {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .difficulty-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .difficulty-hard {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .flowchart {
+            background: #f8fafc;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .flowchart-node {
+            background: white;
+            padding: 15px 25px;
+            margin: 15px auto;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            display: inline-block;
+            font-weight: 500;
+            color: #1e293b;
+            max-width: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .flowchart-node:hover {
+            background: #f8fafc;
+            transform: scale(1.02);
+        }
+
+        .flowchart-arrow {
+            font-size: 1.5rem;
+            color: #64748b;
+            margin: 10px 0;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        .resource-card h3 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .resource-card p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .skill-meter {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .skill-level {
+            height: 100%;
+            background: linear-gradient(90deg, #64748b, #475569);
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer h3 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .footer p {
+            color: #64748b;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border-top: 1px solid #e2e8f0;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-tabs {
+                flex-direction: column;
+            }
+
+            .step-content {
+                padding-left: 0;
+            }
+
+            .step-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .step-duration {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showPage('home')">DevHub Pro</a>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="showPage('home')">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showPage('roadmaps')">Learning Roadmaps</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showPage('interviews')">Interview Prep</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showPage('resources')">Resources</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showPage('tools')">Dev Tools</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="showPage('progress')">Progress</a>
+                </li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="hero">
+                <h1>Professional Development Hub</h1>
+                <p>Master programming languages with structured learning paths, comprehensive interview preparation, and professional development resources.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary" onclick="showPage('roadmaps')">Start Learning</a>
+                    <a href="#" class="btn btn-secondary" onclick="showPage('interviews')">Practice Interviews</a>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Structured Learning Paths</h3>
+                    <p>Follow comprehensive roadmaps for JavaScript, Python, Java, React, and Node.js with clear milestones and timelines.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💼</div>
+                    <h3>Interview Preparation</h3>
+                    <p>Practice technical, behavioral, and system design questions with detailed solutions and expert guidance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Curated Resources</h3>
+                    <p>Access premium learning platforms, essential books, and professional development tools handpicked by industry experts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Progress Tracking</h3>
+                    <p>Monitor your learning journey with detailed progress metrics and personalized study schedules.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Development Tools</h3>
+                    <p>Discover and master essential development tools, IDEs, and productivity software used by professionals.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Skill Assessment</h3>
+                    <p>Evaluate your current skills and identify areas for improvement with comprehensive assessments.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Roadmaps Page -->
+        <div id="roadmaps" class="page">
+            <div class="page-header">
+                <h1>Learning Roadmaps</h1>
+                <p>Structured learning paths designed by industry professionals to take you from beginner to expert level.</p>
+            </div>
+
+            <div class="content-section">
+                <div class="section-tabs">
+                    <button class="tab-btn active" onclick="showTab('roadmaps', 'javascript')">JavaScript</button>
+                    <button class="tab-btn" onclick="showTab('roadmaps', 'python')">Python</button>
+                    <button class="tab-btn" onclick="showTab('roadmaps', 'java')">Java</button>
+                    <button class="tab-btn" onclick="showTab('roadmaps', 'react')">React</button>
+                    <button class="tab-btn" onclick="showTab('roadmaps', 'nodejs')">Node.js</button>
+                    <button class="tab-btn" onclick="showTab('roadmaps', 'devops')">DevOps</button>
+                </div>
+
+                <div id="roadmaps-javascript" class="tab-content active">
+                    <div class="roadmap-container">
+                        <div class="roadmap-step completed" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number completed">1</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">JavaScript Fundamentals <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Variables, data types, and operators</li>
+                                    <li class="completed">Functions, scope, and closures</li>
+                                    <li class="completed">Control structures and loops</li>
+                                    <li class="completed">Arrays and objects manipulation</li>
+                                    <li class="completed">Error handling with try/catch</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <div class="interactive-element">
+                                    <div class="quiz-container">
+                                        <div class="quiz-question">Quick Check: What is the output of console.log(typeof null)?</div>
+                                        <div class="quiz-options">
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">"null"</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">"undefined"</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, true)">"object"</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">"boolean"</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step current" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number current">2</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">DOM Manipulation & Events <span class="step-duration">2-3 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Document Object Model structure</li>
+                                    <li class="completed">Element selection methods</li>
+                                    <li>Event handling and delegation</li>
+                                    <li>Dynamic content modification</li>
+                                    <li>Form validation techniques</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%"></div>
+                                </div>
+                                <div class="code-example">
+// Event Delegation Example
+document.getElementById('parent').addEventListener('click', function(e) {
+    if (e.target.matches('.child-button')) {
+        console.log('Button clicked:', e.target.textContent);
+    }
+});
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">3</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Asynchronous JavaScript <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Promises and Promise chaining</li>
+                                    <li>Async/await syntax</li>
+                                    <li>Fetch API for HTTP requests</li>
+                                    <li>Error handling in async code</li>
+                                    <li>Callback patterns and alternatives</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">4</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">ES6+ Modern Features <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Arrow functions and lexical this</li>
+                                    <li>Destructuring and spread operator</li>
+                                    <li>Template literals and tagged templates</li>
+                                    <li>Classes and inheritance</li>
+                                    <li>Modules (import/export)</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">5</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Testing & Build Tools <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Unit testing with Jest</li>
+                                    <li>Test-driven development (TDD)</li>
+                                    <li>Webpack configuration</li>
+                                    <li>Babel transpilation</li>
+                                    <li>Package managers (npm/yarn)</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="roadmaps-python" class="tab-content">
+                    <div class="roadmap-container">
+                        <div class="roadmap-step completed" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number completed">1</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Python Fundamentals <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Python syntax and variables</li>
+                                    <li class="completed">Data types and structures</li>
+                                    <li class="completed">Control flow statements</li>
+                                    <li class="completed">Functions and modules</li>
+                                    <li class="completed">File I/O operations</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <div class="interactive-element">
+                                    <div class="quiz-container">
+                                        <div class="quiz-question">What is the difference between list and tuple in Python?</div>
+                                        <div class="quiz-options">
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">Lists are faster than tuples</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, true)">Lists are mutable, tuples are immutable</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">Tuples can only store numbers</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">There is no difference</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step current" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number current">2</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Object-Oriented Programming <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Classes and objects</li>
+                                    <li class="completed">Inheritance concepts</li>
+                                    <li>Polymorphism and encapsulation</li>
+                                    <li>Special methods (__init__, __str__)</li>
+                                    <li>Property decorators</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%"></div>
+                                </div>
+                                <div class="code-example">
+class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} says Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} says Meow!"
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">3</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Data Structures & Algorithms <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Lists, dictionaries, sets advanced usage</li>
+                                    <li>Stack and queue implementations</li>
+                                    <li>Sorting and searching algorithms</li>
+                                    <li>Time and space complexity</li>
+                                    <li>Recursive problem solving</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">4</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Libraries & Frameworks <span class="step-duration">5-6 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>NumPy for numerical computing</li>
+                                    <li>Pandas for data manipulation</li>
+                                    <li>Django/Flask web frameworks</li>
+                                    <li>Database integration (SQLAlchemy)</li>
+                                    <li>API development with FastAPI</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">5</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Advanced Python <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Decorators and context managers</li>
+                                    <li>Generators and iterators</li>
+                                    <li>Async programming with asyncio</li>
+                                    <li>Testing with pytest</li>
+                                    <li>Package distribution and deployment</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="roadmaps-java" class="tab-content">
+                    <div class="roadmap-container">
+                        <div class="roadmap-step completed" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number completed">1</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Java Foundations <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">JVM architecture and compilation</li>
+                                    <li class="completed">Object-oriented programming principles</li>
+                                    <li class="completed">Collections framework</li>
+                                    <li class="completed">Exception handling</li>
+                                    <li class="completed">Package management</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <div class="interactive-element">
+                                    <div class="quiz-container">
+                                        <div class="quiz-question">Which collection maintains insertion order in Java?</div>
+                                        <div class="quiz-options">
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">HashSet</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, true)">LinkedHashSet</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">TreeSet</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">HashMap</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step current" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number current">2</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Advanced Java Concepts <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Multithreading and concurrency</li>
+                                    <li>Lambda expressions and streams</li>
+                                    <li>Generic programming</li>
+                                    <li>Reflection API</li>
+                                    <li>Memory management</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 30%"></div>
+                                </div>
+                                <div class="code-example">
+// Lambda and Stream Example
+List&lt;String&gt; names = Arrays.asList("John", "Jane", "Jack");
+List&lt;String&gt; filtered = names.stream()
+    .filter(name -&gt; name.startsWith("J"))
+    .map(String::toUpperCase)
+    .collect(Collectors.toList());
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">3</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Spring Framework <span class="step-duration">5-6 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Dependency injection (DI)</li>
+                                    <li>Aspect-oriented programming (AOP)</li>
+                                    <li>Spring Boot fundamentals</li>
+                                    <li>Data access with Spring Data</li>
+                                    <li>RESTful web services</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">4</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Database & Persistence <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>JDBC fundamentals</li>
+                                    <li>Hibernate ORM</li>
+                                    <li>JPA specifications</li>
+                                    <li>Transaction management</li>
+                                    <li>Database optimization</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">5</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Enterprise Development <span class="step-duration">6-8 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Microservices architecture</li>
+                                    <li>Security implementation</li>
+                                    <li>Testing strategies (JUnit, Mockito)</li>
+                                    <li>Build tools (Maven, Gradle)</li>
+                                    <li>Deployment and DevOps</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="roadmaps-react" class="tab-content">
+                    <div class="roadmap-container">
+                        <div class="roadmap-step completed" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number completed">1</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">React Fundamentals <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">JSX syntax and components</li>
+                                    <li class="completed">Props and component composition</li>
+                                    <li class="completed">State management with useState</li>
+                                    <li class="completed">Event handling</li>
+                                    <li class="completed">Conditional rendering</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <div class="interactive-element">
+                                    <div class="quiz-container">
+                                        <div class="quiz-question">What is the virtual DOM in React?</div>
+                                        <div class="quiz-options">
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">A real DOM element</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, true)">A JavaScript representation of the DOM</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">A CSS framework</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">A database</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step current" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number current">2</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Hooks & State Management <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">useEffect for side effects</li>
+                                    <li class="completed">Custom hooks development</li>
+                                    <li>Context API for global state</li>
+                                    <li>useReducer for complex state</li>
+                                    <li>Performance optimization hooks</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 50%"></div>
+                                </div>
+                                <div class="code-example">
+// Custom Hook Example
+function useCounter(initialValue = 0) {
+    const [count, setCount] = useState(initialValue);
+    
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
+    const reset = () => setCount(initialValue);
+    
+    return { count, increment, decrement, reset };
+}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">3</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Routing & Navigation <span class="step-duration">2-3 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>React Router setup</li>
+                                    <li>Route parameters and queries</li>
+                                    <li>Nested routing</li>
+                                    <li>Protected routes</li>
+                                    <li>Programmatic navigation</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">4</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Advanced Patterns <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Higher-order components (HOCs)</li>
+                                    <li>Render props pattern</li>
+                                    <li>Error boundaries</li>
+                                    <li>Code splitting and lazy loading</li>
+                                    <li>Performance optimization</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">5</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Testing & Production <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Unit testing with React Testing Library</li>
+                                    <li>Integration testing</li>
+                                    <li>E2E testing with Cypress</li>
+                                    <li>Build optimization</li>
+                                    <li>Deployment strategies</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="roadmaps-nodejs" class="tab-content">
+                    <div class="roadmap-container">
+                        <div class="roadmap-step completed" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number completed">1</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Node.js Core Concepts <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Event loop and non-blocking I/O</li>
+                                    <li class="completed">Module system (CommonJS/ES6)</li>
+                                    <li class="completed">File system operations</li>
+                                    <li class="completed">HTTP server creation</li>
+                                    <li class="completed">Stream and buffer handling</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <div class="interactive-element">
+                                    <div class="quiz-container">
+                                        <div class="quiz-question">What makes Node.js non-blocking?</div>
+                                        <div class="quiz-options">
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">Multi-threading</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, true)">Event loop and callbacks</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">Synchronous execution</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">Memory management</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step current" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number current">2</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Express.js Framework <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Routing and middleware</li>
+                                    <li class="completed">Request/response handling</li>
+                                    <li>Template engines (EJS, Pug)</li>
+                                    <li>Static file serving</li>
+                                    <li>Error handling middleware</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%"></div>
+                                </div>
+                                <div class="code-example">
+// Express Middleware Example
+const express = require('express');
+const app = express();
+
+// Custom middleware
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path} - ${new Date().toISOString()}`);
+    next();
+});
+
+app.get('/api/users', (req, res) => {
+    res.json({ users: [] });
+});
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">3</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Database Integration <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>MongoDB with Mongoose</li>
+                                    <li>SQL databases with Sequelize</li>
+                                    <li>Database schema design</li>
+                                    <li>Query optimization</li>
+                                    <li>Connection pooling</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">4</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Authentication & Security <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>JWT authentication</li>
+                                    <li>Session management</li>
+                                    <li>Password hashing (bcrypt)</li>
+                                    <li>OAuth integration</li>
+                                    <li>Security best practices</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">5</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Advanced Node.js <span class="step-duration">5-6 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>WebSocket implementation</li>
+                                    <li>GraphQL with Apollo</li>
+                                    <li>Microservices architecture</li>
+                                    <li>Performance optimization</li>
+                                    <li>Testing and deployment</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="roadmaps-devops" class="tab-content">
+                    <div class="roadmap-container">
+                        <div class="roadmap-step completed" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number completed">1</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Linux & Command Line <span class="step-duration">3-4 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Linux fundamentals and navigation</li>
+                                    <li class="completed">File permissions and ownership</li>
+                                    <li class="completed">Process management</li>
+                                    <li class="completed">Shell scripting basics</li>
+                                    <li class="completed">System monitoring tools</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <div class="interactive-element">
+                                    <div class="quiz-container">
+                                        <div class="quiz-question">Which command shows running processes in Linux?</div>
+                                        <div class="quiz-options">
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">ls -la</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, true)">ps aux</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">df -h</div>
+                                            <div class="quiz-option" onclick="selectQuizOption(this, false)">cat /proc</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step current" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number current">2</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Version Control & CI/CD <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li class="completed">Git advanced workflows</li>
+                                    <li class="completed">GitHub Actions/GitLab CI</li>
+                                    <li>Jenkins pipeline setup</li>
+                                    <li>Automated testing integration</li>
+                                    <li>Deployment strategies</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%"></div>
+                                </div>
+                                <div class="code-example">
+# GitHub Actions Example
+name: CI/CD Pipeline
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: npm test
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">3</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Containerization <span class="step-duration">4-5 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Docker fundamentals</li>
+                                    <li>Dockerfile best practices</li>
+                                    <li>Docker Compose for multi-container apps</li>
+                                    <li>Container registries</li>
+                                    <li>Security in containers</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">4</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Cloud Platforms <span class="step-duration">5-6 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>AWS/Azure/GCP fundamentals</li>
+                                    <li>Virtual machines and networking</li>
+                                    <li>Storage solutions</li>
+                                    <li>Load balancers and auto-scaling</li>
+                                    <li>Identity and access management</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-step" onclick="toggleStepDetails(this)">
+                            <div class="step-header">
+                                <div class="step-number">5</div>
+                                <div style="flex-grow: 1;">
+                                    <div class="step-title">Infrastructure as Code <span class="step-duration">5-6 weeks</span></div>
+                                </div>
+                            </div>
+                            <div class="step-content">
+                                <ul class="step-topics">
+                                    <li>Terraform fundamentals</li>
+                                    <li>Ansible configuration management</li>
+                                    <li>Kubernetes orchestration</li>
+                                    <li>Monitoring and logging</li>
+                                    <li>Disaster recovery planning</li>
+                                </ul>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interview Preparation Page -->
+        <div id="interviews" class="page">
+            <div class="page-header">
+                <h1>Interview Preparation</h1>
+                <p>Comprehensive interview preparation with technical questions, coding challenges, and system design problems.</p>
+            </div>
+
+            <div class="content-section">
+                <div class="section-tabs">
+                    <button class="tab-btn active" onclick="showTab('interviews', 'javascript-questions')">JavaScript</button>
+                    <button class="tab-btn" onclick="showTab('interviews', 'python-questions')">Python</button>
+                    <button class="tab-btn" onclick="showTab('interviews', 'java-questions')">Java</button>
+                    <button class="tab-btn" onclick="showTab('interviews', 'react-questions')">React</button>
+                    <button class="tab-btn" onclick="showTab('interviews', 'nodejs-questions')">Node.js</button>
+                    <button class="tab-btn" onclick="showTab('interviews', 'system-design')">System Design</button>
+                    <button class="tab-btn" onclick="showTab('interviews', 'behavioral')">Behavioral</button>
+                </div>
+
+                <div id="interviews-javascript-questions" class="tab-content active">
+                    <div class="question-card">
+                        <h3>What is the difference between == and === in JavaScript? <span class="difficulty-badge difficulty-easy">Easy</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">== (loose equality) performs type coercion before comparison, while === (strict equality) compares both value and type without conversion.
+
+Examples:
+5 == "5"          // true (string converted to number)
+5 === "5"         // false (different types)
+null == undefined // true (special case)
+null === undefined // false (different types)
+0 == false        // true (false converted to 0)
+0 === false       // false (different types)
+
+Best Practice: Always use === for predictable, bug-free comparisons.</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Explain closures in JavaScript with a practical example <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">A closure is a function that has access to variables from its outer (enclosing) scope even after the outer function returns.
+
+function createCounter() {
+    let count = 0;
+    
+    return function() {
+        count++;
+        return count;
+    };
+}
+
+const counter1 = createCounter();
+const counter2 = createCounter();
+
+console.log(counter1()); // 1
+console.log(counter1()); // 2
+console.log(counter2()); // 1 (separate closure)
+
+Practical Use Cases:
+- Module pattern for data privacy
+- Function factories
+- Event handlers that need access to outer variables
+- Callback functions with persistent state</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>What is event delegation and why is it useful? <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Event delegation is attaching a single event listener to a parent element instead of multiple listeners to child elements, using event bubbling.
+
+// Instead of this:
+document.querySelectorAll('.button').forEach(btn => {
+    btn.addEventListener('click', handleClick);
+});
+
+// Use this:
+document.getElementById('container').addEventListener('click', function(e) {
+    if (e.target.matches('.button')) {
+        handleClick(e);
+    }
+});
+
+Benefits:
+1. Better performance (fewer event listeners)
+2. Works with dynamically added elements
+3. Less memory usage
+4. Easier to manage and maintain
+
+Perfect for: Dynamic content, large lists, menu systems</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Explain the JavaScript event loop <span class="difficulty-badge difficulty-hard">Hard</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">The event loop is JavaScript's concurrency model that handles asynchronous operations in a single-threaded environment.
+
+Components:
+1. Call Stack: Executes synchronous code
+2. Web APIs: Handle async operations (setTimeout, DOM events, HTTP requests)
+3. Callback Queue: Holds completed async callbacks
+4. Event Loop: Moves callbacks from queue to stack when stack is empty
+
+Execution Order:
+console.log('1');
+setTimeout(() => console.log('2'), 0);
+Promise.resolve().then(() => console.log('3'));
+console.log('4');
+
+Output: 1, 4, 3, 2
+
+Why? 
+- Synchronous code runs first (1, 4)
+- Promises use microtask queue (higher priority) (3)
+- setTimeout uses macrotask queue (lower priority) (2)
+
+Key Points:
+- Microtasks (Promises) have higher priority than macrotasks (setTimeout)
+- Event loop only processes callbacks when call stack is empty</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>What are Promises and how do they work? <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Promises represent the eventual completion (or failure) of asynchronous operations.
+
+States:
+1. Pending: Initial state
+2. Fulfilled: Operation completed successfully  
+3. Rejected: Operation failed
+
+Creating a Promise:
+function fetchData() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const success = Math.random() > 0.5;
+            if (success) {
+                resolve('Data received');
+            } else {
+                reject('Network error');
+            }
+        }, 1000);
+    });
+}
+
+Using Promises:
+fetchData()
+    .then(data => console.log(data))
+    .catch(error => console.error(error))
+    .finally(() => console.log('Request completed'));
+
+Promise Methods:
+- Promise.all(): Wait for all promises
+- Promise.race(): Return first settled promise
+- Promise.allSettled(): Wait for all, get all results
+- Promise.resolve()/reject(): Create resolved/rejected promises</div>
+                    </div>
+                </div>
+
+                <div id="interviews-python-questions" class="tab-content">
+                    <div class="question-card">
+                        <h3>What is the difference between list and tuple in Python? <span class="difficulty-badge difficulty-easy">Easy</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Key Differences:
+
+1. Mutability:
+   - List: Mutable (can be changed after creation)
+   - Tuple: Immutable (cannot be changed after creation)
+
+2. Syntax:
+   list_example = [1, 2, 3]      # Square brackets
+   tuple_example = (1, 2, 3)     # Parentheses
+
+3. Performance:
+   - Tuples are faster for iteration and access
+   - Lists are slower due to mutability overhead
+
+4. Use Cases:
+   - Lists: When you need to modify data
+   - Tuples: For fixed data, function returns, dictionary keys
+
+5. Methods:
+   - Lists: append(), remove(), pop(), etc.
+   - Tuples: count(), index() only
+
+Example:
+# List
+my_list = [1, 2, 3]
+my_list.append(4)  # Works
+my_list[0] = 10    # Works
+
+# Tuple  
+my_tuple = (1, 2, 3)
+# my_tuple.append(4)  # Error!
+# my_tuple[0] = 10    # Error!</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Explain Python's GIL (Global Interpreter Lock) <span class="difficulty-badge difficulty-hard">Hard</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">The GIL is a mutex that protects access to Python objects, preventing multiple threads from executing Python bytecode simultaneously.
+
+Key Points:
+1. Only one thread can execute Python code at a time per process
+2. Designed to simplify memory management (reference counting)
+3. Impacts CPU-bound multi-threaded programs significantly
+4. I/O-bound operations can release the GIL
+
+Impact on Performance:
+import threading
+import time
+
+def cpu_bound_task():
+    count = 0
+    for i in range(50000000):
+        count += i
+
+# Sequential execution
+start = time.time()
+cpu_bound_task()
+cpu_bound_task()
+print(f"Sequential: {time.time() - start}")
+
+# Threading (won't improve CPU-bound tasks)
+start = time.time()
+t1 = threading.Thread(target=cpu_bound_task)
+t2 = threading.Thread(target=cpu_bound_task)
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+print(f"Threading: {time.time() - start}")
+
+Workarounds:
+- Use multiprocessing for CPU-bound tasks
+- Use asyncio for I/O-bound tasks
+- Use C extensions that release the GIL
+- Consider alternative Python implementations (Jython, IronPython)</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>What are Python decorators? <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Decorators are functions that modify the behavior of other functions or classes without permanently modifying them.
+
+Basic Decorator:
+def my_decorator(func):
+    def wrapper(*args, **kwargs):
+        print("Before function call")
+        result = func(*args, **kwargs)
+        print("After function call")
+        return result
+    return wrapper
+
+@my_decorator
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")  # Prints before/after messages
+
+Common Use Cases:
+
+1. Timing Functions:
+import time
+from functools import wraps
+
+def timer(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} took {time.time() - start:.4f}s")
+        return result
+    return wrapper
+
+2. Decorators with Arguments:
+def repeat(times):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            for _ in range(times):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def say_hello():
+    print("Hello!")
+
+Built-in Decorators:
+- @property: Create getter/setter methods
+- @staticmethod: Methods that don't need self
+- @classmethod: Methods that receive class as first argument</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Explain list comprehensions vs generator expressions <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Both provide concise ways to create sequences, but with different memory and performance characteristics.
+
+Syntax Comparison:
+# List comprehension
+squares_list = [x**2 for x in range(10)]
+
+# Generator expression  
+squares_gen = (x**2 for x in range(10))
+
+Key Differences:
+
+1. Memory Usage:
+import sys
+list_squares = [x**2 for x in range(1000)]
+gen_squares = (x**2 for x in range(1000))
+
+print(sys.getsizeof(list_squares))  # ~9000 bytes
+print(sys.getsizeof(gen_squares))   # ~112 bytes
+
+2. Evaluation:
+# List: Eager evaluation (all values computed immediately)
+numbers_list = [x for x in range(5)]
+print(numbers_list)  # [0, 1, 2, 3, 4]
+
+# Generator: Lazy evaluation (values computed on demand)
+numbers_gen = (x for x in range(5))
+print(numbers_gen)   # <generator object>
+print(list(numbers_gen))  # [0, 1, 2, 3, 4]
+
+3. Reusability:
+# Lists can be iterated multiple times
+my_list = [x for x in range(3)]
+print(sum(my_list))  # 3
+print(sum(my_list))  # 3
+
+# Generators are consumed after one iteration
+my_gen = (x for x in range(3))
+print(sum(my_gen))  # 3
+print(sum(my_gen))  # 0 (generator exhausted)
+
+When to Use:
+- List comprehensions: Small datasets, need random access, multiple iterations
+- Generator expressions: Large datasets, memory constraints, single iteration</div>
+                    </div>
+                </div>
+
+                <div id="interviews-java-questions" class="tab-content">
+                    <div class="question-card">
+                        <h3>What is the difference between ArrayList and LinkedList? <span class="difficulty-badge difficulty-easy">Easy</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Key Differences:
+
+1. Internal Structure:
+   - ArrayList: Dynamic array (resizable array)
+   - LinkedList: Doubly linked list
+
+2. Performance Comparison:
+Operation           ArrayList    LinkedList
+get(index)         O(1)         O(n)
+add(element)       O(1)*        O(1)
+add(index,element) O(n)         O(1)**
+remove(index)      O(n)         O(1)**
+
+*Amortized O(1), O(n) when resizing needed
+**O(1) if you have reference to node, O(n) if searching by index
+
+3. Memory Usage:
+   - ArrayList: Less overhead (just array + size info)
+   - LinkedList: More overhead (each node stores data + 2 pointers)
+
+4. Use Cases:
+ArrayList:
+- Frequent random access (get/set operations)
+- More reading than inserting/deleting
+- Memory-sensitive applications
+
+LinkedList:
+- Frequent insertion/deletion in middle
+- Queue/Deque operations
+- Unknown size with frequent modifications
+
+Example:
+List<String> arrayList = new ArrayList<>();
+List<String> linkedList = new LinkedList<>();
+
+// ArrayList better for:
+String item = arrayList.get(100);  // O(1)
+
+// LinkedList better for:
+linkedList.addFirst("item");       // O(1)
+linkedList.removeFirst();          // O(1)</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Explain Java's memory management and garbage collection <span class="difficulty-badge difficulty-hard">Hard</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Java's automatic memory management system handles object allocation and deallocation.
+
+Memory Areas:
+1. Heap: Objects and instance variables
+2. Stack: Method calls and local variables  
+3. Method Area: Class metadata, static variables
+4. PC Register: Current executing instruction
+5. Native Method Stack: Native method calls
+
+Generational Garbage Collection:
+1. Young Generation:
+   - Eden Space: New objects created here
+   - Survivor Spaces (S0, S1): Objects that survived one GC cycle
+
+2. Old Generation:
+   - Long-lived objects promoted from young generation
+
+3. Permanent Generation/Metaspace:
+   - Class metadata (removed in Java 8)
+
+GC Process:
+1. Minor GC: Cleans young generation
+   - Fast and frequent
+   - Most objects die young
+   
+2. Major GC: Cleans old generation
+   - Slower, less frequent
+   
+3. Full GC: Cleans entire heap
+   - Slowest, should be rare
+
+GC Algorithms:
+- Serial GC: Single-threaded, small applications
+- Parallel GC: Multi-threaded, throughput-focused
+- G1 GC: Low-latency, large heaps
+- ZGC: Ultra-low latency
+
+JVM Tuning:
+-Xms512m          # Initial heap size
+-Xmx2g            # Maximum heap size  
+-XX:+UseG1GC      # Enable G1 collector
+-XX:MaxGCPauseMillis=200  # Target pause time
+
+Memory Leaks in Java:
+- Static collections holding references
+- Unclosed resources (files, connections)
+- Inner classes holding outer references
+- ThreadLocal variables not cleared</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>What are Java Streams and how do they work? <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Java Streams (Java 8+) provide a functional approach to processing collections of data.
+
+Key Concepts:
+1. Stream Pipeline: Source → Intermediate Operations → Terminal Operation
+2. Lazy Evaluation: Operations are not executed until terminal operation
+3. Immutable: Streams don't modify the original data source
+
+Example:
+List<String> names = Arrays.asList("John", "Jane", "Jack", "Jill");
+
+List<String> result = names.stream()
+    .filter(name -> name.startsWith("J"))     // Intermediate
+    .map(String::toUpperCase)                 // Intermediate  
+    .sorted()                                 // Intermediate
+    .collect(Collectors.toList());            // Terminal
+
+Intermediate Operations (lazy):
+- filter(): Filter elements based on predicate
+- map(): Transform elements
+- flatMap(): Flatten nested structures
+- distinct(): Remove duplicates
+- sorted(): Sort elements
+- limit(): Limit number of elements
+- skip(): Skip first n elements
+
+Terminal Operations (trigger execution):
+- collect(): Collect to collection
+- forEach(): Perform action on each element
+- reduce(): Reduce to single value
+- count(): Count elements
+- anyMatch()/allMatch()/noneMatch(): Boolean tests
+- findFirst()/findAny(): Find elements
+
+Advanced Example:
+Map<String, List<Person>> peopleByCity = people.stream()
+    .filter(person -> person.getAge() > 18)
+    .collect(Collectors.groupingBy(Person::getCity));
+
+Benefits:
+- Functional programming style
+- Parallel processing capability  
+- Readable and concise code
+- Lazy evaluation for performance</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Explain the concept of Java interfaces and abstract classes <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Both provide abstraction in Java but serve different purposes.
+
+Abstract Classes:
+- Can have both abstract and concrete methods
+- Can have instance variables and constructors
+- Support access modifiers (private, protected, public)
+- Single inheritance (extends one class)
+
+abstract class Animal {
+    protected String name;
+    
+    public Animal(String name) {
+        this.name = name;
+    }
+    
+    public void sleep() {
+        System.out.println(name + " is sleeping");
+    }
+    
+    public abstract void makeSound();
+}
+
+Interfaces:
+- All methods are implicitly public and abstract (before Java 8)
+- Variables are implicitly public, static, and final
+- Support multiple inheritance (implements multiple interfaces)
+- Java 8+: Can have default and static methods
+
+interface Flyable {
+    int MAX_ALTITUDE = 50000;  // public static final
+    
+    void fly();  // public abstract
+    
+    default void land() {
+        System.out.println("Landing safely");
+    }
+    
+    static void checkWeather() {
+        System.out.println("Weather is good for flying");
+    }
+}
+
+Implementation:
+class Bird extends Animal implements Flyable, Swimmable {
+    public Bird(String name) {
+        super(name);
+    }
+    
+    @Override
+    public void makeSound() {
+        System.out.println("Chirp chirp");
+    }
+    
+    @Override
+    public void fly() {
+        System.out.println(name + " is flying");
+    }
+}
+
+When to Use:
+- Abstract Class: "is-a" relationship, shared code among related classes
+- Interface: "can-do" relationship, multiple inheritance, loose coupling
+
+Java 8+ Features:
+- Default methods: Provide implementation in interface
+- Static methods: Utility methods in interface
+- Functional interfaces: Single abstract method (@FunctionalInterface)</div>
+                    </div>
+                </div>
+
+                <div id="interviews-react-questions" class="tab-content">
+                    <div class="question-card">
+                        <h3>What is the Virtual DOM and how does it work? <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">The Virtual DOM is a JavaScript representation of the actual DOM kept in memory and synced with the "real" DOM through reconciliation.
+
+How it Works:
+1. Create virtual representation of UI in memory
+2. When state changes, create new virtual DOM tree
+3. Compare (diff) new tree with previous tree
+4. Calculate minimum changes needed
+5. Update only changed parts in real DOM
+
+Process:
+// 1. Initial render
+const virtualDOM1 = {
+  type: 'div',
+  props: { className: 'container' },
+  children: [
+    { type: 'h1', props: {}, children: ['Hello World'] }
+  ]
+};
+
+// 2. State change
+const virtualDOM2 = {
+  type: 'div', 
+  props: { className: 'container' },
+  children: [
+    { type: 'h1', props: {}, children: ['Hello React'] }
+  ]
+};
+
+// 3. Diffing algorithm identifies only text change
+// 4. Update only the text node in real DOM
+
+Benefits:
+1. Performance: Batch updates, minimize DOM operations
+2. Predictability: Declarative programming model
+3. Cross-browser: Abstracts browser differences
+4. Server-side rendering: Can render to string
+
+React Fiber (React 16+):
+- Incremental rendering
+- Ability to pause and resume work
+- Priority-based updates
+- Better error boundaries
+
+Key Concepts:
+- Reconciliation: Process of updating DOM
+- Keys: Help identify which items changed
+- Component lifecycle tied to virtual DOM updates
+
+Example:
+function App() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}
+// Only the text content updates when count changes</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Explain React Hooks and their benefits <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Hooks are functions that let you use state and other React features in functional components.
+
+Built-in Hooks:
+
+1. useState: Manage component state
+const [count, setCount] = useState(0);
+const [name, setName] = useState('');
+
+2. useEffect: Handle side effects
+useEffect(() => {
+    document.title = `Count: ${count}`;
+}, [count]); // Dependency array
+
+3. useContext: Access context values
+const theme = useContext(ThemeContext);
+
+4. useReducer: Complex state management
+const [state, dispatch] = useReducer(reducer, initialState);
+
+5. useMemo: Memoize expensive calculations
+const expensiveValue = useMemo(() => {
+    return calculateExpensiveValue(data);
+}, [data]);
+
+6. useCallback: Memoize functions
+const memoizedCallback = useCallback(() => {
+    doSomething(a, b);
+}, [a, b]);
+
+Custom Hooks:
+function useCounter(initialValue = 0) {
+    const [count, setCount] = useState(initialValue);
+    
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
+    const reset = () => setCount(initialValue);
+    
+    return { count, increment, decrement, reset };
+}
+
+// Usage
+function Counter() {
+    const { count, increment, decrement, reset } = useCounter(0);
+    
+    return (
+        <div>
+            <p>Count: {count}</p>
+            <button onClick={increment}>+</button>
+            <button onClick={decrement}>-</button>
+            <button onClick={reset}>Reset</button>
+        </div>
+    );
+}
+
+Rules of Hooks:
+1. Only call at top level (not in loops, conditions, nested functions)
+2. Only call from React functions (components or custom hooks)
+
+Benefits:
+- Reuse stateful logic between components
+- Organize related logic together
+- Avoid wrapper hell from HOCs and render props
+- Easier testing and code splitting
+- Better performance with optimization hooks</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>What is React Context and when should you use it? <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">React Context provides a way to pass data through the component tree without manually passing props at every level.
+
+Creating Context:
+// 1. Create context
+const ThemeContext = React.createContext();
+
+// 2. Create provider component
+function ThemeProvider({ children }) {
+    const [theme, setTheme] = useState('light');
+    
+    return (
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+            {children}
+        </ThemeContext.Provider>
+    );
+}
+
+// 3. Consume context
+function ThemedButton() {
+    const { theme, setTheme } = useContext(ThemeContext);
+    
+    return (
+        <button 
+            style={{ 
+                background: theme === 'light' ? '#fff' : '#333',
+                color: theme === 'light' ? '#333' : '#fff'
+            }}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+        >
+            Toggle Theme
+        </button>
+    );
+}
+
+// 4. App structure
+function App() {
+    return (
+        <ThemeProvider>
+            <Header />
+            <Main />
+            <ThemedButton />
+        </ThemeProvider>
+    );
+}
+
+Advanced Pattern - Multiple Contexts:
+function AppProviders({ children }) {
+    return (
+        <AuthProvider>
+            <ThemeProvider>
+                <DataProvider>
+                    {children}
+                </DataProvider>
+            </ThemeProvider>
+        </AuthProvider>
+    );
+}
+
+When to Use Context:
+✅ Good for:
+- Theme data (dark/light mode)
+- User authentication info
+- Language/localization settings
+- Global app state (user preferences)
+
+❌ Avoid for:
+- Frequently changing data (causes re-renders)
+- Local component state
+- Simple prop passing (1-2 levels)
+- Performance-critical updates
+
+Performance Considerations:
+- Split contexts by update frequency
+- Use useMemo for provider values
+- Consider state management libraries for complex scenarios
+
+Alternative to Context:
+- Redux/Zustand for complex state
+- Component composition for prop drilling
+- Custom hooks for shared logic</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>How do you optimize React application performance? <span class="difficulty-badge difficulty-hard">Hard</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">React Performance Optimization Strategies:
+
+1. Prevent Unnecessary Re-renders:
+
+React.memo: Memoize functional components
+const ExpensiveComponent = React.memo(({ data }) => {
+    return <div>{data.value}</div>;
+});
+
+useMemo: Memoize expensive calculations
+const expensiveValue = useMemo(() => {
+    return data.reduce((sum, item) => sum + item.value, 0);
+}, [data]);
+
+useCallback: Memoize functions
+const handleClick = useCallback(() => {
+    onItemClick(item.id);
+}, [item.id, onItemClick]);
+
+2. Code Splitting:
+
+Route-based splitting:
+const Home = lazy(() => import('./Home'));
+const About = lazy(() => import('./About'));
+
+function App() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+            </Routes>
+        </Suspense>
+    );
+}
+
+3. Optimize Lists:
+
+Use keys properly:
+{items.map(item => (
+    <Item key={item.id} data={item} />  // Stable, unique keys
+))}
+
+Virtual scrolling for large lists:
+import { FixedSizeList as List } from 'react-window';
+
+4. State Management:
+
+Move state down:
+// Bad: State too high up
+function App() {
+    const [userInput, setUserInput] = useState('');
+    return (
+        <div>
+            <ExpensiveComponent />
+            <InputComponent value={userInput} onChange={setUserInput} />
+        </div>
+    );
+}
+
+// Good: State where it's needed
+function InputSection() {
+    const [userInput, setUserInput] = useState('');
+    return <InputComponent value={userInput} onChange={setUserInput} />;
+}
+
+5. Bundle Optimization:
+
+Analyze bundle:
+npm install --save-dev webpack-bundle-analyzer
+
+Tree shaking:
+// Import only what you need
+import { debounce } from 'lodash';  // Bad
+import debounce from 'lodash/debounce';  // Good
+
+6. Image Optimization:
+
+Lazy loading:
+<img loading="lazy" src="image.jpg" alt="Description" />
+
+Next.js Image component:
+import Image from 'next/image';
+<Image src="/image.jpg" width={500} height={300} alt="Description" />
+
+7. Profiling Tools:
+
+React DevTools Profiler:
+- Identify slow components
+- Measure render times
+- Find unnecessary re-renders
+
+Performance monitoring:
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+
+getCLS(console.log);
+getFID(console.log);
+getFCP(console.log);
+getLCP(console.log);
+getTTFB(console.log);</div>
+                    </div>
+                </div>
+
+                <div id="interviews-nodejs-questions" class="tab-content">
+                    <div class="question-card">
+                        <h3>What is the Event Loop in Node.js? <span class="difficulty-badge difficulty-hard">Hard</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">The Event Loop is the core of Node.js's non-blocking I/O model, enabling JavaScript to perform asynchronous operations.
+
+Event Loop Phases:
+1. Timer Phase: Executes setTimeout() and setInterval() callbacks
+2. Pending Callbacks: Executes I/O callbacks deferred to next loop iteration
+3. Idle, Prepare: Internal use only
+4. Poll Phase: Fetch new I/O events; execute I/O related callbacks
+5. Check Phase: Execute setImmediate() callbacks
+6. Close Callbacks: Execute close event callbacks
+
+Event Loop Example:
+console.log('Start');
+
+setTimeout(() => console.log('Timer 1'), 0);
+setImmediate(() => console.log('Immediate 1'));
+
+process.nextTick(() => console.log('Next Tick 1'));
+Promise.resolve().then(() => console.log('Promise 1'));
+
+setTimeout(() => console.log('Timer 2'), 0);
+setImmediate(() => console.log('Immediate 2'));
+
+process.nextTick(() => console.log('Next Tick 2'));
+Promise.resolve().then(() => console.log('Promise 2'));
+
+console.log('End');
+
+Output Order:
+Start
+End
+Next Tick 1
+Next Tick 2
+Promise 1
+Promise 2
+Timer 1
+Timer 2
+Immediate 1
+Immediate 2
+
+Priority Order:
+1. process.nextTick() callbacks (highest priority)
+2. Promise callbacks (microtasks)
+3. Timer callbacks (macrotasks)
+4. setImmediate() callbacks
+5. I/O callbacks
+6. Close callbacks
+
+Key Concepts:
+- Single-threaded event loop
+- Non-blocking I/O operations
+- Callbacks are queued and processed in order
+- Heavy CPU tasks can block the event loop
+- Use worker threads for CPU-intensive operations</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Explain middleware in Express.js <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Middleware functions are functions that execute during the request-response cycle, having access to request (req), response (res), and next middleware function.
+
+Types of Middleware:
+
+1. Application-level middleware:
+const express = require('express');
+const app = express();
+
+// Applied to all routes
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path} - ${new Date().toISOString()}`);
+    next(); // Must call next() to proceed
+});
+
+// Applied to specific routes
+app.use('/api', (req, res, next) => {
+    // Only for routes starting with /api
+    next();
+});
+
+2. Router-level middleware:
+const router = express.Router();
+
+router.use((req, res, next) => {
+    // Middleware for this router only
+    next();
+});
+
+3. Built-in middleware:
+app.use(express.json());       // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(express.static('public')); // Serve static files
+
+4. Third-party middleware:
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
+app.use(cors());           // Enable CORS
+app.use(helmet());         // Security headers
+app.use(morgan('combined')); // HTTP request logger
+
+5. Error-handling middleware:
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        error: 'Something went wrong!',
+        message: err.message 
+    });
+});
+
+Custom Middleware Examples:
+
+Authentication middleware:
+function authenticate(req, res, next) {
+    const token = req.headers.authorization;
+    
+    if (!token) {
+        return res.status(401).json({ error: 'No token provided' });
+    }
+    
+    // Verify token logic here
+    jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ error: 'Invalid token' });
+        }
+        req.user = decoded;
+        next();
+    });
+}
+
+Rate limiting middleware:
+function rateLimit(maxRequests, windowMs) {
+    const requests = new Map();
+    
+    return (req, res, next) => {
+        const ip = req.ip;
+        const now = Date.now();
+        const windowStart = now - windowMs;
+        
+        if (!requests.has(ip)) {
+            requests.set(ip, []);
+        }
+        
+        const userRequests = requests.get(ip);
+        const recentRequests = userRequests.filter(time => time > windowStart);
+        
+        if (recentRequests.length >= maxRequests) {
+            return res.status(429).json({ error: 'Too many requests' });
+        }
+        
+        recentRequests.push(now);
+        requests.set(ip, recentRequests);
+        next();
+    };
+}
+
+Middleware Execution Order:
+app.use(middleware1);  // Executes first
+app.use(middleware2);  // Executes second
+app.get('/', middleware3, handler); // middleware3, then handler
+
+Key Points:
+- Order matters - middleware executes in the order it's defined
+- Always call next() unless sending a response
+- Error middleware has 4 parameters (err, req, res, next)
+- Middleware can modify req/res objects for downstream functions</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>How do you handle errors in Node.js? <span class="difficulty-badge difficulty-medium">Medium</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Node.js Error Handling Strategies:
+
+1. Synchronous Error Handling:
+
+Try-catch for synchronous code:
+try {
+    const data = JSON.parse(invalidJson);
+} catch (error) {
+    console.error('JSON parsing failed:', error.message);
+    // Handle error appropriately
+}
+
+2. Asynchronous Error Handling:
+
+Callback pattern:
+fs.readFile('file.txt', (err, data) => {
+    if (err) {
+        console.error('File read error:', err);
+        return;
+    }
+    // Process data
+});
+
+Promise-based:
+readFileAsync('file.txt')
+    .then(data => {
+        // Process data
+    })
+    .catch(error => {
+        console.error('File read error:', error);
+    });
+
+Async/await with try-catch:
+async function readFile() {
+    try {
+        const data = await readFileAsync('file.txt');
+        return data;
+    } catch (error) {
+        console.error('File read error:', error);
+        throw error; // Re-throw if needed
+    }
+}
+
+3. Express.js Error Handling:
+
+Error middleware:
+app.use((err, req, res, next) => {
+    // Log error
+    console.error(err.stack);
+    
+    // Don't expose internal errors in production
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    
+    res.status(err.status || 500).json({
+        error: {
+            message: err.message,
+            ...(isDevelopment && { stack: err.stack })
+        }
+    });
+});
+
+Route error handling:
+app.get('/api/users/:id', async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            const error = new Error('User not found');
+            error.status = 404;
+            throw error;
+        }
+        res.json(user);
+    } catch (error) {
+        next(error); // Pass to error middleware
+    }
+});
+
+4. Global Error Handling:
+
+Uncaught exceptions:
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+    // Log error, cleanup, then exit
+    process.exit(1);
+});
+
+Unhandled promise rejections:
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Log error, cleanup, then exit
+    process.exit(1);
+});
+
+5. Custom Error Classes:
+
+class ValidationError extends Error {
+    constructor(message, field) {
+        super(message);
+        this.name = 'ValidationError';
+        this.field = field;
+        this.status = 400;
+    }
+}
+
+class DatabaseError extends Error {
+    constructor(message, query) {
+        super(message);
+        this.name = 'DatabaseError';
+        this.query = query;
+        this.status = 500;
+    }
+}
+
+// Usage
+function validateUser(userData) {
+    if (!userData.email) {
+        throw new ValidationError('Email is required', 'email');
+    }
+}
+
+6. Error Logging:
+
+Using Winston logger:
+const winston = require('winston');
+
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.errors({ stack: true }),
+        winston.format.json()
+    ),
+    transports: [
+        new winston.transports.File({ filename: 'error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'combined.log' })
+    ]
+});
+
+// Error middleware with logging
+app.use((err, req, res, next) => {
+    logger.error({
+        message: err.message,
+        stack: err.stack,
+        url: req.url,
+        method: req.method,
+        ip: req.ip
+    });
+    
+    res.status(err.status || 500).json({ error: 'Internal server error' });
+});
+
+Best Practices:
+- Always handle errors explicitly
+- Use error middleware in Express
+- Log errors with context information
+- Don't expose sensitive error details to clients
+- Implement graceful shutdown for critical errors
+- Use error monitoring services (Sentry, Bugsnag)
+- Validate input data to prevent errors
+- Use circuit breakers for external service calls</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>What are Node.js streams and how do you use them? <span class="difficulty-badge difficulty-hard">Hard</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Streams are objects that let you read data from a source or write data to a destination in a continuous manner, handling data piece by piece rather than loading everything into memory.
+
+Types of Streams:
+
+1. Readable Streams: Read data from source
+const fs = require('fs');
+const readableStream = fs.createReadStream('large-file.txt');
+
+readableStream.on('data', (chunk) => {
+    console.log(`Received ${chunk.length} bytes`);
+});
+
+readableStream.on('end', () => {
+    console.log('No more data');
+});
+
+readableStream.on('error', (err) => {
+    console.error('Stream error:', err);
+});
+
+2. Writable Streams: Write data to destination
+const writableStream = fs.createWriteStream('output.txt');
+
+writableStream.write('Hello ');
+writableStream.write('World!');
+writableStream.end(); // Close stream
+
+writableStream.on('finish', () => {
+    console.log('Write completed');
+});
+
+3. Duplex Streams: Both readable and writable
+const { Duplex } = require('stream');
+
+class MyDuplex extends Duplex {
+    constructor(options) {
+        super(options);
+        this.data = [];
+    }
+    
+    _read() {
+        if (this.data.length) {
+            this.push(this.data.shift());
+        } else {
+            this.push(null); // End stream
+        }
+    }
+    
+    _write(chunk, encoding, callback) {
+        this.data.push(chunk);
+        callback();
+    }
+}
+
+4. Transform Streams: Modify data as it passes through
+const { Transform } = require('stream');
+
+class UpperCaseTransform extends Transform {
+    _transform(chunk, encoding, callback) {
+        const upperChunk = chunk.toString().toUpperCase();
+        callback(null, upperChunk);
+    }
+}
+
+// Usage
+const upperTransform = new UpperCaseTransform();
+process.stdin.pipe(upperTransform).pipe(process.stdout);
+
+Stream Piping:
+
+Basic piping:
+const fs = require('fs');
+const readStream = fs.createReadStream('input.txt');
+const writeStream = fs.createWriteStream('output.txt');
+
+readStream.pipe(writeStream);
+
+Chain multiple streams:
+const zlib = require('zlib');
+
+fs.createReadStream('input.txt')
+  .pipe(zlib.createGzip()) // Compress
+  .pipe(fs.createWriteStream('output.txt.gz'));
+
+Pipeline with error handling:
+const { pipeline } = require('stream');
+
+pipeline(
+    fs.createReadStream('input.txt'),
+    new UpperCaseTransform(),
+    fs.createWriteStream('output.txt'),
+    (err) => {
+        if (err) {
+            console.error('Pipeline failed:', err);
+        } else {
+            console.log('Pipeline succeeded');
+        }
+    }
+);
+
+Custom Readable Stream:
+const { Readable } = require('stream');
+
+class NumberStream extends Readable {
+    constructor(max, options) {
+        super(options);
+        this.current = 0;
+        this.max = max;
+    }
+    
+    _read() {
+        if (this.current < this.max) {
+            this.push(`${this.current++}\n`);
+        } else {
+            this.push(null); // End stream
+        }
+    }
+}
+
+// Usage
+const numberStream = new NumberStream(5);
+numberStream.pipe(process.stdout);
+
+HTTP Streams Example:
+const http = require('http');
+const fs = require('fs');
+
+const server = http.createServer((req, res) => {
+    if (req.method === 'GET' && req.url === '/download') {
+        const fileStream = fs.createReadStream('large-file.pdf');
+        
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="file.pdf"');
+        
+        fileStream.pipe(res); // Stream file directly to response
+        
+        fileStream.on('error', (err) => {
+            res.statusCode = 500;
+            res.end('Error reading file');
+        });
+    }
+});
+
+Benefits of Streams:
+- Memory efficient: Process data in chunks
+- Time efficient: Start processing before all data is available
+- Composable: Chain operations together
+- Backpressure handling: Automatic flow control
+
+Common Use Cases:
+- File processing (reading/writing large files)
+- HTTP request/response handling
+- Data transformation and processing
+- Real-time data processing
+- Compression/decompression
+- Encryption/decryption
+
+Best Practices:
+- Always handle errors on streams
+- Use pipeline() for better error handling
+- Implement backpressure in custom streams
+- Use appropriate buffer sizes
+- Clean up streams properly (unpipe, destroy)
+- Use async iterators for modern stream handling</div>
+                    </div>
+                </div>
+
+                <div id="interviews-system-design" class="tab-content">
+                    <div class="question-card">
+                        <h3>Design a URL shortening service like bit.ly <span class="difficulty-badge difficulty-hard">Hard</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">System Design for URL Shortening Service:
+
+1. Requirements Analysis:
+Functional Requirements:
+- Shorten long URLs to short URLs
+- Redirect short URLs to original URLs
+- Custom aliases (optional)
+- URL expiration
+- Analytics (click tracking)
+
+Non-functional Requirements:
+- 100M URLs shortened per day
+- 100:1 read/write ratio (10B redirects per day)
+- 99.9% availability
+- Low latency (< 100ms)
+- URLs should not be predictable
+
+2. Capacity Estimation:
+Storage:
+- 100M URLs/day × 365 days × 5 years = 182.5B URLs
+- Average URL length: 100 characters
+- Storage needed: 182.5B × 100 bytes = 18.25 TB
+
+Bandwidth:
+- Write: 100M / (24 × 3600) ≈ 1150 URLs/second
+- Read: 10B / (24 × 3600) ≈ 115K redirects/second
+
+3. Database Design:
+URLs Table:
+- short_url (VARCHAR, Primary Key)
+- original_url (TEXT)
+- user_id (INT)
+- created_at (TIMESTAMP)
+- expires_at (TIMESTAMP)
+- click_count (INT)
+
+Users Table:
+- user_id (INT, Primary Key)
+- email (VARCHAR)
+- created_at (TIMESTAMP)
+
+4. URL Encoding Algorithm:
+Base62 Encoding (a-z, A-Z, 0-9):
+const BASE62 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+function encodeBase62(num) {
+    let encoded = "";
+    while (num > 0) {
+        encoded = BASE62[num % 62] + encoded;
+        num = Math.floor(num / 62);
+    }
+    return encoded || "a";
+}
+
+// 7 characters = 62^7 ≈ 3.5 trillion combinations
+function generateShortUrl(id) {
+    return encodeBase62(id).padStart(7, 'a');
+}
+
+5. High-Level Architecture:
+[Load Balancer] → [Web Servers] → [Application Servers] → [Database]
+                                                      ↘ [Cache Layer]
+
+Components:
+- Load Balancer: Distribute traffic (NGINX, HAProxy)
+- Web Servers: Handle HTTP requests
+- Application Servers: Business logic
+- Database: Store URL mappings (MySQL, PostgreSQL)
+- Cache: Frequently accessed URLs (Redis, Memcached)
+- CDN: Global content distribution
+
+6. Database Sharding:
+Shard by hash of short_url:
+shard = hash(short_url) % number_of_shards
+
+Database Schema per Shard:
+- Shard 1: URLs with hash % 4 = 0
+- Shard 2: URLs with hash % 4 = 1
+- Shard 3: URLs with hash % 4 = 2
+- Shard 4: URLs with hash % 4 = 3
+
+7. Caching Strategy:
+Cache frequently accessed URLs:
+- Cache hit ratio: 80% (Pareto principle)
+- Cache 20% of URLs, handle 80% of traffic
+- TTL: 24 hours for most URLs
+- LRU eviction policy
+
+Redis Cache Structure:
+Key: short_url
+Value: {
+    original_url: "https://...",
+    expires_at: timestamp,
+    click_count: number
+}
+
+8. API Design:
+POST /api/shorten
+{
+    "original_url": "https://example.com/very/long/url",
+    "custom_alias": "my-link", // optional
+    "expires_at": "2024-12-31T23:59:59Z" // optional
+}
+
+Response:
+{
+    "short_url": "https://short.ly/abc123",
+    "original_url": "https://example.com/very/long/url",
+    "created_at": "2024-01-01T00:00:00Z",
+    "expires_at": "2024-12-31T23:59:59Z"
+}
+
+GET /abc123 → 301 Redirect to original URL
+
+9. Additional Features:
+Analytics API:
+GET /api/analytics/abc123
+{
+    "short_url": "abc123",
+    "click_count": 1500,
+    "daily_clicks": [...],
+    "top_referrers": [...],
+    "geographic_data": [...]
+}
+
+10. Security Considerations:
+- Rate limiting per IP/user
+- Spam detection algorithms
+- Malicious URL scanning
+- CAPTCHA for suspicious activity
+- URL blacklisting
+
+11. Monitoring & Alerting:
+Metrics to track:
+- Request rate and latency
+- Error rates (4xx, 5xx)
+- Database connection pool status
+- Cache hit ratio
+- Disk and memory usage
+
+Tools:
+- Prometheus + Grafana for metrics
+- ELK stack for logging
+- PagerDuty for alerting
+
+12. Scalability Considerations:
+- Horizontal scaling of web/app servers
+- Database read replicas
+- Multiple cache layers
+- CDN for global distribution
+- Auto-scaling based on traffic patterns</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Design a chat application like WhatsApp <span class="difficulty-badge difficulty-hard">Hard</span></h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+                        <div class="answer">Chat Application System Design:
+
+1. Requirements Analysis:
+Functional Requirements:
+- Send/receive messages in real-time
+- One-on-one and group chat
+- Message history and persistence
+- Online/offline status
+- Message delivery status (sent, delivered, read)
+- File/media sharing
+- Push notifications
+
+Non-functional Requirements:
+- Support 1 billion users
+- Low latency (< 100ms message delivery)
+- 99.9% availability
+- End-to-end encryption
+- Cross-platform support
+
+2. Capacity Estimation:
+Users and Messages:
+- 1B registered users, 500M daily active users
+- Average 40 messages per user per day
+- Total: 20B messages per day = 230K messages/second
+
+Storage:
+- Average message size: 100 bytes
+- Daily storage: 20B × 100 bytes = 2TB/day
+- 5-year storage: 2TB × 365 × 5 = 3.6 PB
+
+Bandwidth:
+- Incoming: 230K messages/second × 100 bytes = 23 MB/s
+- Outgoing: 230K × 100 × 2 (average fan-out) = 46 MB/s
+
+3. High-Level Architecture:
+[Mobile Apps] ↔ [Load Balancer] ↔ [Chat Servers] ↔ [Message Queue] ↔ [Database]
+                                          ↓
+                                   [Notification Service]
+                                          ↓
+                                   [Push Notification Gateway]
+
+4. Real-time Communication:
+WebSocket Connections:
+- Persistent bidirectional connections
+- Connection pooling across multiple servers
+- Heartbeat mechanism for connection health
+
+Connection Management:
+class ConnectionManager {
+    constructor() {
+        this.connections = new Map(); // userId -> WebSocket
+        this.userServers = new Map();  // userId -> serverId
+    }
+    
+    addConnection(userId, ws, serverId) {
+        this.connections.set(userId, ws);
+        this.userServers.set(userId, serverId);
+    }
+    
+    removeConnection(userId) {
+        this.connections.delete(userId);
+        this.userServers.delete(userId);
+    }
+    
+    getConnection(userId) {
+        return this.connections.get(userId);
+    }
+}
+
+5. Database Design:
+Users Table:
+- user_id (Primary Key)
+- username
+- email
+- phone_number
+- created_at
+- last_seen
+- profile_image_url
+
+Conversations Table:
+- conversation_id (Primary Key)
+- type (direct/group)
+- created_at
+- updated_at
+
+Messages Table:
+- message_id (Primary Key)
+- conversation_id (Foreign Key)
+- sender_id (Foreign Key)
+- content
+- message_type (text/image/file)
+- timestamp
+- delivery_status
+
+Participants Table:
+- conversation_id (Foreign Key)
+- user_id (Foreign Key)
+- joined_at
+- role (admin/member for groups)
+
+6. Message Flow:
+Sending Message:
+1. Client sends message via WebSocket
+2. Chat server validates and assigns message_id
+3. Message queued in message broker
+4. Message persisted to database
+5. Message delivered to online recipients
+6. Push notification sent to offline users
+7. Delivery confirmations sent back
+
+Message Processing:
+async function processMessage(message) {
+    try {
+        // 1. Validate message
+        if (!validateMessage(message)) {
+            throw new Error('Invalid message');
+        }
+        
+        // 2. Save to database
+        const savedMessage = await saveMessage(message);
+        
+        // 3. Get conversation participants
+        const participants = await getParticipants(message.conversation_id);
+        
+        // 4. Deliver to online users
+        for (const participant of participants) {
+            if (participant.user_id !== message.sender_id) {
+                await deliverMessage(participant.user_id, savedMessage);
+            }
+        }
+        
+        // 5. Send push notifications to offline users
+        const offlineUsers = participants.filter(p => !isUserOnline(p.user_id));
+        await sendPushNotifications(offlineUsers, savedMessage);
+        
+        return savedMessage;
+    } catch (error) {
+        console.error('Error processing message:', error);
+        throw error;
+    }
+}
+
+7. Scalability Solutions:
+Database Sharding:
+- Shard by conversation_id
+- Each shard handles a subset of conversations
+- Use consistent hashing for even distribution
+
+Sharding Strategy:
+shard = hash(conversation_id) % num_shards
+
+Message Queue Partitioning:
+- Partition by conversation_id
+- Ensures message ordering within conversations
+- Parallel processing across conversations
+
+8. Caching Strategy:
+Redis Caching:
+- Recent messages (last 100 per conversation)
+- User presence information
+- Conversation metadata
+- Frequently accessed user profiles
+
+Cache Structure:
+// Recent messages
+Key: "messages:{conversation_id}"
+Value: List of recent messages (JSON)
+
+// User presence
+Key: "presence:{user_id}"
+Value: {status: "online", last_seen: timestamp, server_id: "server1"}
+
+9. Push Notifications:
+Notification Service:
+class NotificationService {
+    async sendPushNotification(userId, message) {
+        const userDevice = await getUserDevice(userId);
+        
+        if (userDevice.platform === 'ios') {
+            await this.sendAPNS(userDevice.token, message);
+        } else if (userDevice.platform === 'android') {
+            await this.sendFCM(userDevice.token, message);
+        }
+    }
+    
+    async sendAPNS(deviceToken, message) {
+        // Apple Push Notification Service
+        const payload = {
+            aps: {
+                alert: {
+                    title: message.sender_name,
+                    body: message.content
+                },
+                badge: await getUnreadCount(message.recipient_id)
+            }
+        };
+        
+        await apn.send(payload, deviceToken);
+    }
+}
+
+10. File/Media Handling:
+File Upload Flow:
+1. Client requests upload URL
+2. Server generates signed URL (S3, CloudFront)
+3. Client uploads directly to cloud storage
+4. Client sends message with file reference
+5. Recipients download via CDN
+
+File Service:
+class FileService {
+    async generateUploadUrl(fileInfo) {
+        const key = `files/${Date.now()}_${fileInfo.name}`;
+        const signedUrl = await s3.getSignedUrl('putObject', {
+            Bucket: 'chat-files',
+            Key: key,
+            ContentType: fileInfo.type,
+            Expires: 3600 // 1 hour
+        });
+        
+        return { uploadUrl: signedUrl, fileKey: key };
+    }
+    
+    async getDownloadUrl(fileKey) {
+        return await cloudfront.getSignedUrl(fileKey);
+    }
+}
+
+11. Security Features:
+End-to-End Encryption:
+- Generate key pairs for each user
+- Encrypt messages on sender device
+- Decrypt on recipient device
+- Server cannot read message content
+
+Message Encryption:
+function encryptMessage(message, recipientPublicKey) {
+    const symmetricKey = generateSymmetricKey();
+    const encryptedMessage = encrypt(message, symmetricKey);
+    const encryptedKey = encryptWithPublicKey(symmetricKey, recipientPublicKey);
+    
+    return {
+        encrypted_content: encryptedMessage,
+        encrypted_key: encryptedKey
+    };
+}
+
+12. Monitoring and Analytics:
+Key Metrics:
+- Message delivery time
+- Connection success rate
+- Message failure rate
+- User engagement metrics
+- Server resource utilization
+
+Health Checks:
+- WebSocket connection health
+- Database connection pools
+- Message queue status
+- Cache hit ratios
+- External service availability
+
+13. Additional Features:
+Message Status Tracking:
+- Sent: Message sent from client
+- Delivered: Message reached recipient's device
+- Read: Message opened by recipient
+
+Group Chat Optimizations:
+- Limit group size (256 members)
+- Admin controls (add/remove members)
+- Message fan-out optimization
+- Group metadata caching
+
+Offline Message Sync:
+- Store offline messages per user
+- Sync when user comes online
+- Pagination for large message history
+- Delta sync for efficiency</div>
+                    </div>
+                </div>
+
+                <div id="interviews-behavioral" class="tab-content">
+                    <div class="question-card">
+                        <h3>Tell me about a challenging project you worked on</h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Strategy</button>
+                        <div class="answer">Use the STAR Method (Situation, Task, Action, Result):
+
+Situation: Set the context and background
+- "While working at [Company], our team was tasked with migrating a legacy monolithic application to microservices architecture..."
+- "The existing system was written in PHP and handled 10,000+ daily transactions..."
+- "We had a tight deadline of 6 months and couldn't afford downtime..."
+
+Task: Explain your specific responsibility
+- "As the lead developer, I was responsible for designing the migration strategy..."
+- "My role included breaking down the monolith into logical services..."
+- "I needed to ensure zero data loss and minimal service disruption..."
+
+Action: Detail what you specifically did
+- "I started by analyzing the existing codebase and identifying service boundaries..."
+- "I created a detailed migration plan with phases to minimize risk..."
+- "I implemented the strangler fig pattern to gradually replace components..."
+- "I set up comprehensive monitoring and rollback procedures..."
+- "I collaborated with DevOps to establish CI/CD pipelines for each service..."
+
+Result: Share the measurable outcome
+- "The migration was completed 2 weeks ahead of schedule..."
+- "System performance improved by 40% with better scalability..."
+- "We achieved 99.9% uptime duringthe transition..."
+- "Reduced operational costs by 30% through better resource utilization..."
+- "The team gained valuable experience with modern architecture patterns..."
+
+Tips for Answering:
+- Choose a project that showcases relevant technical skills
+- Highlight leadership, problem-solving, and collaboration
+- Be specific about your contributions vs. team contributions
+- Mention technologies and methodologies used
+- Show learning and growth from the experience
+- Prepare 2-3 different project examples for variety</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>How do you handle disagreements with team members?</h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Strategy</button>
+                        <div class="answer">Framework for Handling Disagreements:
+
+1. Listen and Understand:
+- "I always start by actively listening to understand their perspective..."
+- "I ask clarifying questions to ensure I understand their concerns..."
+- "I try to separate the person from the problem..."
+
+2. Find Common Ground:
+- "I look for shared goals and objectives we both care about..."
+- "I focus on what we agree on before addressing differences..."
+- "I remind everyone of the project's overall success criteria..."
+
+3. Present Your View Objectively:
+- "I present my perspective with data and concrete examples..."
+- "I explain my reasoning and the potential outcomes I see..."
+- "I avoid making it personal and stick to technical merits..."
+
+4. Seek Win-Win Solutions:
+- "I look for solutions that address both of our concerns..."
+- "I'm willing to compromise when it benefits the project..."
+- "Sometimes I suggest we prototype both approaches to test them..."
+
+Example Response:
+"Recently, a colleague and I disagreed about the database choice for a new project. They preferred MongoDB while I advocated for PostgreSQL. Instead of arguing, I:
+
+- Asked them to explain their reasoning (they were concerned about schema flexibility)
+- Shared my concerns about data consistency and complex queries
+- We listed the specific requirements and evaluated each option objectively
+- We agreed to do a small proof-of-concept with both databases
+- Based on the results, we chose PostgreSQL but designed our data layer to be more flexible
+
+This approach strengthened our working relationship and led to a better technical decision."
+
+Key Principles:
+- Stay professional and objective
+- Focus on the problem, not personalities
+- Be willing to be wrong and learn
+- Seek input from others when needed
+- Document decisions and reasoning</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Describe a time when you had to learn a new technology quickly</h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Strategy</button>
+                        <div class="answer">Learning Strategy Framework:
+
+1. Situation Setup:
+- "Our client needed a real-time dashboard, but our team had no experience with WebSocket technology..."
+- "I had 2 weeks to learn React Native for a mobile project..."
+- "The company decided to migrate to Kubernetes, and I volunteered to lead the effort..."
+
+2. Learning Approach:
+- "I started by understanding the fundamentals and core concepts..."
+- "I found the best learning resources: official documentation, tutorials, and courses..."
+- "I built small proof-of-concept projects to practice..."
+- "I joined community forums and connected with experts..."
+
+3. Practical Application:
+- "I created a simple chat application to understand WebSocket basics..."
+- "I broke down the learning into daily goals and milestones..."
+- "I documented what I learned to share with the team..."
+- "I asked for code reviews from more experienced developers..."
+
+Example Response:
+"When our startup needed to implement machine learning features, I had never worked with ML before. Here's how I approached it:
+
+Week 1: Fundamentals
+- Completed Andrew Ng's ML course online
+- Read documentation for scikit-learn and TensorFlow
+- Built simple classification models with sample datasets
+
+Week 2: Practical Application
+- Analyzed our specific use case (user behavior prediction)
+- Cleaned and prepared our actual data
+- Experimented with different algorithms
+- Created a working prototype
+
+Week 3: Implementation
+- Integrated the model into our Python backend
+- Set up model training pipelines
+- Implemented A/B testing to measure impact
+- Documented the solution for the team
+
+Result: The ML feature improved user engagement by 25%, and I became the team's go-to person for ML projects."
+
+Learning Strategies:
+- Start with fundamentals before diving deep
+- Learn by building real projects
+- Join communities and ask questions
+- Teach others to reinforce your learning
+- Set specific, measurable learning goals
+- Don't be afraid to make mistakes</div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>What motivates you as a developer?</h3>
+                        <button class="answer-btn" onclick="toggleAnswer(this)">Show Strategy</button>
+                        <div class="answer">Structure Your Answer Around:
+
+1. Technical Growth:
+- "I'm energized by solving complex technical challenges..."
+- "Learning new technologies and staying current with industry trends..."
+- "Building elegant, efficient solutions to real problems..."
+- "The satisfaction of debugging and fixing difficult issues..."
+
+2. Impact and Purpose:
+- "Seeing how my code affects real users and improves their lives..."
+- "Contributing to products that make a meaningful difference..."
+- "Building tools that help other developers be more productive..."
+- "Working on projects that solve important business problems..."
+
+3. Collaboration and Learning:
+- "Mentoring junior developers and seeing them grow..."
+- "Learning from experienced colleagues and different perspectives..."
+- "Code reviews and technical discussions that improve code quality..."
+- "Working with cross-functional teams to deliver complete solutions..."
+
+4. Continuous Improvement:
+- "Refactoring legacy code and improving system architecture..."
+- "Optimizing performance and user experience..."
+- "Implementing best practices and raising code quality standards..."
+- "Automating repetitive tasks to increase team efficiency..."
+
+Example Response:
+"What motivates me most is the combination of technical problem-solving and real-world impact. For example, when I optimized our API response times from 2 seconds to 200ms, I wasn't just improving numbers—I was directly enhancing the experience for thousands of users.
+
+I'm also deeply motivated by continuous learning. The field evolves so rapidly that there's always something new to master. Whether it's exploring a new framework, understanding emerging design patterns, or diving into system architecture, I find the learning process energizing.
+
+Additionally, I love the collaborative aspect of development. Some of my best solutions have come from pair programming sessions or architecture discussions with colleagues. Teaching and mentoring others also motivates me because it reinforces my own understanding while helping the team grow stronger.
+
+Finally, I'm driven by craftsmanship—writing clean, maintainable code that other developers can easily understand and build upon. There's something deeply satisfying about creating elegant solutions that stand the test of time."
+
+Key Points to Include:
+- Be genuine and specific to your experience
+- Connect motivation to value you bring to the company
+- Show passion for both technical and collaborative aspects
+- Mention growth mindset and continuous learning
+- Avoid generic answers like "I love coding"</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Page -->
+        <div id="resources" class="page">
+            <div class="page-header">
+                <h1>Learning Resources</h1>
+                <p>Curated collection of books, courses, and platforms to accelerate your professional development.</p>
+            </div>
+
+            <div class="content-section">
+                <div class="section-tabs">
+                    <button class="tab-btn active" onclick="showTab('resources', 'courses')">Online Courses</button>
+                    <button class="tab-btn" onclick="showTab('resources', 'books')">Books</button>
+                    <button class="tab-btn" onclick="showTab('resources', 'platforms')">Learning Platforms</button>
+                    <button class="tab-btn" onclick="showTab('resources', 'blogs')">Blogs & Websites</button>
+                    <button class="tab-btn" onclick="showTab('resources', 'communities')">Communities</button>
+                </div>
+
+                <div id="resources-courses" class="tab-content active">
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h3>The Complete JavaScript Course 2024</h3>
+                            <p><strong>Platform:</strong> Udemy</p>
+                            <p><strong>Instructor:</strong> Jonas Schmedtmann</p>
+                            <p>Comprehensive JavaScript course covering ES6+, DOM manipulation, asynchronous JavaScript, and modern development practices.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 85%"></div>
+                            </div>
+                            <p><small>Atlassian ecosystem • Enterprise focus</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>SourceTree</h3>
+                            <p><strong>Type:</strong> Git GUI Client</p>
+                            <p>Free Git GUI client that simplifies Git workflows with visual branch management and merge conflict resolution.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 82%"></div>
+                            </div>
+                            <p><small>Beginner friendly • Visual interface • Free</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Git Kraken</h3>
+                            <p><strong>Type:</strong> Git GUI Client</p>
+                            <p>Cross-platform Git client with intuitive interface, built-in merge tool, and integration with GitHub/GitLab.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 88%"></div>
+                            </div>
+                            <p><small>Beautiful UI • Cross-platform • Premium features</small></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tools-databases" class="tab-content">
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h3>PostgreSQL</h3>
+                            <p><strong>Type:</strong> Relational Database</p>
+                            <p>Advanced open-source relational database with ACID compliance, JSON support, and powerful query capabilities.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 95%"></div>
+                            </div>
+                            <p><small>Open source • ACID compliant • Feature rich</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>MongoDB</h3>
+                            <p><strong>Type:</strong> NoSQL Database</p>
+                            <p>Document-based NoSQL database with flexible schema, horizontal scaling, and rich query language.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 92%"></div>
+                            </div>
+                            <p><small>NoSQL • Document store • Scalable</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Redis</h3>
+                            <p><strong>Type:</strong> In-Memory Database</p>
+                            <p>High-performance in-memory data store used for caching, session storage, and real-time applications.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 90%"></div>
+                            </div>
+                            <p><small>In-memory • High performance • Caching</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>MySQL</h3>
+                            <p><strong>Type:</strong> Relational Database</p>
+                            <p>Popular open-source relational database known for reliability, ease of use, and wide adoption.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 88%"></div>
+                            </div>
+                            <p><small>Widely used • Mature • Web applications</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>DBeaver</h3>
+                            <p><strong>Type:</strong> Database Tool</p>
+                            <p>Universal database tool with support for multiple database types, SQL editor, and data visualization.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 85%"></div>
+                            </div>
+                            <p><small>Multi-database • Free • Visual tools</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Elasticsearch</h3>
+                            <p><strong>Type:</strong> Search Engine</p>
+                            <p>Distributed search and analytics engine for handling large volumes of data with real-time search capabilities.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 87%"></div>
+                            </div>
+                            <p><small>Search engine • Analytics • Big data</small></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tools-deployment" class="tab-content">
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h3>Docker</h3>
+                            <p><strong>Type:</strong> Containerization Platform</p>
+                            <p>Platform for developing, shipping, and running applications in lightweight, portable containers.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 96%"></div>
+                            </div>
+                            <p><small>Industry standard • Containerization • DevOps essential</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Kubernetes</h3>
+                            <p><strong>Type:</strong> Container Orchestration</p>
+                            <p>Open-source system for automating deployment, scaling, and management of containerized applications.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 85%"></div>
+                            </div>
+                            <p><small>Container orchestration • Complex • Enterprise</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>AWS</h3>
+                            <p><strong>Type:</strong> Cloud Platform</p>
+                            <p>Amazon's comprehensive cloud platform with computing, storage, database, and networking services.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 94%"></div>
+                            </div>
+                            <p><small>Market leader • Comprehensive • Pay-as-you-go</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Netlify</h3>
+                            <p><strong>Type:</strong> Static Site Hosting</p>
+                            <p>Platform for deploying static sites and serverless functions with continuous deployment from Git.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 90%"></div>
+                            </div>
+                            <p><small>Static sites • Serverless functions • Developer friendly</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Vercel</h3>
+                            <p><strong>Type:</strong> Frontend Deployment</p>
+                            <p>Platform optimized for frontend frameworks with instant deployments, serverless functions, and edge network.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 92%"></div>
+                            </div>
+                            <p><small>Frontend focused • Next.js creators • Fast deployments</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Heroku</h3>
+                            <p><strong>Type:</strong> Platform as a Service</p>
+                            <p>Cloud platform that enables easy deployment and scaling of web applications with minimal configuration.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 88%"></div>
+                            </div>
+                            <p><small>Easy deployment • Multiple languages • Beginner friendly</small></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tools-testing" class="tab-content">
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h3>Jest</h3>
+                            <p><strong>Type:</strong> JavaScript Testing Framework</p>
+                            <p>Comprehensive testing framework for JavaScript with built-in mocking, coverage reports, and snapshot testing.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 95%"></div>
+                            </div>
+                            <p><small>JavaScript standard • Zero config • Feature rich</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Cypress</h3>
+                            <p><strong>Type:</strong> End-to-End Testing</p>
+                            <p>Modern testing tool for web applications with real browser testing, time-travel debugging, and easy setup.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 92%"></div>
+                            </div>
+                            <p><small>E2E testing • Developer friendly • Real browser</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Selenium</h3>
+                            <p><strong>Type:</strong> Browser Automation</p>
+                            <p>Cross-platform tool for automating web browsers, supporting multiple programming languages and browsers.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 85%"></div>
+                            </div>
+                            <p><small>Cross-browser • Multiple languages • Industry standard</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Postman</h3>
+                            <p><strong>Type:</strong> API Testing</p>
+                            <p>Platform for API development and testing with request collections, automated testing, and team collaboration.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 93%"></div>
+                            </div>
+                            <p><small>API testing • User friendly • Team collaboration</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>JUnit</h3>
+                            <p><strong>Type:</strong> Java Testing Framework</p>
+                            <p>Standard testing framework for Java applications with annotations, assertions, and test runners.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 90%"></div>
+                            </div>
+                            <p><small>Java standard • Unit testing • Mature framework</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>pytest</h3>
+                            <p><strong>Type:</strong> Python Testing Framework</p>
+                            <p>Simple yet powerful testing framework for Python with fixtures, parametrized testing, and plugin ecosystem.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 91%"></div>
+                            </div>
+                            <p><small>Python testing • Simple syntax • Extensible</small></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tools-productivity" class="tab-content">
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h3>Figma</h3>
+                            <p><strong>Type:</strong> Design Tool</p>
+                            <p>Collaborative design tool for UI/UX design, prototyping, and design system management in the browser.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 95%"></div>
+                            </div>
+                            <p><small>Design collaboration • Browser-based • Free tier</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Notion</h3>
+                            <p><strong>Type:</strong> All-in-One Workspace</p>
+                            <p>Workspace for notes, tasks, wikis, and databases with powerful organization and collaboration features.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 90%"></div>
+                            </div>
+                            <p><small>Documentation • Project management • Versatile</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Slack</h3>
+                            <p><strong>Type:</strong> Team Communication</p>
+                            <p>Business communication platform with channels, direct messages, file sharing, and app integrations.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 88%"></div>
+                            </div>
+                            <p><small>Team communication • Popular • Integration rich</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Jira</h3>
+                            <p><strong>Type:</strong> Project Management</p>
+                            <p>Agile project management tool for tracking issues, managing sprints, and planning software development.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 85%"></div>
+                            </div>
+                            <p><small>Agile management • Issue tracking • Enterprise</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Trello</h3>
+                            <p><strong>Type:</strong> Kanban Board</p>
+                            <p>Visual project management tool using boards, lists, and cards for organizing tasks and workflows.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 82%"></div>
+                            </div>
+                            <p><small>Simple • Visual • Kanban approach</small></p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Oh My Zsh</h3>
+                            <p><strong>Type:</strong> Terminal Enhancement</p>
+                            <p>Framework for managing Zsh configuration with themes, plugins, and productivity improvements for terminal.</p>
+                            <div class="skill-meter">
+                                <div class="skill-level" style="width: 78%"></div>
+                            </div>
+                            <p><small>Terminal productivity • Customizable • Developer focused</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Tracking Page -->
+        <div id="progress" class="page">
+            <div class="page-header">
+                <h1>Progress Tracking</h1>
+                <p>Monitor your learning journey with detailed progress metrics and personalized study schedules.</p>
+            </div>
+
+            <div class="content-section">
+                <h2>Learning Progress Overview</h2>
+                <div class="features-grid" style="margin-top: 30px;">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Overall Progress</h3>
+                        <div class="progress-bar" style="margin: 20px 0;">
+                            <div class="progress-fill" style="width: 45%"></div>
+                        </div>
+                        <p>45% Complete across all learning paths</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Current Focus</h3>
+                        <p><strong>JavaScript - DOM Manipulation</strong></p>
+                        <div class="progress-bar" style="margin: 15px 0;">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                        <p>3 of 5 topics completed</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🔥</div>
+                        <h3>Study Streak</h3>
+                        <p style="font-size: 2rem; font-weight: bold; color: #f59e0b; margin: 10px 0;">12 days</p>
+                        <p>Keep up the great work!</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⏰</div>
+                        <h3>Time Invested</h3>
+                        <p style="font-size: 1.5rem; font-weight: bold; margin: 10px 0;">47 hours</p>
+                        <p>This month: 18 hours</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 50px;">
+                    <h2>Skill Development</h2>
+                    <div class="resources-grid" style="margin-top: 30px;">
+                        <div class="resource-card">
+                            <h3>JavaScript</h3>
+                            <div class="skill-meter" style="margin: 15px 0;">
+                                <div class="skill-level" style="width: 70%"></div>
+                            </div>
+                            <p><strong>Intermediate Level</strong></p>
+                            <p>Strong fundamentals, working on advanced concepts</p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>React</h3>
+                            <div class="skill-meter" style="margin: 15px 0;">
+                                <div class="skill-level" style="width: 45%"></div>
+                            </div>
+                            <p><strong>Beginner Level</strong></p>
+                            <p>Learning hooks and state management</p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Node.js</h3>
+                            <div class="skill-meter" style="margin: 15px 0;">
+                                <div class="skill-level" style="width: 35%"></div>
+                            </div>
+                            <p><strong>Beginner Level</strong></p>
+                            <p>Starting with Express.js framework</p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>System Design</h3>
+                            <div class="skill-meter" style="margin: 15px 0;">
+                                <div class="skill-level" style="width: 20%"></div>
+                            </div>
+                            <p><strong>Novice Level</strong></p>
+                            <p>Learning basic architectural patterns</p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Algorithms & Data Structures</h3>
+                            <div class="skill-meter" style="margin: 15px 0;">
+                                <div class="skill-level" style="width: 55%"></div>
+                            </div>
+                            <p><strong>Intermediate Level</strong></p>
+                            <p>Solved 150+ LeetCode problems</p>
+                        </div>
+
+                        <div class="resource-card">
+                            <h3>Database Management</h3>
+                            <div class="skill-meter" style="margin: 15px 0;">
+                                <div class="skill-level" style="width: 40%"></div>
+                            </div>
+                            <p><strong>Beginner Level</strong></p>
+                            <p>Learning SQL and database design</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 50px;">
+                    <h2>Upcoming Goals</h2>
+                    <div class="flowchart">
+                        <div class="flowchart-node">Complete JavaScript DOM Module</div>
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-node">Start React Fundamentals</div>
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-node">Build First React Project</div>
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-node">Learn Node.js Backend</div>
+                        <div class="flowchart-arrow">↓</div>
+                        <div class="flowchart-node">Complete Full-Stack Project</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Professional Development Hub</h3>
+            <p>Empowering developers to build amazing careers through structured learning and comprehensive resources.</p>
+            <p style="margin-top: 20px; color: #94a3b8;">&copy; 2024 DevHub Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Global state management
+        let currentPage = 'home';
+        let currentTabs = {};
+
+        // Navigation functionality
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate current nav link
+            const activeLink = document.querySelector(`[onclick="showPage('${pageId}')"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            currentPage = pageId;
+        }
+
+        // Tab functionality
+        function showTab(section, tabId) {
+            const sectionId = `${section}-${tabId}`;
+            
+            // Hide all tab contents in this section
+            document.querySelectorAll(`[id^="${section}-"]`).forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(sectionId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Update tab buttons
+            const tabContainer = document.querySelector(`#${section} .section-tabs`);
+            if (tabContainer) {
+                tabContainer.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Find and activate current tab button
+                const activeBtn = Array.from(tabContainer.querySelectorAll('.tab-btn'))
+                    .find(btn => btn.textContent.toLowerCase().replace(/[^a-z0-9]/g, '') === tabId.replace(/-/g, ''));
+                
+                if (activeBtn) {
+                    activeBtn.classList.add('active');
+                } else {
+                    // Fallback: activate the clicked button
+                    event.target.classList.add('active');
+                }
+            }
+            
+            currentTabs[section] = tabId;
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Roadmap step details toggle
+        function toggleStepDetails(stepElement) {
+            const content = stepElement.querySelector('.step-content');
+            const isExpanded = stepElement.classList.contains('expanded');
+            
+            // Close all other steps
+            document.querySelectorAll('.roadmap-step').forEach(step => {
+                step.classList.remove('expanded');
+                const stepContent = step.querySelector('.step-content');
+                if (stepContent) {
+                    stepContent.style.maxHeight = null;
+                }
+            });
+            
+            // Toggle current step
+            if (!isExpanded) {
+                stepElement.classList.add('expanded');
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        }
+
+        // Quiz functionality
+        function selectQuizOption(option, isCorrect) {
+            const options = option.parentElement.querySelectorAll('.quiz-option');
+            
+            // Reset all options
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Mark selected option
+            if (isCorrect) {
+                option.classList.add('correct');
+            } else {
+                option.classList.add('incorrect');
+                // Show correct answer
+                options.forEach(opt => {
+                    if (opt.onclick && opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+        }
+
+        // Answer toggle functionality
+        function toggleAnswer(button) {
+            const answer = button.nextElementSibling;
+            const isVisible = answer.style.display === 'block';
+            
+            if (isVisible) {
+                answer.style.display = 'none';
+                button.textContent = 'Show Answer';
+            } else {
+                answer.style.display = 'block';
+                button.textContent = 'Hide Answer';
+            }
+        }
+
+        // Progress animation
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const progressBar = entry.target;
+                        const width = progressBar.style.width;
+                        progressBar.style.width = '0%';
+                        
+                        setTimeout(() => {
+                            progressBar.style.width = width;
+                        }, 100);
+                    }
+                });
+            });
+            
+            progressBars.forEach(bar => observer.observe(bar));
+        }
+
+        // Skill level animation
+        function animateSkillLevels() {
+            const skillLevels = document.querySelectorAll('.skill-level');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const skillLevel = entry.target;
+                        const width = skillLevel.style.width;
+                        skillLevel.style.width = '0%';
+                        
+                        setTimeout(() => {
+                            skillLevel.style.width = width;
+                        }, 200);
+                    }
+                });
+            });
+            
+            skillLevels.forEach(level => observer.observe(level));
+        }
+
+        // Search functionality (basic implementation)
+        function searchContent(query) {
+            const pages = document.querySelectorAll('.page');
+            const results = [];
+            
+            pages.forEach(page => {
+                const content = page.textContent.toLowerCase();
+                if (content.includes(query.toLowerCase())) {
+                    results.push({
+                        page: page.id,
+                        title: page.querySelector('h1')?.textContent || 'Unknown',
+                        matches: (content.match(new RegExp(query, 'gi')) || []).length
+                    });
+                }
+            });
+            
+            return results.sort((a, b) => b.matches - a.matches);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Alt + number keys for quick navigation
+            if (e.altKey && e.key >= '1' && e.key <= '6') {
+                e.preventDefault();
+                const pages = ['home', 'roadmaps', 'interviews', 'resources', 'tools', 'progress'];
+                const pageIndex = parseInt(e.key) - 1;
+                if (pages[pageIndex]) {
+                    showPage(pages[pageIndex]);
+                }
+            }
+            
+            // Escape to close mobile menu
+            if (e.key === 'Escape') {
+                const navMenu = document.getElementById('navMenu');
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                }
+            }
+        });
+
+        // Local storage for progress tracking
+        function saveProgress(data) {
+            try {
+                const existingProgress = JSON.parse(localStorage.getItem('devhub_progress') || '{}');
+                const updatedProgress = { ...existingProgress, ...data };
+                localStorage.setItem('devhub_progress', JSON.stringify(updatedProgress));
+            } catch (error) {
+                console.warn('Could not save progress to local storage');
+            }
+        }
+
+        function loadProgress() {
+            try {
+                return JSON.parse(localStorage.getItem('devhub_progress') || '{}');
+            } catch (error) {
+                console.warn('Could not load progress from local storage');
+                return {};
+            }
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize animations
+            animateProgressBars();
+            animateSkillLevels();
+            
+            // Load saved progress
+            const savedProgress = loadProgress();
+            console.log('Loaded progress:', savedProgress);
+            
+            // Set initial page
+            showPage('home');
+            
+            // Initialize default tabs
+            currentTabs = {
+                roadmaps: 'javascript',
+                interviews: 'javascript-questions',
+                resources: 'courses',
+                tools: 'ides'
+            };
+            
+            // Add smooth scrolling to navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Add loading states for dynamic content
+            const buttons = document.querySelectorAll('.btn, .tab-btn, .answer-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Add subtle loading feedback
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+            console.log('Professional Development Hub initialized successfully!');
+        });
+
+        // Performance monitoring
+        if ('performance' in window) {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    console.log('Page load time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+                }, 0);
+            });
+        }
+
+        // Error handling
+        window.addEventListener('error', (e) => {
+            console.error('Application error:', e.error);
+            // In production, you might want to send this to an error reporting service
+        });
+
+        // Utility functions
+        const utils = {
+            debounce: (func, wait) => {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            },
+            
+            formatTime: (seconds) => {
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                return `${hours}h ${minutes}m`;
+            },
+            
+            calculateProgress: (completed, total) => {
+                return Math.round((completed / total) * 100);
+            }
+        };
+
+       
+    // Export for potential future use
+    window.DevHub = {
+        showPage,
+        showTab,
+        toggleMobileMenu,
+        toggleStepDetails,
+        selectQuizOption,
+        toggleAnswer,
+        saveProgress,
+        loadProgress,
+        utils
+    };
+</script>
+</body>
+</html>

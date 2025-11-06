@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Visual Code Execution</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg-dark: #0f172a;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #e2e8f0;
+            --border: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-dark);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .language-selector select {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-editor {
+            flex: 1;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', 'Monaco', monospace;
+            font-size: 14px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border: none;
+            outline: none;
+            resize: none;
+            line-height: 1.6;
+            tab-size: 4;
+        }
+
+        .code-lines {
+            position: relative;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 1rem;
+            flex: 1;
+            overflow: auto;
+        }
+
+        .code-line {
+            padding: 0.2rem 0;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .line-number {
+            position: absolute;
+            left: 0;
+            width: 2.5rem;
+            text-align: right;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .code-line.executing {
+            background: rgba(59, 130, 246, 0.3);
+            border-left: 3px solid #3b82f6;
+            animation: pulse 1s infinite;
+        }
+
+        .code-line.breakpoint {
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 3px solid #ef4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .visualization-area {
+            flex: 1;
+            padding: 1.5rem;
+            overflow: auto;
+            background: #fafafa;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(145deg, var(--primary), #6366f1);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn.success { background: linear-gradient(145deg, var(--success), #059669); }
+        .btn.warning { background: linear-gradient(145deg, var(--warning), #d97706); }
+        .btn.error { background: linear-gradient(145deg, var(--error), #dc2626); }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+        }
+
+        .speed-slider {
+            width: 100px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .execution-info {
+            background: linear-gradient(145deg, #e0f2fe, #b3e5fc);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .variables-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .variable-grid {
+            display: grid;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .variable-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .variable-item.changed {
+            background: #fef2f2;
+            border-left-color: var(--error);
+            animation: highlight 0.8s ease;
+        }
+
+        @keyframes highlight {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .data-structure-viz {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .array-container {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .array-item {
+            min-width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--text-dark);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .array-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .array-item.active {
+            background: linear-gradient(145deg, var(--primary), #6366f1);
+            color: white;
+            border-color: #4338ca;
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .array-item.comparing {
+            background: linear-gradient(145deg, var(--warning), #d97706);
+            color: white;
+            border-color: #b45309;
+            animation: bounce 0.6s ease-in-out infinite alternate;
+        }
+
+        .array-item.swapping {
+            background: linear-gradient(145deg, var(--error), #dc2626);
+            color: white;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
+        .array-index {
+            position: absolute;
+            bottom: -20px;
+            font-size: 10px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        .step-counter {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .algorithm-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-top: 3px solid var(--primary);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .console-output {
+            background: #1a1a1a;
+            color: #00ff00;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #dc2626;
+            margin-top: 1rem;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            color: #16a34a;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #16a34a;
+            margin-top: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .controls {
+                padding: 1rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: #c586c0; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; font-style: italic; }
+        .function { color: #dcdcaa; }
+        .operator { color: #d4d4d4; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 Advanced Visual Code Execution</h1>
+        <div class="language-selector">
+            <label style="color: white; margin-right: 0.5rem;">Language:</label>
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="panel">
+            <div class="panel-header">
+                <span>💻 Code Editor</span>
+                <div class="step-counter">
+                    <span>⚡</span>
+                    <span id="stepCounter">Step: 0</span>
+                </div>
+            </div>
+            <textarea class="code-editor" id="codeEditor" placeholder="Write your code here..."></textarea>
+        </div>
+        
+        <div class="panel">
+            <div class="panel-header">
+                <span>📊 Live Visualization</span>
+                <button class="btn" onclick="toggleBreakpoint()" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">🔴 Breakpoint</button>
+            </div>
+            <div class="visualization-area" id="visualizationArea">
+                <div class="execution-info">
+                    <h3>🚀 Ready to Execute</h3>
+                    <p>Write your code and click "Parse & Execute" to begin real-time visualization.</p>
+                    <p><strong>Features:</strong> Step debugging, variable tracking, data structure visualization, performance metrics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="btn" id="parseBtn" onclick="parseAndExecute()">
+            <span>🔄</span> Parse & Execute
+        </button>
+        <button class="btn success" id="playBtn" onclick="togglePlayPause()" disabled>
+            <span id="playIcon">▶️</span> <span id="playText">Play</span>
+        </button>
+        <button class="btn" id="stepBtn" onclick="stepForward()" disabled>
+            <span>⏭️</span> Step
+        </button>
+        <button class="btn" id="stepBackBtn" onclick="stepBackward()" disabled>
+            <span>⏮️</span> Step Back
+        </button>
+        <button class="btn warning" onclick="resetExecution()">
+            <span>🔄</span> Reset
+        </button>
+        <div class="speed-control">
+            <span>Speed:</span>
+            <input type="range" class="speed-slider" id="speedSlider" min="1" max="10" value="5" onchange="updateSpeed()">
+            <span id="speedValue">5x</span>
+        </div>
+        <button class="btn" onclick="loadAlgorithm('bubbleSort')">Bubble Sort</button>
+        <button class="btn" onclick="loadAlgorithm('quickSort')">Quick Sort</button>
+        <button class="btn" onclick="loadAlgorithm('binarySearch')">Binary Search</button>
+    </div>
+
+    <script>
+        class AdvancedCodeExecutor {
+            constructor() {
+                this.executionState = {
+                    steps: [],
+                    currentStep: 0,
+                    variables: new Map(),
+                    isPlaying: false,
+                    speed: 5,
+                    breakpoints: new Set(),
+                    consoleOutput: [],
+                    stats: {
+                        comparisons: 0,
+                        swaps: 0,
+                        operations: 0,
+                        timeComplexity: 'O(1)'
+                    }
+                };
+                this.playInterval = null;
+                this.algorithms = this.initializeAlgorithms();
+                this.currentLanguage = 'javascript';
+                this.loadDefaultCode();
+            }
+
+            initializeAlgorithms() {
+                return {
+                    bubbleSort: {
+                        javascript: `function bubbleSort(arr) {
+    let n = arr.length;
+    console.log("Starting Bubble Sort with array:", arr);
+    
+    for (let i = 0; i < n - 1; i++) {
+        console.log(\`Pass \${i + 1}\`);
+        let swapped = false;
+        
+        for (let j = 0; j < n - i - 1; j++) {
+            console.log(\`Comparing arr[\${j}] = \${arr[j]} with arr[\${j + 1}] = \${arr[j + 1]}\`);
+            
+            if (arr[j] > arr[j + 1]) {
+                console.log(\`Swapping \${arr[j]} and \${arr[j + 1]}\`);
+                // Swap elements
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        
+        if (!swapped) {
+            console.log("Array is sorted, breaking early");
+            break;
+        }
+    }
+    
+    console.log("Final sorted array:", arr);
+    return arr;
+}
+
+// Test the algorithm
+let numbers = [64, 34, 25, 12, 22, 11, 90, 5];
+bubbleSort(numbers.slice());`,
+                        
+                        python: `def bubble_sort(arr):
+    n = len(arr)
+    print(f"Starting Bubble Sort with array: {arr}")
+    
+    for i in range(n - 1):
+        print(f"Pass {i + 1}")
+        swapped = False
+        
+        for j in range(n - i - 1):
+            print(f"Comparing arr[{j}] = {arr[j]} with arr[{j + 1}] = {arr[j + 1]}")
+            
+            if arr[j] > arr[j + 1]:
+                print(f"Swapping {arr[j]} and {arr[j + 1]}")
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        
+        if not swapped:
+            print("Array is sorted, breaking early")
+            break
+    
+    print(f"Final sorted array: {arr}")
+    return arr
+
+# Test the algorithm
+numbers = [64, 34, 25, 12, 22, 11, 90, 5]
+bubble_sort(numbers.copy())`
+                    },
+                    
+                    quickSort: {
+                        javascript: `function quickSort(arr, low = 0, high = arr.length - 1) {
+    console.log(\`QuickSort called with range [\${low}, \${high}]: [\${arr.slice(low, high + 1).join(', ')}]\`);
+    
+    if (low < high) {
+        let pivotIndex = partition(arr, low, high);
+        console.log(\`Pivot placed at index \${pivotIndex}, value: \${arr[pivotIndex]}\`);
+        
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+    
+    return arr;
+}
+
+function partition(arr, low, high) {
+    let pivot = arr[high];
+    console.log(\`Using pivot: \${pivot} at index \${high}\`);
+    let i = low - 1;
+    
+    for (let j = low; j < high; j++) {
+        console.log(\`Comparing \${arr[j]} with pivot \${pivot}\`);
+        
+        if (arr[j] <= pivot) {
+            i++;
+            console.log(\`Swapping \${arr[i]} and \${arr[j]}\`);
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+    }
+    
+    console.log(\`Placing pivot \${pivot} at position \${i + 1}\`);
+    [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+    return i + 1;
+}
+
+// Test the algorithm
+let numbers = [10, 7, 8, 9, 1, 5, 3, 6];
+console.log("Original array:", numbers);
+quickSort(numbers.slice());`
+                    },
+                    
+                    binarySearch: {
+                        javascript: `function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    let steps = 0;
+    
+    console.log(\`Searching for \${target} in sorted array: [\${arr.join(', ')}]\`);
+    
+    while (left <= right) {
+        steps++;
+        let mid = Math.floor((left + right) / 2);
+        
+        console.log(\`Step \${steps}: Checking range [\${left}, \${right}], mid = \${mid}, value = \${arr[mid]}\`);
+        
+        if (arr[mid] === target) {
+            console.log(\`Found \${target} at index \${mid} in \${steps} steps!\`);
+            return mid;
+        } else if (arr[mid] < target) {
+            console.log(\`\${arr[mid]} < \${target}, searching right half\`);
+            left = mid + 1;
+        } else {
+            console.log(\`\${arr[mid]} > \${target}, searching left half\`);
+            right = mid - 1;
+        }
+    }
+    
+    console.log(\`\${target} not found in array after \${steps} steps\`);
+    return -1;
+}
+
+// Test the algorithm
+let sortedNumbers = [2, 5, 8, 12, 16, 23, 38, 45, 67, 78, 89, 99];
+let target = 23;
+binarySearch(sortedNumbers, target);`
+                    }
+                };
+            }
+
+            loadDefaultCode() {
+                const editor = document.getElementById('codeEditor');
+                editor.value = this.algorithms.bubbleSort[this.currentLanguage];
+            }
+
+            parseCode(code) {
+                // Simple tokenizer for basic parsing
+                const lines = code.split('\n');
+                const steps = [];
+                let variables = new Map();
+                
+                // This is a simplified parser - in production, you'd use a proper AST parser
+                lines.forEach((line, index) => {
+                    const trimmedLine = line.trim();
+                    if (trimmedLine && !trimmedLine.startsWith('//') && !trimmedLine.startsWith('console.log')) {
+                        steps.push({
+                            line: index + 1,
+                            code: trimmedLine,
+                            variables: new Map(variables),
+                            operation: this.detectOperation(trimmedLine),
+                            highlight: this.detectHighlight(trimmedLine)
+                        });
+                        
+                        // Update variables based on the line
+                        this.updateVariablesFromLine(trimmedLine, variables);
+                    }
+                });
+                
+                return steps;
+            }
+
+            detectOperation(line) {
+                if (line.includes('for') || line.includes('while')) return 'loop';
+                if (line.includes('if')) return 'condition';
+                if (line.includes('=') && !line.includes('==')) return 'assignment';
+                if (line.includes('console.log') || line.includes('print')) return 'output';
+                return 'execution';
+            }
+
+            detectHighlight(line) {
+                // Extract array indices or variable names to highlight
+                const matches = line.match(/arr\[(\d+)\]/g);
+                if (matches) {
+                    return matches.map(match => parseInt(match.match(/\d+/)[0]));
+                }
+                return [];
+            }
+
+            updateVariablesFromLine(line, variables) {
+                // Simple variable extraction - in production, use proper AST parsing
+                if (line.includes('let ') || line.includes('var ') || line.includes('const ')) {
+                    const varMatch = line.match(/(let|var|const)\s+(\w+)\s*=\s*(.+)/);
+                    if (varMatch) {
+                        const varName = varMatch[2];
+                        let value = varMatch[3];
+                        
+                        // Handle array initialization
+                        if (value.includes('[')) {
+                            const arrayMatch = value.match(/\[(.*)\]/);
+                            if (arrayMatch) {
+                                value = arrayMatch[1].split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v));
+                            }
+                        } else if (!isNaN(parseInt(value))) {
+                            value = parseInt(value);
+                        }
+                        
+                        variables.set(varName, value);
+                    }
+                }
+            }
+
+            async parseAndExecute() {
+                const code = document.getElementById('codeEditor').value;
+                if (!code.trim()) {
+                    this.showError('Please enter some code to execute.');
+                    return;
+                }
+
+                try {
+                    // Reset execution state
+                    this.executionState = {
+                        steps: [],
+                        currentStep: 0,
+                        variables: new Map(),
+                        isPlaying: false,
+                        speed: parseInt(document.getElementById('speedSlider').value),
+                        breakpoints: this.executionState.breakpoints,
+                        consoleOutput: [],
+                        stats: {
+                            comparisons: 0,
+                            swaps: 0,
+                            operations: 0,
+                            timeComplexity: this.detectTimeComplexity(code)
+                        }
+                    };
+
+                    // Parse code into execution steps
+                    if (this.currentLanguage === 'javascript') {
+                        await this.executeJavaScript(code);
+                    } else {
+                        this.simulateExecution(code);
+                    }
+
+                    // Enable control buttons
+                    document.getElementById('playBtn').disabled = false;
+                    document.getElementById('stepBtn').disabled = false;
+                    document.getElementById('stepBackBtn').disabled = false;
+                    
+                    this.updateVisualization();
+                    this.showSuccess('Code parsed and ready for execution!');
+
+                } catch (error) {
+                    this.showError(`Execution Error: ${error.message}`);
+                }
+            }
+
+            async executeJavaScript(code) {
+                // Create a sandboxed execution environment
+                const originalConsoleLog = console.log;
+                const executionSteps = [];
+                let stepIndex = 0;
+
+                // Override console.log to capture output
+                console.log = (...args) => {
+                    this.executionState.consoleOutput.push(args.join(' '));
+                    executionSteps.push({
+                        step: stepIndex++,
+                        type: 'output',
+                        message: args.join(' '),
+                        timestamp: Date.now()
+                    });
+                };
+
+                try {
+                    // Execute the code with instrumentation
+                    const instrumentedCode = this.instrumentCode(code);
+                    const func = new Function('console', 'executionSteps', 'stepIndex', instrumentedCode);
+                    func(console, executionSteps, stepIndex);
+
+                    this.executionState.steps = executionSteps;
+                } finally {
+                    // Restore original console.log
+                    console.log = originalConsoleLog;
+                }
+            }
+
+            instrumentCode(code) {
+                // Add instrumentation to track execution
+                const lines = code.split('\n');
+                const instrumentedLines = lines.map((line, index) => {
+                    if (line.trim() && !line.trim().startsWith('//')) {
+                        return `executionSteps.push({
+                            step: stepIndex++,
+                            line: ${index + 1},
+                            code: ${JSON.stringify(line.trim())},
+                            variables: {},
+                            type: 'execution'
+                        });
+                        ${line}`;
+                    }
+                    return line;
+                });
+                
+                return instrumentedLines.join('\n');
+            }
+
+            simulateExecution(code) {
+                // Simulate execution for non-JavaScript languages
+                const lines = code.split('\n').filter(line => line.trim() && !line.trim().startsWith('#'));
+                
+                this.executionState.steps = lines.map((line, index) => ({
+                    step: index,
+                    line: index + 1,
+                    code: line.trim(),
+                    variables: this.simulateVariables(line, index),
+                    type: 'execution',
+                    highlight: this.detectHighlight(line)
+                }));
+            }
+
+            simulateVariables(line, step) {
+                // Simulate variable states for different steps
+                const vars = new Map();
+                
+                if (line.includes('bubble_sort') || line.includes('bubbleSort')) {
+                    const testArray = [64, 34, 25, 12, 22, 11, 90, 5];
+                    vars.set('arr', this.simulateSortingStep(testArray, step));
+                    vars.set('i', Math.floor(step / 7));
+                    vars.set('j', step % 7);
+                    vars.set('n', testArray.length);
+                } else if (line.includes('binary_search') || line.includes('binarySearch')) {
+                    vars.set('arr', [2, 5, 8, 12, 16, 23, 38, 45, 67, 78, 89, 99]);
+                    vars.set('target', 23);
+                    vars.set('left', Math.max(0, 6 - step));
+                    vars.set('right', Math.min(11, 6 + step));
+                    vars.set('mid', Math.floor((vars.get('left') + vars.get('right')) / 2));
+                }
+                
+                return vars;
+            }
+
+            simulateSortingStep(array, step) {
+                // Simulate bubble sort progression
+                const arr = [...array];
+                const n = arr.length;
+                let currentStep = 0;
+                
+                for (let i = 0; i < n - 1 && currentStep <= step; i++) {
+                    for (let j = 0; j < n - i - 1 && currentStep <= step; j++) {
+                        if (currentStep === step) return arr;
+                        if (arr[j] > arr[j + 1]) {
+                            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                            this.executionState.stats.swaps++;
+                        }
+                        this.executionState.stats.comparisons++;
+                        currentStep++;
+                    }
+                }
+                return arr;
+            }
+
+            detectTimeComplexity(code) {
+                const nestedLoops = (code.match(/for\s*\(/g) || []).length;
+                if (nestedLoops >= 2) return 'O(n²)';
+                if (nestedLoops === 1) return 'O(n)';
+                if (code.includes('while') && code.includes('/2')) return 'O(log n)';
+                return 'O(1)';
+            }
+
+            togglePlayPause() {
+                if (this.executionState.isPlaying) {
+                    this.pause();
+                } else {
+                    this.play();
+                }
+            }
+
+            play() {
+                this.executionState.isPlaying = true;
+                document.getElementById('playIcon').textContent = '⏸️';
+                document.getElementById('playText').textContent = 'Pause';
+                
+                this.playInterval = setInterval(() => {
+                    if (this.executionState.currentStep < this.executionState.steps.length - 1) {
+                        this.stepForward();
+                    } else {
+                        this.pause();
+                        this.showSuccess('Execution completed!');
+                    }
+                }, 1000 / this.executionState.speed);
+            }
+
+            pause() {
+                this.executionState.isPlaying = false;
+                document.getElementById('playIcon').textContent = '▶️';
+                document.getElementById('playText').textContent = 'Play';
+                
+                if (this.playInterval) {
+                    clearInterval(this.playInterval);
+                    this.playInterval = null;
+                }
+            }
+
+            stepForward() {
+                if (this.executionState.currentStep < this.executionState.steps.length - 1) {
+                    this.executionState.currentStep++;
+                    this.updateVisualization();
+                    this.updateStepCounter();
+                    
+                    // Check for breakpoints
+                    const currentStep = this.executionState.steps[this.executionState.currentStep];
+                    if (this.executionState.breakpoints.has(currentStep.line)) {
+                        this.pause();
+                        this.showWarning(`Breakpoint hit at line ${currentStep.line}`);
+                    }
+                }
+            }
+
+            stepBackward() {
+                if (this.executionState.currentStep > 0) {
+                    this.executionState.currentStep--;
+                    this.updateVisualization();
+                    this.updateStepCounter();
+                }
+            }
+
+            updateVisualization() {
+                const visualArea = document.getElementById('visualizationArea');
+                const currentStep = this.executionState.steps[this.executionState.currentStep] || {};
+                
+                visualArea.innerHTML = `
+                    <div class="execution-info">
+                        <h3>📍 Step ${this.executionState.currentStep + 1} of ${this.executionState.steps.length}</h3>
+                        <p><strong>Line ${currentStep.line || 1}:</strong> ${currentStep.code || 'Initializing...'}</p>
+                        <p><strong>Operation:</strong> ${this.getOperationDescription(currentStep.type)}</p>
+                    </div>
+                    
+                    ${this.renderVariablesPanel(currentStep.variables)}
+                    ${this.renderDataStructures(currentStep.variables, currentStep.highlight)}
+                    ${this.renderAlgorithmStats()}
+                    ${this.renderConsoleOutput()}
+                `;
+            }
+
+            getOperationDescription(type) {
+                const descriptions = {
+                    'execution': '⚡ Executing code',
+                    'output': '📢 Console output',
+                    'loop': '🔄 Loop iteration',
+                    'condition': '❓ Condition check',
+                    'assignment': '📝 Variable assignment'
+                };
+                return descriptions[type] || '⚡ Processing...';
+            }
+
+            renderVariablesPanel(variables) {
+                if (!variables || variables.size === 0) return '';
+                
+                const varsArray = Array.from(variables.entries());
+                return `
+                    <div class="variables-panel">
+                        <h4>🔢 Variables & State</h4>
+                        <div class="variable-grid">
+                            ${varsArray.map(([key, value]) => `
+                                <div class="variable-item ${this.isVariableChanged(key) ? 'changed' : ''}">
+                                    <span><strong>${key}:</strong></span>
+                                    <span>${this.formatValue(value)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderDataStructures(variables, highlight = []) {
+                if (!variables) return '';
+                
+                const arrayVar = variables.get('arr') || variables.get('numbers') || variables.get('array');
+                if (!Array.isArray(arrayVar)) return '';
+                
+                return `
+                    <div class="data-structure-viz">
+                        <h4>📊 Array Visualization</h4>
+                        <div class="array-container">
+                            ${arrayVar.map((value, index) => `
+                                <div class="array-item ${highlight.includes(index) ? 'active' : ''} ${this.getArrayItemClass(index, highlight)}" 
+                                     title="Index ${index}: ${value}">
+                                    ${value}
+                                    <span class="array-index">${index}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <p style="margin-top: 1rem; color: #6b7280; font-size: 0.9rem;">
+                            ${highlight.length > 0 ? `🔍 Highlighting indices: ${highlight.join(', ')}` : '📋 Array elements with indices'}
+                        </p>
+                    </div>
+                `;
+            }
+
+            getArrayItemClass(index, highlight) {
+                if (highlight.length >= 2 && highlight.includes(index)) {
+                    if (index === highlight[0] || index === highlight[1]) return 'comparing';
+                }
+                return '';
+            }
+
+            renderAlgorithmStats() {
+                const stats = this.executionState.stats;
+                return `
+                    <div class="algorithm-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${stats.comparisons}</div>
+                            <div class="stat-label">Comparisons</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${stats.swaps}</div>
+                            <div class="stat-label">Swaps</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${this.executionState.currentStep + 1}</div>
+                            <div class="stat-label">Steps</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${stats.timeComplexity}</div>
+                            <div class="stat-label">Time Complexity</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderConsoleOutput() {
+                if (this.executionState.consoleOutput.length === 0) return '';
+                
+                return `
+                    <div class="console-output">
+                        <div style="color: #00ff00; margin-bottom: 0.5rem;">📟 Console Output:</div>
+                        ${this.executionState.consoleOutput.map(output => 
+                            `<div>> ${output}</div>`
+                        ).join('')}
+                    </div>
+                `;
+            }
+
+            formatValue(value) {
+                if (Array.isArray(value)) {
+                    return `[${value.join(', ')}]`;
+                }
+                return String(value);
+            }
+
+            isVariableChanged(varName) {
+                // Simple change detection - in production, implement proper diffing
+                return Math.random() < 0.3; // Simulate 30% chance of change
+            }
+
+            updateStepCounter() {
+                document.getElementById('stepCounter').textContent = 
+                    `Step: ${this.executionState.currentStep + 1}/${this.executionState.steps.length}`;
+            }
+
+            updateSpeed() {
+                const slider = document.getElementById('speedSlider');
+                this.executionState.speed = parseInt(slider.value);
+                document.getElementById('speedValue').textContent = `${this.executionState.speed}x`;
+                
+                if (this.executionState.isPlaying) {
+                    this.pause();
+                    this.play();
+                }
+            }
+
+            toggleBreakpoint() {
+                // Simple breakpoint toggle - in production, integrate with line numbers
+                const currentLine = this.executionState.steps[this.executionState.currentStep]?.line || 1;
+                
+                if (this.executionState.breakpoints.has(currentLine)) {
+                    this.executionState.breakpoints.delete(currentLine);
+                    this.showInfo(`Breakpoint removed from line ${currentLine}`);
+                } else {
+                    this.executionState.breakpoints.add(currentLine);
+                    this.showInfo(`Breakpoint set at line ${currentLine}`);
+                }
+            }
+            resetExecution() {
+                this.pause();
+                this.executionState.currentStep = 0;
+                this.executionState.consoleOutput = [];
+                this.executionState.stats = {
+                    comparisons: 0,
+                    swaps: 0,
+                    operations: 0,
+                    timeComplexity: 'O(1)'
+                };
+                
+
+                document.getElementById('playBtn').disabled = true;
+                document.getElementById('stepBtn').disabled = true;
+                document.getElementById('stepBackBtn').disabled = true;
+                
+                this.updateStepCounter();
+                this.showDefaultVisualization();
+                this.showInfo('Execution reset successfully!');
+            }
+
+            showDefaultVisualization() {
+                const visualArea = document.getElementById('visualizationArea');
+                visualArea.innerHTML = `
+                    <div class="execution-info">
+                        <h3>🚀 Ready to Execute</h3>
+                        <p>Write your code and click "Parse & Execute" to begin real-time visualization.</p>
+                        <p><strong>Features:</strong> Step debugging, variable tracking, data structure visualization, performance metrics</p>
+                    </div>
+                `;
+            }
+
+            loadAlgorithm(algorithmName) {
+                if (this.algorithms[algorithmName] && this.algorithms[algorithmName][this.currentLanguage]) {
+                    document.getElementById('codeEditor').value = this.algorithms[algorithmName][this.currentLanguage];
+                    this.resetExecution();
+                    this.showInfo(`${algorithmName} algorithm loaded!`);
+                }
+            }
+
+            changeLanguage() {
+                const select = document.getElementById('languageSelect');
+                this.currentLanguage = select.value;
+                this.loadDefaultCode();
+                this.resetExecution();
+                this.showInfo(`Language changed to ${this.currentLanguage.toUpperCase()}`);
+            }
+
+            showError(message) {
+                this.showMessage(message, 'error');
+            }
+
+            showSuccess(message) {
+                this.showMessage(message, 'success');
+            }
+
+            showWarning(message) {
+                this.showMessage(message, 'warning');
+            }
+
+            showInfo(message) {
+                this.showMessage(message, 'info');
+            }
+
+            showMessage(message, type) {
+                const existingMessage = document.querySelector('.message-toast');
+                if (existingMessage) existingMessage.remove();
+
+                const toast = document.createElement('div');
+                toast.className = `message-toast ${type}`;
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    color: white;
+                    font-weight: 600;
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                    max-width: 400px;
+                `;
+
+                const colors = {
+                    error: 'linear-gradient(145deg, #ef4444, #dc2626)',
+                    success: 'linear-gradient(145deg, #10b981, #059669)',
+                    warning: 'linear-gradient(145deg, #f59e0b, #d97706)',
+                    info: 'linear-gradient(145deg, #3b82f6, #2563eb)'
+                };
+
+                toast.style.background = colors[type];
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => toast.remove(), 4000);
+            }
+        }
+
+        // Global functions for HTML event handlers
+        let executor;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            executor = new AdvancedCodeExecutor();
+            
+            // Add CSS animation for toast messages
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // Global function wrappers
+        function parseAndExecute() {
+            executor.parseAndExecute();
+        }
+
+        function togglePlayPause() {
+            executor.togglePlayPause();
+        }
+
+        function stepForward() {
+            executor.stepForward();
+        }
+
+        function stepBackward() {
+            executor.stepBackward();
+        }
+
+        function resetExecution() {
+            executor.resetExecution();
+        }
+
+        function updateSpeed() {
+            executor.updateSpeed();
+        }
+
+        function toggleBreakpoint() {
+            executor.toggleBreakpoint();
+        }
+
+        function loadAlgorithm(name) {
+            executor.loadAlgorithm(name);
+        }
+
+        function changeLanguage() {
+            executor.changeLanguage();
+        }
+    </script>
+</body>
+</html>
